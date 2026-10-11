@@ -1,0 +1,61 @@
+# .NET
+[Obi]
+[Obi.Debug]
+[Obi.Release]
+*.user
+*.suo
+*.cache
+*.log
+user-secrets.json
+
+# NuGet
+nuget.config
+*.nupkg
+*/nuget.exe
+packages/
+*/packages/
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+bld/
+[Bb]in/
+[Oo]bj/
+*.dll
+*.pdb
+*.exe
+
+# Visual Studio
+.vs/
+*.ossData
+*.ossDataTemp
+*.slnx
+*.suo
+*.user
+
+# IDE
+.idea/
+*.iml
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Uploads
+uploads/
+logs/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+dist/
+
+# LLM
+llm-service/uploads/

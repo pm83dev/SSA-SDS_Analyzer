@@ -1,0 +1,530 @@
+{
+  "builtAt": "2026-10-09T12:55:56.792Z",
+  "symbols": [
+    {
+      "name": "NavbarComponent",
+      "kind": "component",
+      "file": "frontend/sds-frontend/src/app/layout/components/navbar.component.ts",
+      "line": 55,
+      "preview": "export class NavbarComponent {"
+    },
+    {
+      "name": "ScenariosComponent",
+      "kind": "component",
+      "file": "frontend/sds-frontend/src/app/features/scenarios/components/scenarios.component.ts",
+      "line": 70,
+      "preview": "export class ScenariosComponent {"
+    },
+    {
+      "name": "DashboardComponent",
+      "kind": "component",
+      "file": "frontend/sds-frontend/src/app/features/scenarios/components/dashboard.component.ts",
+      "line": 62,
+      "preview": "export class DashboardComponent {"
+    },
+    {
+      "name": "CardListComponent",
+      "kind": "component",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-list.component.ts",
+      "line": 101,
+      "preview": "export class CardListComponent {"
+    },
+    {
+      "name": "App",
+      "kind": "component",
+      "file": "frontend/sds-frontend/src/app/app.ts",
+      "line": 10,
+      "preview": "export class App {"
+    },
+    {
+      "name": "ImportComponent",
+      "kind": "component",
+      "file": "frontend/sds-frontend/src/app/features/import/components/import.component.ts",
+      "line": 72,
+      "preview": "export class ImportComponent {"
+    },
+    {
+      "name": "ClientListComponent",
+      "kind": "component",
+      "file": "frontend/sds-frontend/src/app/features/clients/components/client-list.component.ts",
+      "line": 91,
+      "preview": "export class ClientListComponent {"
+    },
+    {
+      "name": "ClientDetailComponent",
+      "kind": "component",
+      "file": "frontend/sds-frontend/src/app/features/clients/components/client-detail.component.ts",
+      "line": 19,
+      "preview": "export class ClientDetailComponent {"
+    },
+    {
+      "name": "ApiService",
+      "kind": "service",
+      "file": "frontend/sds-frontend/src/app/core/services/api.service.ts",
+      "line": 10,
+      "preview": "export class ApiService {"
+    },
+    {
+      "name": "SafetyCardService",
+      "kind": "service",
+      "file": "frontend/sds-frontend/src/app/core/services/safety-card.service.ts",
+      "line": 9,
+      "preview": "export class SafetyCardService {"
+    },
+    {
+      "name": "getCards",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/safety-card.service.ts",
+      "line": 12,
+      "preview": "getCards(): Observable<SafetyCard[]> {"
+    },
+    {
+      "name": "getCard",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/safety-card.service.ts",
+      "line": 16,
+      "preview": "getCard(id: number): Observable<SafetyCard> {"
+    },
+    {
+      "name": "getCardsByClient",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/safety-card.service.ts",
+      "line": 20,
+      "preview": "getCardsByClient(clientId: number): Observable<SafetyCard[]> {"
+    },
+    {
+      "name": "createCard",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/safety-card.service.ts",
+      "line": 24,
+      "preview": "createCard(request: CreateSafetyCardRequest): Observable<SafetyCard> {"
+    },
+    {
+      "name": "updateCard",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/safety-card.service.ts",
+      "line": 28,
+      "preview": "updateCard(id: number, request: Partial<CreateSafetyCardRequest>): Observable<SafetyCard> {"
+    },
+    {
+      "name": "deleteCard",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/safety-card.service.ts",
+      "line": 32,
+      "preview": "deleteCard(id: number): Observable<void> {"
+    },
+    {
+      "name": "uploadPdf",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/safety-card.service.ts",
+      "line": 36,
+      "preview": "uploadPdf(cardId: number, file: File): Observable<{ url: string }> {"
+    },
+    {
+      "name": "analyzePdf",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/safety-card.service.ts",
+      "line": 42,
+      "preview": "analyzePdf(clientId: number, file: File): Observable<LlmAnalysisResponse> {"
+    },
+    {
+      "name": "ClientService",
+      "kind": "service",
+      "file": "frontend/sds-frontend/src/app/core/services/client.service.ts",
+      "line": 9,
+      "preview": "export class ClientService {"
+    },
+    {
+      "name": "getClients",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/client.service.ts",
+      "line": 12,
+      "preview": "getClients(): Observable<Client[]> {"
+    },
+    {
+      "name": "getClient",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/client.service.ts",
+      "line": 16,
+      "preview": "getClient(id: number): Observable<Client> {"
+    },
+    {
+      "name": "createClient",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/client.service.ts",
+      "line": 20,
+      "preview": "createClient(request: CreateClientRequest): Observable<Client> {"
+    },
+    {
+      "name": "updateClient",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/client.service.ts",
+      "line": 24,
+      "preview": "updateClient(id: number, request: UpdateClientRequest): Observable<Client> {"
+    },
+    {
+      "name": "deleteClient",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/client.service.ts",
+      "line": 28,
+      "preview": "deleteClient(id: number): Observable<void> {"
+    },
+    {
+      "name": "SafetyCard",
+      "kind": "interface",
+      "file": "frontend/sds-frontend/src/app/core/models/safety-card.model.ts",
+      "line": 1,
+      "preview": "export interface SafetyCard {"
+    },
+    {
+      "name": "CreateSafetyCardRequest",
+      "kind": "interface",
+      "file": "frontend/sds-frontend/src/app/core/models/safety-card.model.ts",
+      "line": 21,
+      "preview": "export interface CreateSafetyCardRequest {"
+    },
+    {
+      "name": "LlmAnalysisResponse",
+      "kind": "interface",
+      "file": "frontend/sds-frontend/src/app/core/models/safety-card.model.ts",
+      "line": 34,
+      "preview": "export interface LlmAnalysisResponse {"
+    },
+    {
+      "name": "Client",
+      "kind": "interface",
+      "file": "frontend/sds-frontend/src/app/core/models/client.model.ts",
+      "line": 1,
+      "preview": "export interface Client {"
+    },
+    {
+      "name": "CreateClientRequest",
+      "kind": "interface",
+      "file": "frontend/sds-frontend/src/app/core/models/client.model.ts",
+      "line": 18,
+      "preview": "export interface CreateClientRequest {"
+    },
+    {
+      "name": "UpdateClientRequest",
+      "kind": "interface",
+      "file": "frontend/sds-frontend/src/app/core/models/client.model.ts",
+      "line": 31,
+      "preview": "export interface UpdateClientRequest {"
+    },
+    {
+      "name": "SdsDbContext",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/SSA.SDS.Infrastructure/Data/SdsDbContext.cs",
+      "line": 6,
+      "preview": "public class SdsDbContext : DbContext"
+    },
+    {
+      "name": "Class1",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/SSA.SDS.Infrastructure/Class1.cs",
+      "line": 3,
+      "preview": "public class Class1"
+    },
+    {
+      "name": "ScenariosController",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/Controllers/ScenariosController.cs",
+      "line": 7,
+      "preview": "public class ScenariosController : ControllerBase"
+    },
+    {
+      "name": "GetExpiring",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/ScenariosController.cs",
+      "line": 17,
+      "preview": "public IActionResult GetExpiring()"
+    },
+    {
+      "name": "GetExpiringWithinDays",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/ScenariosController.cs",
+      "line": 23,
+      "preview": "public IActionResult GetExpiringWithinDays(int days)"
+    },
+    {
+      "name": "GetStats",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/ScenariosController.cs",
+      "line": 29,
+      "preview": "public IActionResult GetStats()"
+    },
+    {
+      "name": "SafetyCardsController",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/Controllers/SafetyCardsController.cs",
+      "line": 7,
+      "preview": "public class SafetyCardsController : ControllerBase"
+    },
+    {
+      "name": "Get",
+      "kind": "endpoint",
+      "file": "api/SSA.SDS.Api/Controllers/SafetyCardsController.cs",
+      "line": 16,
+      "preview": "[HttpGet]"
+    },
+    {
+      "name": "Get",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/SafetyCardsController.cs",
+      "line": 17,
+      "preview": "public IActionResult Get()"
+    },
+    {
+      "name": "Get",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/SafetyCardsController.cs",
+      "line": 23,
+      "preview": "public IActionResult Get(int id)"
+    },
+    {
+      "name": "Post",
+      "kind": "endpoint",
+      "file": "api/SSA.SDS.Api/Controllers/SafetyCardsController.cs",
+      "line": 28,
+      "preview": "[HttpPost]"
+    },
+    {
+      "name": "Create",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/SafetyCardsController.cs",
+      "line": 29,
+      "preview": "public IActionResult Create()"
+    },
+    {
+      "name": "Update",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/SafetyCardsController.cs",
+      "line": 35,
+      "preview": "public IActionResult Update(int id)"
+    },
+    {
+      "name": "Delete",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/SafetyCardsController.cs",
+      "line": 41,
+      "preview": "public IActionResult Delete(int id)"
+    },
+    {
+      "name": "UploadPdf",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/SafetyCardsController.cs",
+      "line": 47,
+      "preview": "public IActionResult UploadPdf(int id)"
+    },
+    {
+      "name": "AnalyzePdf",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/SafetyCardsController.cs",
+      "line": 53,
+      "preview": "public IActionResult AnalyzePdf()"
+    },
+    {
+      "name": "ImportController",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/Controllers/ImportController.cs",
+      "line": 7,
+      "preview": "public class ImportController : ControllerBase"
+    },
+    {
+      "name": "ImportExcel",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/ImportController.cs",
+      "line": 17,
+      "preview": "public IActionResult ImportExcel()"
+    },
+    {
+      "name": "GetHistory",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/ImportController.cs",
+      "line": 23,
+      "preview": "public IActionResult GetHistory()"
+    },
+    {
+      "name": "ClientsController",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/Controllers/ClientsController.cs",
+      "line": 8,
+      "preview": "public class ClientsController : ControllerBase"
+    },
+    {
+      "name": "Get",
+      "kind": "endpoint",
+      "file": "api/SSA.SDS.Api/Controllers/ClientsController.cs",
+      "line": 17,
+      "preview": "[HttpGet]"
+    },
+    {
+      "name": "Get",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/ClientsController.cs",
+      "line": 18,
+      "preview": "public IActionResult Get()"
+    },
+    {
+      "name": "Get",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/ClientsController.cs",
+      "line": 24,
+      "preview": "public IActionResult Get(int id)"
+    },
+    {
+      "name": "Post",
+      "kind": "endpoint",
+      "file": "api/SSA.SDS.Api/Controllers/ClientsController.cs",
+      "line": 29,
+      "preview": "[HttpPost]"
+    },
+    {
+      "name": "Create",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/ClientsController.cs",
+      "line": 30,
+      "preview": "public IActionResult Create([FromBody] CreateClientDto dto)"
+    },
+    {
+      "name": "Update",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/ClientsController.cs",
+      "line": 36,
+      "preview": "public IActionResult Update(int id, [FromBody] UpdateClientDto dto)"
+    },
+    {
+      "name": "Delete",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/ClientsController.cs",
+      "line": 42,
+      "preview": "public IActionResult Delete(int id)"
+    },
+    {
+      "name": "CardStatus",
+      "kind": "enum",
+      "file": "api/SSA.SDS.Api/SSA.SDS.Domain/Enums/CardStatus.cs",
+      "line": 3,
+      "preview": "public enum CardStatus"
+    },
+    {
+      "name": "ImportFileType",
+      "kind": "enum",
+      "file": "api/SSA.SDS.Api/SSA.SDS.Domain/Enums/CardStatus.cs",
+      "line": 11,
+      "preview": "public enum ImportFileType"
+    },
+    {
+      "name": "ImportStatus",
+      "kind": "enum",
+      "file": "api/SSA.SDS.Api/SSA.SDS.Domain/Enums/CardStatus.cs",
+      "line": 17,
+      "preview": "public enum ImportStatus"
+    },
+    {
+      "name": "NotificationType",
+      "kind": "enum",
+      "file": "api/SSA.SDS.Api/SSA.SDS.Domain/Enums/CardStatus.cs",
+      "line": 24,
+      "preview": "public enum NotificationType"
+    },
+    {
+      "name": "Class1",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/SSA.SDS.Domain/Class1.cs",
+      "line": 3,
+      "preview": "public class Class1"
+    },
+    {
+      "name": "Client",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/SSA.SDS.Domain/Entities/Client.cs",
+      "line": 6,
+      "preview": "public class Client"
+    },
+    {
+      "name": "ImportHistory",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/SSA.SDS.Domain/Entities/ImportHistory.cs",
+      "line": 6,
+      "preview": "public class ImportHistory"
+    },
+    {
+      "name": "SafetyCard",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/SSA.SDS.Domain/Entities/SafetyCard.cs",
+      "line": 6,
+      "preview": "public class SafetyCard"
+    },
+    {
+      "name": "Notification",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/SSA.SDS.Domain/Entities/Notification.cs",
+      "line": 6,
+      "preview": "public class Notification"
+    },
+    {
+      "name": "CreateSafetyCardDto",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/SSA.SDS.Application/DTOs/SafetyCardDtos.cs",
+      "line": 3,
+      "preview": "public class CreateSafetyCardDto"
+    },
+    {
+      "name": "UpdateSafetyCardDto",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/SSA.SDS.Application/DTOs/SafetyCardDtos.cs",
+      "line": 17,
+      "preview": "public class UpdateSafetyCardDto"
+    },
+    {
+      "name": "SafetyCardDto",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/SSA.SDS.Application/DTOs/SafetyCardDtos.cs",
+      "line": 30,
+      "preview": "public class SafetyCardDto"
+    },
+    {
+      "name": "LlmAnalysisRequest",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/SSA.SDS.Application/DTOs/SafetyCardDtos.cs",
+      "line": 51,
+      "preview": "public class LlmAnalysisRequest"
+    },
+    {
+      "name": "LlmAnalysisResponse",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/SSA.SDS.Application/DTOs/SafetyCardDtos.cs",
+      "line": 57,
+      "preview": "public class LlmAnalysisResponse"
+    },
+    {
+      "name": "CreateClientDto",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/SSA.SDS.Application/DTOs/ClientDtos.cs",
+      "line": 3,
+      "preview": "public class CreateClientDto"
+    },
+    {
+      "name": "UpdateClientDto",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/SSA.SDS.Application/DTOs/ClientDtos.cs",
+      "line": 17,
+      "preview": "public class UpdateClientDto"
+    },
+    {
+      "name": "ClientDto",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/SSA.SDS.Application/DTOs/ClientDtos.cs",
+      "line": 31,
+      "preview": "public class ClientDto"
+    },
+    {
+      "name": "Class1",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/SSA.SDS.Application/Class1.cs",
+      "line": 3,
+      "preview": "public class Class1"
+    }
+  ]
+}
