@@ -1,109 +1,169 @@
 -- SSA-SDS Database Initialization Script
--- PostgreSQL 15+
+-- SQL Server 2016+
 
--- Create database
-CREATE DATABASE sds_db;
+IF NOT EXISTS (SELECT 1 FROM sys.databases WHERE name = 'sds_db')
+    CREATE DATABASE sds_db;
+GO
 
-\c sds_db;
+USE sds_db;
+GO
 
 -- Clients table
-CREATE TABLE clients (
-    id SERIAL PRIMARY KEY,
-    ragione_sociale VARCHAR(255) NOT NULL,
-    codice_fiscale VARCHAR(20) UNIQUE,
-    indirizzo VARCHAR(255),
-    citta VARCHAR(100),
-    provincia VARCHAR(10),
-    cap VARCHAR(10),
-    telefono VARCHAR(20),
-    email VARCHAR(100),
-    contatto VARCHAR(100),
-    note TEXT,
-    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
-);
+IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'clients')
+BEGIN
+    CREATE TABLE clients (
+        Id INT IDENTITY(1,1) PRIMARY KEY,
+        ragione_sociale NVARCHAR(MAX) NOT NULL,
+        codice_fiscale NVARCHAR(450) NULL,
+        indirizzo NVARCHAR(MAX) NULL,
+        citta NVARCHAR(MAX) NULL,
+        provincia NVARCHAR(MAX) NULL,
+        cap NVARCHAR(MAX) NULL,
+        telefono NVARCHAR(MAX) NULL,
+        email NVARCHAR(MAX) NULL,
+        contatto NVARCHAR(MAX) NULL,
+        note NVARCHAR(MAX) NULL,
+        created_at DATETIME2 NOT NULL DEFAULT GETDATE(),
+        updated_at DATETIME2 NOT NULL DEFAULT GETDATE()
+    );
+
+    CREATE UNIQUE INDEX IX_clients_codice_fiscale ON clients(codice_fiscale) WHERE codice_fiscale IS NOT NULL;
+END
+GO
 
 -- Safety cards table
-CREATE TABLE safety_cards (
-    id SERIAL PRIMARY KEY,
-    client_id INTEGER NOT NULL REFERENCES clients(id) ON DELETE CASCADE,
-    tipologia VARCHAR(100) NOT NULL,
-    titolo VARCHAR(255) NOT NULL,
-    numero_protocollo VARCHAR(100),
-    ente_emittitore VARCHAR(200),
-    data_rilascio DATE,
-    data_scadenza DATE,
-    validita_mesi INTEGER,
-    stato VARCHAR(20) NOT NULL DEFAULT 'NotExpired',
-    frequenza_controllo VARCHAR(100),
-    osservazioni TEXT,
-    pdf_url VARCHAR(500),
-    llm_analyzed BOOLEAN NOT NULL DEFAULT FALSE,
-    llm_raw_response TEXT,
-    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
-);
+IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'safety_cards')
+BEGIN
+    CREATE TABLE safety_cards (
+        Id INT IDENTITY(1,1) PRIMARY KEY,
+        client_id INT NOT NULL REFERENCES clients(Id) ON DELETE CASCADE,
+        tipologia NVARCHAR(MAX) NOT NULL,
+        titolo NVARCHAR(MAX) NOT NULL,
+        numero_protocollo NVARCHAR(MAX) NULL,
+        ente_emittitore NVARCHAR(MAX) NULL,
+        data_rilascio DATETIME2 NULL,
+        data_scadenza DATETIME2 NULL,
+        validita_mesi INT NULL,
+        stato NVARCHAR(MAX) NOT NULL DEFAULT 'NotExpired',
+        frequenza_controllo NVARCHAR(MAX) NULL,
+        osservazioni NVARCHAR(MAX) NULL,
+        pdf_url NVARCHAR(MAX) NULL,
+        llm_analyzed BIT NOT NULL DEFAULT 0,
+        llm_raw_response NVARCHAR(MAX) NULL,
+        created_at DATETIME2 NOT NULL DEFAULT GETDATE(),
+        updated_at DATETIME2 NOT NULL DEFAULT GETDATE()
+    );
+
+    CREATE INDEX IX_safety_cards_client_id ON safety_cards(client_id);
+    CREATE INDEX IX_safety_cards_data_scadenza ON safety_cards(data_scadenza);
+    CREATE INDEX IX_safety_cards_stato ON safety_cards(stato);
+END
+GO
 
 -- Import histories table
-CREATE TABLE import_histories (
-    id SERIAL PRIMARY KEY,
-    file_name VARCHAR(255) NOT NULL,
-    file_type VARCHAR(10) NOT NULL,
-    client_id INTEGER REFERENCES clients(id) ON DELETE SET NULL,
-    records_imported INTEGER NOT NULL DEFAULT 0,
-    status VARCHAR(20) NOT NULL DEFAULT 'Processing',
-    error_message TEXT,
-    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
-);
+IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'import_histories')
+BEGIN
+    CREATE TABLE import_histories (
+        Id INT IDENTITY(1,1) PRIMARY KEY,
+        file_name NVARCHAR(MAX) NOT NULL,
+        file_type NVARCHAR(MAX) NOT NULL,
+        client_id INT NULL REFERENCES clients(Id) ON DELETE SET NULL,
+        records_imported INT NOT NULL DEFAULT 0,
+        status NVARCHAR(MAX) NOT NULL DEFAULT 'Processing',
+        error_message NVARCHAR(MAX) NULL,
+        created_at DATETIME2 NOT NULL DEFAULT GETDATE()
+    );
+
+    CREATE INDEX IX_import_histories_client_id ON import_histories(client_id);
+END
+GO
 
 -- Notifications table
-CREATE TABLE notifications (
-    id SERIAL PRIMARY KEY,
-    client_id INTEGER NOT NULL REFERENCES clients(id) ON DELETE CASCADE,
-    card_id INTEGER REFERENCES safety_cards(id) ON DELETE SET NULL,
-    type VARCHAR(20) NOT NULL,
-    message TEXT NOT NULL,
-    is_read BOOLEAN NOT NULL DEFAULT FALSE,
-    sent_date TIMESTAMP WITH TIME ZONE,
-    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
-);
-
--- Indexes
-CREATE INDEX idx_safety_cards_client_id ON safety_cards(client_id);
-CREATE INDEX idx_safety_cards_data_scadenza ON safety_cards(data_scadenza);
-CREATE INDEX idx_safety_cards_stato ON safety_cards(stato);
-CREATE INDEX idx_import_histories_client_id ON import_histories(client_id);
-CREATE INDEX idx_notifications_client_id ON notifications(client_id);
-CREATE INDEX idx_notifications_is_read ON notifications(is_read);
-
--- Function to update updated_at timestamp
-CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $$
+IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'notifications')
 BEGIN
-    NEW.updated_at = NOW();
-    RETURN NEW;
-END;
-$$ language 'plpgsql';
+    CREATE TABLE notifications (
+        Id INT IDENTITY(1,1) PRIMARY KEY,
+        client_id INT NOT NULL REFERENCES clients(Id) ON DELETE CASCADE,
+        card_id INT NULL REFERENCES safety_cards(Id) ON DELETE SET NULL,
+        type NVARCHAR(MAX) NOT NULL,
+        message NVARCHAR(MAX) NOT NULL,
+        is_read BIT NOT NULL DEFAULT 0,
+        sent_date DATETIME2 NULL,
+        created_at DATETIME2 NOT NULL DEFAULT GETDATE()
+    );
 
--- Triggers for updated_at
-CREATE TRIGGER update_clients_updated_at BEFORE UPDATE ON clients
-    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+    CREATE INDEX IX_notifications_client_id ON notifications(client_id);
+    CREATE INDEX IX_notifications_card_id ON notifications(card_id);
+    CREATE INDEX IX_notifications_is_read ON notifications(is_read);
+END
+GO
 
-CREATE TRIGGER update_safety_cards_updated_at BEFORE UPDATE ON safety_cards
-    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-
--- Function to calculate card status
-CREATE OR REPLACE FUNCTION calculate_card_status(card_data_scadenza DATE)
-RETURNS VARCHAR AS $$
+-- Users table
+IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'users')
 BEGIN
-    IF card_data_scadenza IS NULL THEN
-        RETURN 'NotExpired';
-    ELSIF card_data_scadenza < CURRENT_DATE THEN
-        RETURN 'Expired';
-    ELSIF card_data_scadenza < CURRENT_DATE + INTERVAL '30 days' THEN
-        RETURN 'Expiring';
-    ELSE
-        RETURN 'Valid';
-    END IF;
-END;
-$$ LANGUAGE plpgsql;
+    CREATE TABLE users (
+        Id INT IDENTITY(1,1) PRIMARY KEY,
+        username NVARCHAR(450) NOT NULL,
+        password_hash NVARCHAR(MAX) NOT NULL,
+        email NVARCHAR(MAX) NULL,
+        role NVARCHAR(MAX) NOT NULL,
+        is_active BIT NOT NULL DEFAULT 1,
+        last_login DATETIME2 NULL,
+        created_at DATETIME2 NOT NULL DEFAULT GETDATE(),
+        updated_at DATETIME2 NOT NULL DEFAULT GETDATE()
+    );
+
+    CREATE UNIQUE INDEX IX_users_username ON users(username);
+END
+GO
+
+-- Trigger to update updated_at (clients)
+IF NOT EXISTS (SELECT 1 FROM sys.triggers WHERE name = 'trg_clients_updated_at')
+BEGIN
+    CREATE TRIGGER trg_clients_updated_at
+    ON clients
+    AFTER UPDATE
+    AS
+    BEGIN
+        SET NOCOUNT ON;
+        UPDATE c
+        SET c.updated_at = GETDATE()
+        FROM clients c
+        INNER JOIN inserted i ON c.Id = i.Id;
+    END
+END
+GO
+
+-- Trigger to update updated_at (safety_cards)
+IF NOT EXISTS (SELECT 1 FROM sys.triggers WHERE name = 'trg_safety_cards_updated_at')
+BEGIN
+    CREATE TRIGGER trg_safety_cards_updated_at
+    ON safety_cards
+    AFTER UPDATE
+    AS
+    BEGIN
+        SET NOCOUNT ON;
+        UPDATE s
+        SET s.updated_at = GETDATE()
+        FROM safety_cards s
+        INNER JOIN inserted i ON s.Id = i.Id;
+    END
+END
+GO
+
+-- Trigger to update updated_at (users)
+IF NOT EXISTS (SELECT 1 FROM sys.triggers WHERE name = 'trg_users_updated_at')
+BEGIN
+    CREATE TRIGGER trg_users_updated_at
+    ON users
+    AFTER UPDATE
+    AS
+    BEGIN
+        SET NOCOUNT ON;
+        UPDATE u
+        SET u.updated_at = GETDATE()
+        FROM users u
+        INNER JOIN inserted i ON u.Id = i.Id;
+    END
+END
+GO

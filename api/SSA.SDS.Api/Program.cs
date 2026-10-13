@@ -9,10 +9,10 @@ using System.IdentityModel.Tokens.Jwt;
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? "Host=localhost;Port=5432;Database=sds_db;Username=postgres;Password=postgres";
+    ?? "Server=localhost;Database=sds_db;Integrated Security=true;Trust Server Certificate=true";
 
 builder.Services.AddDbContext<SdsDbContext>(options =>
-    options.UseNpgsql(connectionString));
+    options.UseSqlServer(connectionString));
 
 builder.Services.AddControllers();
 
