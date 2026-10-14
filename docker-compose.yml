@@ -1,21 +1,4 @@
 services:
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    environment:
-      ACCEPT_EULA: "Y"
-      MSSQL_SA_PASSWORD: "Amelia2024!"
-      MSSQL_PID: Developer
-    ports:
-      - "1433:1433"
-    volumes:
-      - sqlserver_data:/var/opt/mssql
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
-    healthcheck:
-      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Amelia2024!' -C -Q 'SELECT 1' -b -o /dev/null"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-
   api:
     build:
       context: ./api/SSA.SDS.Api
@@ -23,14 +6,13 @@ services:
     ports:
       - "5000:8080"
     environment:
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=sds_db;User Id=sa;Password=Amelia2024!;Trust Server Certificate=true
+      - ConnectionStrings__DefaultConnection=Server=host.docker.internal;Database=sds_db;Integrated Security=true;Trust Server Certificate=true
       - Jwt__SecretKey=SSA-SDS-SecretKey-2024-MustBeAtLeast32CharsLong!
       - Jwt__Issuer=SSA-SDS
       - Jwt__Audience=SSA-SDS-Client
       - LLM__BaseUrl=http://llm-service:8000/api
-    depends_on:
-      sqlserver:
-        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     restart: unless-stopped
 
   frontend:
@@ -53,9 +35,4 @@ services:
       - LLM_BASE_URL=http://qwen-server:8080/v1
       - EMBEDDING_URL=http://bge-embed:8081/embed
       - RERANKING_URL=http://bge-rerank:8082/rerank
-    depends_on:
-      - sqlserver
     restart: unless-stopped
-
-volumes:
-  sqlserver_data:
