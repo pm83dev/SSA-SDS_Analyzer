@@ -1,0 +1,40 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+
+@Component({
+  selector: 'app-navbar',
+  standalone: true,
+  imports: [CommonModule, RouterLink, RouterLinkActive],
+  template: `
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container-fluid">
+        <a class="navbar-brand" routerLink="/" routerLinkActive="active">SSA-SDS</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/clients" routerLinkActive="active">Clienti</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/safety-cards" routerLinkActive="active">Schede</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/import" routerLinkActive="active">Import</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/scenarios" routerLinkActive="active">Scadenze</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  `
+})
+export class NavbarComponent {
+}
