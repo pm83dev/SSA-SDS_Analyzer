@@ -311,28 +311,39 @@ public class ImportService : IImportService
 
         try
         {
+            _logger.LogInformation("LLM call: url={Url} model={Model} textLen={Len}", $"{baseUrl}/v1/chat/completions", model, pdfText.Length);
             using var response = await client.PostAsJsonAsync($"{baseUrl}/v1/chat/completions", payload);
+            var status = (int)response.StatusCode;
+            _logger.LogInformation("LLM response status: {Status}", status);
             if (!response.IsSuccessStatusCode)
             {
-                _logger.LogWarning("LLM HTTP {Status}: {Body}", (int)response.StatusCode, await response.Content.ReadAsStringAsync());
+                var errBody = await response.Content.ReadAsStringAsync();
+                _logger.LogWarning("LLM HTTP {Status}: {Body}", status, errBody);
                 return null;
             }
 
             var body = await response.Content.ReadAsStringAsync();
+            _logger.LogInformation("LLM body length: {Len}, preview: {Preview}", body.Length, body.Length > 200 ? body[..200] : body);
             using var doc = System.Text.Json.JsonDocument.Parse(body);
             var content = doc.RootElement.GetProperty("choices")[0].GetProperty("message").GetProperty("content").GetString();
+            _logger.LogInformation("LLM content length: {Len}", content?.Length ?? 0);
 
             var json = ExtractJson(content);
             if (json == null)
+            {
+                _logger.LogWarning("Nessun JSON trovato nella risposta LLM. Content: {Content}", content);
                 return null;
+            }
 
             try
             {
                 System.Text.Json.JsonDocument.Parse(json);
+                _logger.LogInformation("JSON LLM valid, length: {Len}", json.Length);
                 return json;
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogWarning(ex, "JSON LLM non valido: {Json}", json.Length > 500 ? json[..500] : json);
                 return null;
             }
         }
