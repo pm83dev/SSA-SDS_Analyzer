@@ -38,6 +38,9 @@ public class SafetyCard
     [Column("stato")]
     public string Stato { get; set; } = "NotExpired";
 
+    [Column("days_remaining")]
+    public int? DaysRemaining { get; set; }
+
     [Column("frequenza_controllo")]
     public string? FrequenzaControllo { get; set; }
 

@@ -37,13 +37,15 @@ import { SafetyCard } from '../../../core/models/safety-card.model';
               <th>Titolo</th>
               <th>Data Rilascio</th>
               <th>Data Scadenza</th>
+              <th>Giorni</th>
               <th>Stato</th>
+              <th>PDF</th>
               <th>Azioni</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngIf="filteredCards.length === 0">
-              <td colspan="7" class="text-center">
+              <td colspan="9" class="text-center">
                 {{ isLoading ? 'Caricamento...' : 'Nessuna scheda trovata' }}
               </td>
             </tr>
@@ -54,7 +56,16 @@ import { SafetyCard } from '../../../core/models/safety-card.model';
               <td>{{ card.dataRilascio | date:'dd/MM/yyyy' }}</td>
               <td>{{ card.dataScadenza | date:'dd/MM/yyyy' }}</td>
               <td>
+                <span *ngIf="card.daysRemaining !== null && card.daysRemaining !== undefined"
+                      [ngClass]="getDaysClass(card.daysRemaining)">{{ card.daysRemaining }}</span>
+                <span *ngIf="card.daysRemaining === null || card.daysRemaining === undefined">-</span>
+              </td>
+              <td>
                 <span class="badge" [ngClass]="getStatusClass(card.stato)">{{ card.stato }}</span>
+              </td>
+              <td>
+                <a *ngIf="card.hasPdf && card.pdfUrl" [href]="card.pdfUrl" target="_blank" class="pdf-link">PDF</a>
+                <span *ngIf="!card.hasPdf" class="no-pdf">-</span>
               </td>
               <td class="actions">
                 <a [routerLink]="['/safety-cards', card.id, 'edit']" class="btn btn-small btn-secondary">Modifica</a>
@@ -114,6 +125,17 @@ import { SafetyCard } from '../../../core/models/safety-card.model';
     .badge-valid { background: #d4edda; color: #155724; }
     .badge-expiring { background: #fff3cd; color: #856404; }
     .badge-expired { background: #f8d7da; color: #721c24; }
+    .days-positive { color: #27ae60; font-weight: 600; }
+    .days-warning { color: #f39c12; font-weight: 600; }
+    .days-danger { color: #e74c3c; font-weight: 600; }
+    .pdf-link {
+      color: #3498db;
+      text-decoration: underline;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .no-pdf { color: #ccc; }
     .actions {
       display: flex;
       gap: 8px;
@@ -205,6 +227,13 @@ export class CardListComponent implements OnInit {
       case 'Expired': return 'badge-expired';
       default: return 'badge-default';
     }
+  }
+
+  getDaysClass(days: number | undefined): string {
+    if (days === undefined || days === null) return '';
+    if (days < 0) return 'days-danger';
+    if (days <= 30) return 'days-warning';
+    return 'days-positive';
   }
 
   onDelete(id: number) {

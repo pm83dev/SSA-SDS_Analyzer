@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SSA.SDS.Api.Data;
 using SSA.SDS.Api.DTOs;
 using SSA.SDS.Api.Entities;
+using SSA.SDS.Api.Services;
 
 namespace SSA.SDS.Api.Controllers;
 
@@ -13,41 +14,35 @@ namespace SSA.SDS.Api.Controllers;
 public class SafetyCardsController : ControllerBase
 {
     private readonly SdsDbContext _context;
+    private readonly IFileStorageService _fileStorage;
+    private readonly IImportService _importService;
+    private readonly IExpirationService _expirationService;
+    private readonly ILogger<SafetyCardsController> _logger;
 
-    public SafetyCardsController(SdsDbContext context)
+    public SafetyCardsController(
+        SdsDbContext context,
+        IFileStorageService fileStorage,
+        IImportService importService,
+        IExpirationService expirationService,
+        ILogger<SafetyCardsController> logger)
     {
         _context = context;
+        _fileStorage = fileStorage;
+        _importService = importService;
+        _expirationService = expirationService;
+        _logger = logger;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
+        await _expirationService.RecalculateCardStatusesAsync();
+
         var cards = await _context.SafetyCards
             .Include(sc => sc.Client)
             .ToListAsync();
 
-        var result = cards.Select(sc => new SafetyCardDto
-        {
-            Id = sc.Id,
-            ClientId = sc.ClientId,
-            ClientName = sc.Client != null ? sc.Client.RagioneSociale : string.Empty,
-            Tipologia = sc.Tipologia,
-            Titolo = sc.Titolo,
-            NumeroProtocollo = sc.NumeroProtocollo,
-            EnteEmittitore = sc.EnteEmittitore,
-            DataRilascio = sc.DataRilascio,
-            DataScadenza = sc.DataScadenza,
-            ValiditaMesi = sc.ValiditaMesi,
-            Stato = sc.Stato,
-            FrequenzaControllo = sc.FrequenzaControllo,
-            Osservazioni = sc.Osservazioni,
-            PdfUrl = sc.PdfUrl,
-            LlmAnalyzed = sc.LlmAnalyzed,
-            CreatedAt = sc.CreatedAt,
-            UpdatedAt = sc.UpdatedAt
-        });
-
-        return Ok(result);
+        return Ok(cards.Select(MapCard));
     }
 
     [HttpGet("{id}")]
@@ -60,31 +55,15 @@ public class SafetyCardsController : ControllerBase
         if (card == null)
             return NotFound();
 
-        return Ok(new SafetyCardDto
-        {
-            Id = card.Id,
-            ClientId = card.ClientId,
-            ClientName = card.Client != null ? card.Client.RagioneSociale : string.Empty,
-            Tipologia = card.Tipologia,
-            Titolo = card.Titolo,
-            NumeroProtocollo = card.NumeroProtocollo,
-            EnteEmittitore = card.EnteEmittitore,
-            DataRilascio = card.DataRilascio,
-            DataScadenza = card.DataScadenza,
-            ValiditaMesi = card.ValiditaMesi,
-            Stato = card.Stato,
-            FrequenzaControllo = card.FrequenzaControllo,
-            Osservazioni = card.Osservazioni,
-            PdfUrl = card.PdfUrl,
-            LlmAnalyzed = card.LlmAnalyzed,
-            CreatedAt = card.CreatedAt,
-            UpdatedAt = card.UpdatedAt
-        });
+        return Ok(MapCard(card));
     }
 
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateSafetyCardDto dto)
     {
+        if (!await _context.Clients.AnyAsync(c => c.Id == dto.ClientId))
+            return BadRequest(new { message = "Cliente non trovato" });
+
         var card = new SafetyCard
         {
             ClientId = dto.ClientId,
@@ -98,9 +77,18 @@ public class SafetyCardsController : ControllerBase
             FrequenzaControllo = dto.FrequenzaControllo,
             Osservazioni = dto.Osservazioni
         };
+
+        if (card.DataScadenza != null)
+        {
+            var days = (int)(card.DataScadenza.Value.Date - DateTime.Today).Days;
+            card.Stato = days < 0 ? "Expired" : days <= 90 ? "Expiring" : "Valid";
+            card.DaysRemaining = days;
+        }
+
         _context.SafetyCards.Add(card);
         await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetById), new { id = card.Id }, card);
+
+        return CreatedAtAction(nameof(GetById), new { id = card.Id }, MapCard(card));
     }
 
     [HttpPut("{id}")]
@@ -108,7 +96,10 @@ public class SafetyCardsController : ControllerBase
     {
         var card = await _context.SafetyCards.FindAsync(id);
         if (card == null) return NotFound();
+        if (!await _context.Clients.AnyAsync(c => c.Id == dto.ClientId))
+            return BadRequest(new { message = "Cliente non trovato" });
 
+        card.ClientId = dto.ClientId;
         card.Tipologia = dto.Tipologia;
         card.Titolo = dto.Titolo;
         card.NumeroProtocollo = dto.NumeroProtocollo;
@@ -119,8 +110,22 @@ public class SafetyCardsController : ControllerBase
         card.FrequenzaControllo = dto.FrequenzaControllo;
         card.Osservazioni = dto.Osservazioni;
 
+        if (card.DataScadenza != null)
+        {
+            var days = (int)(card.DataScadenza.Value.Date - DateTime.Today).Days;
+            card.Stato = days < 0 ? "Expired" : days <= 90 ? "Expiring" : "Valid";
+            card.DaysRemaining = days;
+        }
+        else
+        {
+            card.Stato = "NotExpired";
+            card.DaysRemaining = null;
+        }
+
+        card.UpdatedAt = DateTime.UtcNow;
         await _context.SaveChangesAsync();
-        return Ok(card);
+
+        return Ok(MapCard(card));
     }
 
     [HttpDelete("{id}")]
@@ -129,8 +134,96 @@ public class SafetyCardsController : ControllerBase
         var card = await _context.SafetyCards.FindAsync(id);
         if (card == null) return NotFound();
 
+        if (!string.IsNullOrEmpty(card.PdfUrl))
+            _fileStorage.DeletePdf(card.PdfUrl);
+
         _context.SafetyCards.Remove(card);
         await _context.SaveChangesAsync();
         return NoContent();
     }
+
+    [HttpPost("{id}/upload-pdf")]
+    [RequestSizeLimit(30 * 1024 * 1024)]
+    public async Task<IActionResult> UploadPdf(int id, IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+            return BadRequest(new { message = "Nessun file caricato" });
+
+        var card = await _context.SafetyCards.FindAsync(id);
+        if (card == null) return NotFound();
+
+        var relativePath = await _fileStorage.SavePdfAsync(card.ClientId, card.Id, file.OpenReadStream(), file.FileName);
+        card.PdfUrl = relativePath;
+        card.UpdatedAt = DateTime.UtcNow;
+        await _context.SaveChangesAsync();
+
+        return Ok(new
+        {
+            pdfPath = $"/api/files/{relativePath.Replace('\\', '/')}",
+            fileName = file.FileName,
+            size = file.Length
+        });
+    }
+
+    [HttpGet("{id}/pdf-url")]
+    public async Task<IActionResult> GetPdfUrl(int id)
+    {
+        var card = await _context.SafetyCards.FindAsync(id);
+        if (card == null) return NotFound();
+        if (string.IsNullOrEmpty(card.PdfUrl)) return Ok((string?)null);
+
+        return Ok($"/api/files/{card.PdfUrl.Replace('\\', '/')}");
+    }
+
+    [HttpDelete("{id}/pdf")]
+    public async Task<IActionResult> DeletePdf(int id)
+    {
+        var card = await _context.SafetyCards.FindAsync(id);
+        if (card == null) return NotFound();
+
+        if (!string.IsNullOrEmpty(card.PdfUrl))
+            _fileStorage.DeletePdf(card.PdfUrl);
+
+        card.PdfUrl = null;
+        card.UpdatedAt = DateTime.UtcNow;
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    [HttpPost("analyze-pdf")]
+    [RequestSizeLimit(30 * 1024 * 1024)]
+    public async Task<IActionResult> AnalyzePdf([FromForm] int clientId, IFormFile pdfFile)
+    {
+        if (pdfFile == null || pdfFile.Length == 0)
+            return BadRequest(new { message = "Nessun file caricato" });
+
+        using var stream = pdfFile.OpenReadStream();
+        var result = await _importService.AnalyzePdfAsync(stream, clientId, pdfFile.FileName);
+
+        return result.Success ? Ok(result) : BadRequest(result);
+    }
+
+    private static SafetyCardDto MapCard(SafetyCard sc) => new()
+    {
+        Id = sc.Id,
+        ClientId = sc.ClientId,
+        ClientName = sc.Client != null ? sc.Client.RagioneSociale : string.Empty,
+        Tipologia = sc.Tipologia,
+        Titolo = sc.Titolo,
+        NumeroProtocollo = sc.NumeroProtocollo,
+        EnteEmittitore = sc.EnteEmittitore,
+        DataRilascio = sc.DataRilascio,
+        DataScadenza = sc.DataScadenza,
+        ValiditaMesi = sc.ValiditaMesi,
+        Stato = sc.Stato,
+        DaysRemaining = sc.DaysRemaining,
+        FrequenzaControllo = sc.FrequenzaControllo,
+        Osservazioni = sc.Osservazioni,
+        PdfUrl = sc.PdfUrl != null ? $"/api/files/{sc.PdfUrl.Replace('\\', '/')}" : null,
+        HasPdf = !string.IsNullOrEmpty(sc.PdfUrl),
+        LlmAnalyzed = sc.LlmAnalyzed,
+        CreatedAt = sc.CreatedAt,
+        UpdatedAt = sc.UpdatedAt
+    };
 }

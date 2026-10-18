@@ -29,6 +29,12 @@ public class User
     [Column("last_login")]
     public DateTime? LastLogin { get; set; }
 
+    [Column("refresh_token")]
+    public string? RefreshToken { get; set; }
+
+    [Column("refresh_token_expires")]
+    public DateTime? RefreshTokenExpires { get; set; }
+
     [Column("created_at")]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

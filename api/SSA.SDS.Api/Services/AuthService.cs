@@ -10,7 +10,7 @@ namespace SSA.SDS.Api.Services;
 public interface IAuthService
 {
     Task<LoginResponse?> LoginAsync(string username, string password);
-    Task<LoginResponse?> RefreshTokenAsync(string refreshToken, string? refreshTokenSecret);
+    Task<LoginResponse?> RefreshTokenAsync(string refreshToken);
     Task<User?> RegisterAsync(string username, string password, string email, string role);
     Task<User?> GetUserByUsernameAsync(string username);
     Task<User?> GetUserByIdAsync(int id);
@@ -38,37 +38,39 @@ public class AuthService : IAuthService
             return null;
 
         user.LastLogin = DateTime.UtcNow;
-        _context.Users.Update(user);
+        ApplyRefreshToken(user);
         await _context.SaveChangesAsync();
 
-        var accessToken = GenerateJwtToken(user);
-        var refreshToken = GenerateRefreshToken();
-
-        return new LoginResponse
-        {
-            AccessToken = accessToken,
-            RefreshToken = refreshToken,
-            ExpiresAt = DateTime.UtcNow.AddHours(2),
-            Role = user.Role
-        };
+        return BuildResponse(user);
     }
 
-    public async Task<LoginResponse?> RefreshTokenAsync(string refreshToken, string? tokenSecret)
+    public async Task<LoginResponse?> RefreshTokenAsync(string refreshToken)
     {
-        if (string.IsNullOrEmpty(refreshToken))
+        if (string.IsNullOrWhiteSpace(refreshToken))
             return null;
 
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.IsActive);
+        var user = await _context.Users
+            .FirstOrDefaultAsync(u => u.IsActive && u.RefreshToken == refreshToken);
+
         if (user == null)
-            return null;
-
-        return new LoginResponse
         {
-            AccessToken = GenerateJwtToken(user),
-            RefreshToken = GenerateRefreshToken(),
-            ExpiresAt = DateTime.UtcNow.AddHours(2),
-            Role = user.Role
-        };
+            _logger.LogWarning("Refresh token non valido");
+            return null;
+        }
+
+        if (user.RefreshTokenExpires == null || user.RefreshTokenExpires < DateTime.UtcNow)
+        {
+            _logger.LogWarning("Refresh token scaduto per utente {Username}", user.Username);
+            user.RefreshToken = null;
+            user.RefreshTokenExpires = null;
+            await _context.SaveChangesAsync();
+            return null;
+        }
+
+        ApplyRefreshToken(user);
+        await _context.SaveChangesAsync();
+
+        return BuildResponse(user);
     }
 
     public async Task<User?> RegisterAsync(string username, string password, string email, string role)
@@ -96,7 +98,34 @@ public class AuthService : IAuthService
     public async Task<User?> GetUserByIdAsync(int id)
         => await _context.Users.FindAsync(id);
 
-    private string GenerateJwtToken(User user)
+    private LoginResponse BuildResponse(User user)
+    {
+        var expiresAt = DateTime.UtcNow.AddHours(GetExpirationHours());
+        return new LoginResponse
+        {
+            AccessToken = GenerateJwtToken(user, expiresAt),
+            RefreshToken = user.RefreshToken ?? string.Empty,
+            ExpiresAt = expiresAt,
+            Role = user.Role
+        };
+    }
+
+    private void ApplyRefreshToken(User user)
+    {
+        var randomBytes = new byte[32];
+        using var rng = System.Security.Cryptography.RandomNumberGenerator.Create();
+        rng.GetBytes(randomBytes);
+        user.RefreshToken = Convert.ToBase64String(randomBytes);
+        user.RefreshTokenExpires = DateTime.UtcNow.AddDays(7);
+    }
+
+    private int GetExpirationHours()
+    {
+        var hours = _configuration.GetValue<int?>("Jwt:ExpirationHours");
+        return hours == null || hours <= 0 ? 2 : hours.Value;
+    }
+
+    private string GenerateJwtToken(User user, DateTime expiresAt)
     {
         var jwtSettings = _configuration.GetSection("Jwt");
         var secretKey = jwtSettings["SecretKey"];
@@ -120,20 +149,12 @@ public class AuthService : IAuthService
             issuer: issuer,
             audience: audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddHours(2),
+            expires: expiresAt,
             signingCredentials: new SigningCredentials(
                 new SymmetricSecurityKey(key),
                 SecurityAlgorithms.HmacSha256Signature)
         );
 
         return tokenHandler.WriteToken(token);
-    }
-
-    private string GenerateRefreshToken()
-    {
-        var randomBytes = new byte[32];
-        using var rng = System.Security.Cryptography.RandomNumberGenerator.Create();
-        rng.GetBytes(randomBytes);
-        return Convert.ToBase64String(randomBytes);
     }
 }

@@ -12,6 +12,7 @@ public class SdsDbContext : DbContext
     public DbSet<ImportHistory> ImportHistories => Set<ImportHistory>();
     public DbSet<Notification> Notifications => Set<Notification>();
     public DbSet<User> Users => Set<User>();
+    public DbSet<ChemicalProduct> ChemicalProducts => Set<ChemicalProduct>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -47,6 +48,12 @@ public class SdsDbContext : DbContext
         {
             entity.ToTable("users");
             entity.HasIndex(u => u.Username).IsUnique();
+        });
+
+        modelBuilder.Entity<ChemicalProduct>(entity =>
+        {
+            entity.ToTable("chemical_products");
+            entity.HasIndex(cp => cp.ClientId);
         });
     }
 }

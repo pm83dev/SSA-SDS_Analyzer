@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SafetyCardService } from '../../../core/services/safety-card.service';
-import { SafetyCard } from '../../../core/models/safety-card.model';
+import { ScenarioService, ExpiringCard } from '../../../core/services/scenario.service';
 
 @Component({
   selector: 'app-scenarios',
@@ -17,18 +16,22 @@ import { SafetyCard } from '../../../core/models/safety-card.model';
           <option value="30">Prossimi 30 giorni</option>
           <option value="60">Prossimi 60 giorni</option>
           <option value="90">Prossimi 90 giorni</option>
+          <option value="180">Prossimi 180 giorni</option>
           <option value="365">Prossimo anno</option>
-          <option value="all">Tutte</option>
         </select>
       </div>
       <div class="summary-cards">
         <div class="summary-card summary-expiring">
-          <h3>In Scadenza</h3>
-          <p class="summary-number">{{ expiringCount }}</p>
+          <h3>In Scadenza (≤30gg)</h3>
+          <p class="summary-number">{{ warningCount }}</p>
         </div>
         <div class="summary-card summary-expired">
           <h3>Scadute</h3>
           <p class="summary-number">{{ expiredCount }}</p>
+        </div>
+        <div class="summary-card summary-total">
+          <h3>Totali nel periodo</h3>
+          <p class="summary-number">{{ expiring.length }}</p>
         </div>
       </div>
       <div class="table-container">
@@ -44,19 +47,19 @@ import { SafetyCard } from '../../../core/models/safety-card.model';
             </tr>
           </thead>
           <tbody>
-            <tr *ngIf="filteredCards.length === 0">
+            <tr *ngIf="expiring.length === 0">
               <td colspan="6" class="text-center">
-                {{ isLoading ? 'Caricamento...' : 'Nessuna scheda trovata' }}
+                {{ isLoading ? 'Caricamento...' : 'Nessuna scheda in scadenza nel periodo selezionato' }}
               </td>
             </tr>
-            <tr *ngFor="let card of filteredCards">
+            <tr *ngFor="let card of expiring">
               <td>{{ card.clientName }}</td>
               <td>{{ card.titolo }}</td>
               <td>{{ card.tipologia }}</td>
               <td>{{ card.dataScadenza | date:'dd/MM/yyyy' }}</td>
               <td>
-                <span *ngIf="getDaysRemaining(card) >= 0" class="text-warning">{{ getDaysRemaining(card) }} giorni</span>
-                <span *ngIf="getDaysRemaining(card) < 0" class="text-danger">{{ getDaysRemaining(card) * -1 }} giorni fa</span>
+                <span *ngIf="(card.daysRemaining ?? 0) >= 0" class="text-warning">{{ card.daysRemaining }} giorni</span>
+                <span *ngIf="(card.daysRemaining ?? 0) < 0" class="text-danger">{{ (card.daysRemaining ?? 0) * -1 }} giorni fa</span>
               </td>
               <td>
                 <span class="badge" [ngClass]="getStatusClass(card.stato)">{{ card.stato }}</span>
@@ -69,9 +72,7 @@ import { SafetyCard } from '../../../core/models/safety-card.model';
   `,
   styles: [`
     .scenarios-page { padding: 20px; }
-    .page-header {
-      margin-bottom: 24px;
-    }
+    .page-header { margin-bottom: 24px; }
     .page-header h1 { margin: 0; color: #2c3e50; }
     .scenarios-filters { margin-bottom: 16px; }
     .filter-select {
@@ -84,6 +85,7 @@ import { SafetyCard } from '../../../core/models/safety-card.model';
       display: flex;
       gap: 16px;
       margin-bottom: 24px;
+      flex-wrap: wrap;
     }
     .summary-card {
       background: white;
@@ -91,6 +93,7 @@ import { SafetyCard } from '../../../core/models/safety-card.model';
       padding: 20px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       flex: 1;
+      min-width: 140px;
       text-align: center;
     }
     .summary-card h3 {
@@ -106,6 +109,7 @@ import { SafetyCard } from '../../../core/models/safety-card.model';
     }
     .summary-expiring .summary-number { color: #f39c12; }
     .summary-expired .summary-number { color: #e74c3c; }
+    .summary-total .summary-number { color: #3498db; }
     .table-container { overflow-x: auto; }
     .data-table {
       width: 100%;
@@ -120,7 +124,6 @@ import { SafetyCard } from '../../../core/models/safety-card.model';
     }
     .data-table th {
       background: #f8f9fa;
-      font-weight: 600;
       color: #2c3e50;
     }
     .text-center { text-align: center !important; color: #999; }
@@ -139,68 +142,40 @@ import { SafetyCard } from '../../../core/models/safety-card.model';
   `]
 })
 export class ScenariosComponent implements OnInit {
-  cards: SafetyCard[] = [];
-  filteredCards: SafetyCard[] = [];
+  expiring: ExpiringCard[] = [];
   isLoading = true;
-  selectedDays = 30;
-  expiringCount = 0;
+  selectedDays = 90;
+  warningCount = 0;
   expiredCount = 0;
 
   constructor(
-    private cardService: SafetyCardService
+    private scenarioService: ScenarioService
   ) {}
 
   ngOnInit() {
-    this.loadCards();
+    this.loadExpiring();
   }
 
-  private loadCards() {
+  private loadExpiring() {
     this.isLoading = true;
-    this.cardService.getCards().subscribe({
+    this.scenarioService.getExpiring(this.selectedDays).subscribe({
       next: (cards) => {
-        this.cards = cards;
-        this.expiringCount = cards.filter(c => c.stato === 'Expiring').length;
-        this.expiredCount = cards.filter(c => c.stato === 'Expired').length;
-        this.applyFilter();
+        this.expiring = cards;
+        this.expiredCount = cards.filter(c => (c.daysRemaining ?? 0) < 0).length;
+        this.warningCount = cards.filter(c => (c.daysRemaining ?? 999) >= 0 && (c.daysRemaining ?? 999) <= 30).length;
         this.isLoading = false;
       },
       error: () => {
         this.isLoading = false;
-        alert('Errore nel caricamento delle schede');
+        this.expiring = [];
       }
     });
   }
 
   onFilterChange(event: Event) {
     const target = event.target as HTMLSelectElement;
-    this.selectedDays = target.value === 'all' ? 9999 : parseInt(target.value);
-    this.applyFilter();
-  }
-
-  private applyFilter() {
-    const today = new Date();
-    const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-    const limitDate = new Date(todayStart);
-    limitDate.setDate(limitDate.getDate() + this.selectedDays);
-
-    this.filteredCards = this.cards
-      .filter(card => {
-        if (!card.dataScadenza) return false;
-        const scadenza = new Date(card.dataScadenza);
-        const scadenzaStart = new Date(scadenza.getFullYear(), scadenza.getMonth(), scadenza.getDate());
-        return scadenzaStart >= todayStart && scadenzaStart <= limitDate;
-      })
-      .sort((a, b) => new Date(a.dataScadenza!).getTime() - new Date(b.dataScadenza!).getTime());
-  }
-
-  getDaysRemaining(card: SafetyCard): number {
-    if (!card.dataScadenza) return 0;
-    const today = new Date();
-    const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-    const scadenza = new Date(card.dataScadenza);
-    const scadenzaStart = new Date(scadenza.getFullYear(), scadenza.getMonth(), scadenza.getDate());
-    const diffTime = scadenzaStart.getTime() - todayStart.getTime();
-    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    this.selectedDays = parseInt(target.value, 10);
+    this.loadExpiring();
   }
 
   getStatusClass(status: string): string {
@@ -208,7 +183,7 @@ export class ScenariosComponent implements OnInit {
       case 'Valid': return 'badge-valid';
       case 'Expiring': return 'badge-expiring';
       case 'Expired': return 'badge-expired';
-      default: return 'badge-default';
+      default: return 'badge-valid';
     }
   }
 }

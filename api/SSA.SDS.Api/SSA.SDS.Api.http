@@ -1,6 +1,57 @@
 @SSA.SDS.Api_HostAddress = http://localhost:5007
+@Authorization = Bearer TOKEN
 
-GET {{SSA.SDS.Api_HostAddress}}/weatherforecast/
-Accept: application/json
+### Login
+POST {{SSA.SDS.Api_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin123"
+}
 
 ###
+# Sostituire TOKEN con l'accessToken restituito dal login
+
+### Dashboard stats
+GET {{SSA.SDS.Api_HostAddress}}/api/dashboard/stats
+Authorization: {{Authorization}}
+
+###
+### Lista clienti
+GET {{SSA.SDS.Api_HostAddress}}/api/clients
+Authorization: {{Authorization}}
+
+###
+### Lista schede
+GET {{SSA.SDS.Api_HostAddress}}/api/safety-cards
+Authorization: {{Authorization}}
+
+###
+### Schede in scadenza (90 giorni)
+GET {{SSA.SDS.Api_HostAddress}}/api/scenarios/expiring?days=90
+Authorization: {{Authorization}}
+
+###
+### Notifiche
+GET {{SSA.SDS.Api_HostAddress}}/api/notifications
+Authorization: {{Authorization}}
+
+###
+### Storico import
+GET {{SSA.SDS.Api_HostAddress}}/api/import/history
+Authorization: {{Authorization}}
+
+###
+### Prodotti chimici
+GET {{SSA.SDS.Api_HostAddress}}/api/chemical-products
+Authorization: {{Authorization}}
+
+###
+### Refresh token
+POST {{SSA.SDS.Api_HostAddress}}/api/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "REFRESH_TOKEN"
+}

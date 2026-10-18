@@ -22,6 +22,90 @@ namespace SSA.SDS.Api.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("SSA.SDS.Api.Entities.ChemicalProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BoilingPoint")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("boiling_point");
+
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int")
+                        .HasColumnName("client_id");
+
+                    b.Property<string>("Composition")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("composition");
+
+                    b.Property<string>("CompositionCasAbove")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("composition_cas_above");
+
+                    b.Property<string>("CompositionCasBelow")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("composition_cas_below");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Density")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("density");
+
+                    b.Property<string>("HPhrases")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("h_phrases");
+
+                    b.Property<bool?>("HasDiisocyanates")
+                        .HasColumnType("bit")
+                        .HasColumnName("has_diisocyanates");
+
+                    b.Property<string>("PhysicalState")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("physical_state");
+
+                    b.Property<string>("Pictogram")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("pictogram");
+
+                    b.Property<string>("Producer")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("producer");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("product_name");
+
+                    b.Property<DateTime?>("SdsDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("sds_date");
+
+                    b.Property<string>("SdsUrl")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("sds_url");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("updated_at");
+
+                    b.Property<string>("VocPercent")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("voc_percent");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("chemical_products", (string)null);
+                });
+
             modelBuilder.Entity("SSA.SDS.Api.Entities.Client", b =>
                 {
                     b.Property<int>("Id")
@@ -207,6 +291,10 @@ namespace SSA.SDS.Api.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("data_scadenza");
 
+                    b.Property<int?>("DaysRemaining")
+                        .HasColumnType("int")
+                        .HasColumnName("days_remaining");
+
                     b.Property<string>("EnteEmittitore")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("ente_emittitore");
@@ -296,6 +384,14 @@ namespace SSA.SDS.Api.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("password_hash");
 
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("refresh_token");
+
+                    b.Property<DateTime?>("RefreshTokenExpires")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("refresh_token_expires");
+
                     b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
@@ -316,6 +412,17 @@ namespace SSA.SDS.Api.Migrations
                         .IsUnique();
 
                     b.ToTable("users", (string)null);
+                });
+
+            modelBuilder.Entity("SSA.SDS.Api.Entities.ChemicalProduct", b =>
+                {
+                    b.HasOne("SSA.SDS.Api.Entities.Client", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Client");
                 });
 
             modelBuilder.Entity("SSA.SDS.Api.Entities.ImportHistory", b =>

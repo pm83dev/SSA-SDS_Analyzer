@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { SafetyCardService } from '../../../core/services/safety-card.service';
@@ -10,7 +10,7 @@ import { CreateSafetyCard } from '../../../core/models/safety-card.model';
 @Component({
   selector: 'app-card-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, NgIf, ReactiveFormsModule, RouterLink],
   template: `
     <div class="card-form-page">
       <div class="page-header">
@@ -87,6 +87,21 @@ import { CreateSafetyCard } from '../../../core/models/safety-card.model';
               <textarea id="osservazioni" formControlName="osservazioni" class="form-control" rows="4"></textarea>
             </div>
           </div>
+
+          <div class="pdf-section" *ngIf="isEdit && cardId">
+            <h2>File PDF della Scheda</h2>
+            <div class="pdf-current" *ngIf="pdfFileName">
+              <p><strong>File attuale:</strong> {{ pdfFileName }}</p>
+              <button type="button" class="btn btn-danger" (click)="deletePdf()">Rimuovi PDF</button>
+            </div>
+            <div class="pdf-upload">
+              <input type="file" accept=".pdf" (change)="onPdfSelected($event)" />
+              <button type="button" class="btn btn-primary" (click)="uploadPdf()" [disabled]="!selectedPdf || isUploadingPdf">
+                {{ isUploadingPdf ? 'Caricamento...' : 'Carica PDF' }}
+              </button>
+            </div>
+          </div>
+
           <div class="form-actions">
             <button type="button" class="btn btn-secondary" (click)="onCancel()">Annulla</button>
             <button type="submit" class="btn btn-primary" [disabled]="cardForm.invalid || isSubmitting">
@@ -142,6 +157,38 @@ import { CreateSafetyCard } from '../../../core/models/safety-card.model';
       font-size: 12px;
       margin-top: 4px;
     }
+    .pdf-section {
+      margin-bottom: 24px;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+    .pdf-section h2 {
+      margin: 0 0 14px 0;
+      color: #2c3e50;
+      font-size: 16px;
+    }
+    .pdf-current {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding: 12px;
+      background: #fff;
+      border-radius: 6px;
+    }
+    .pdf-current p { margin: 0; color: #2c3e50; }
+    .pdf-upload {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .btn-danger {
+      background: #e74c3c;
+      color: white;
+    }
+    .btn-danger:hover { background: #c0392b; }
     .form-actions {
       display: flex;
       justify-content: flex-end;
@@ -179,6 +226,9 @@ export class CardFormComponent implements OnInit {
   clients: Client[] = [];
   isEdit = false;
   isSubmitting = false;
+  isUploadingPdf = false;
+  selectedPdf: File | null = null;
+  pdfFileName = '';
   cardId?: number;
 
   constructor(
@@ -241,6 +291,7 @@ export class CardFormComponent implements OnInit {
           frequenzaControllo: card.frequenzaControllo,
           osservazioni: card.osservazioni
         });
+        this.pdfFileName = card.pdfUrl ? card.pdfUrl.split('/').pop() || 'PDF allegato' : '';
       },
       error: () => {
         alert('Errore nel caricamento della scheda');
@@ -297,5 +348,42 @@ export class CardFormComponent implements OnInit {
 
   onCancel() {
     this.router.navigate(['/safety-cards']);
+  }
+
+  onPdfSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      this.selectedPdf = input.files[0];
+    }
+  }
+
+  uploadPdf() {
+    if (!this.selectedPdf || !this.cardId) return;
+    this.isUploadingPdf = true;
+    const formData = new FormData();
+    formData.append('file', this.selectedPdf);
+    this.cardService.uploadPdf(this.cardId, formData).subscribe({
+      next: () => {
+        this.pdfFileName = this.selectedPdf!.name;
+        this.selectedPdf = null;
+        this.isUploadingPdf = false;
+        alert('PDF caricato con successo');
+      },
+      error: () => {
+        alert('Errore nel caricamento del PDF');
+        this.isUploadingPdf = false;
+      }
+    });
+  }
+
+  deletePdf() {
+    if (!this.cardId) return;
+    this.cardService.deletePdf(this.cardId).subscribe({
+      next: () => {
+        this.pdfFileName = '';
+        alert('PDF rimosso');
+      },
+      error: () => alert('Errore nella rimozione del PDF')
+    });
   }
 }

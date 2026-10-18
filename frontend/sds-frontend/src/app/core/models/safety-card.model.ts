@@ -10,9 +10,11 @@ export interface SafetyCard {
   dataScadenza?: Date;
   validitaMesi?: number;
   stato: string;
+  daysRemaining?: number;
   frequenzaControllo?: string;
   osservazioni?: string;
   pdfUrl?: string;
+  hasPdf?: boolean;
   llmAnalyzed: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -36,4 +38,11 @@ export interface LoginResponse {
   refreshToken: string;
   expiresAt: Date;
   role: string;
+}
+
+export enum Tipologia {
+  Sds = 'SDS',
+  Certificato = 'Certificato',
+  Dichiarazione = 'Dichiarazione',
+  Altro = 'Altro'
 }
