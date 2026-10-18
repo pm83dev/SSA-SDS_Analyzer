@@ -122,4 +122,37 @@ public class ClientsController : ControllerBase
         await _context.SaveChangesAsync();
         return NoContent();
     }
+
+    [HttpGet("{id}/cards")]
+    public async Task<IActionResult> GetCards(int id)
+    {
+        var cards = await _context.SafetyCards
+            .Where(sc => sc.ClientId == id)
+            .OrderByDescending(sc => sc.CreatedAt)
+            .ToListAsync();
+
+        var client = await _context.Clients.FirstOrDefaultAsync(c => c.Id == id);
+
+        return Ok(cards.Select(sc => new SafetyCardDto
+        {
+            Id = sc.Id,
+            ClientId = sc.ClientId,
+            ClientName = client?.RagioneSociale ?? string.Empty,
+            Tipologia = sc.Tipologia,
+            Titolo = sc.Titolo,
+            NumeroProtocollo = sc.NumeroProtocollo,
+            EnteEmittitore = sc.EnteEmittitore,
+            DataRilascio = sc.DataRilascio,
+            DataScadenza = sc.DataScadenza,
+            ValiditaMesi = sc.ValiditaMesi,
+            Stato = sc.Stato,
+            DaysRemaining = sc.DaysRemaining,
+            FrequenzaControllo = sc.FrequenzaControllo,
+            Osservazioni = sc.Osservazioni,
+            PdfUrl = sc.PdfUrl != null ? $"/api/files/{sc.PdfUrl.Replace('\\', '/')}" : null,
+            LlmAnalyzed = sc.LlmAnalyzed,
+            CreatedAt = sc.CreatedAt,
+            UpdatedAt = sc.UpdatedAt
+        }));
+    }
 }

@@ -1,8 +1,7 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from 'environments/environment';
-import { Client, CreateClient, UpdateClient } from '../models/client.model';
 import { Observable } from 'rxjs';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -32,8 +31,6 @@ export class ApiService {
   }
 
   uploadFile<T>(endpoint: string, formData: FormData): Observable<T> {
-    return this.http.post<T>(`${this.baseUrl}${endpoint}`, formData, {
-      responseType: 'json' as 'json'
-    });
+    return this.http.post<T>(`${this.baseUrl}${endpoint}`, formData);
   }
 }

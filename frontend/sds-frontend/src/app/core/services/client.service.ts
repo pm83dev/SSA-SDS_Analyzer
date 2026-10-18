@@ -7,7 +7,7 @@ import { environment } from 'environments/environment';
 @Injectable({ providedIn: 'root' })
 export class ClientService {
   private http = inject(HttpClient);
-  private apiUrl = `${environment.apiUrl}/clients`;
+  private apiUrl = `${environment.apiUrl}/api/clients`;
 
   private getHeaders(): HttpHeaders {
     const token = localStorage.getItem('accessToken');

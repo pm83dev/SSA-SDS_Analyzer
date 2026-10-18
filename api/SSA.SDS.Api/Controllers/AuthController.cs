@@ -30,7 +30,7 @@ public class AuthController : ControllerBase
     [HttpPost("refresh")]
     public async Task<IActionResult> Refresh([FromBody] RefreshRequest request)
     {
-        var result = await _authService.RefreshTokenAsync(request.RefreshToken, null);
+        var result = await _authService.RefreshTokenAsync(request.RefreshToken);
         if (result == null)
             return Unauthorized(new { message = "Refresh token non valido" });
         return Ok(result);

@@ -28,14 +28,19 @@ import { ApiService } from '../../../core/services/api.service';
         </div>
         <div class="import-card">
           <h2>Analisi PDF con LLM</h2>
-          <p>Carica una scheda di sicurezza in PDF per l'analisi automatica</p>
+          <p>Carica una o più schede di sicurezza in PDF per l'analisi automatica</p>
           <div class="drop-zone" (click)="triggerPdfUpload()" (dragover)="onDragOver($event)" (drop)="onDropPdf($event)">
-            <p *ngIf="!pdfFile">Trascina qui il file PDF oppure</p>
-            <p *ngIf="pdfFile" class="file-name">{{ pdfFile.name }}</p>
+            <p *ngIf="!pdfFiles.length">Trascina qui i file PDF oppure</p>
+            <div *ngIf="pdfFiles.length" class="file-list">
+              <div class="file-item" *ngFor="let f of pdfFiles; let i = index">
+                <span class="file-name">{{ f.name }}</span>
+                <button class="btn-remove" (click)="removePdf(i, $event)" title="Rimuovi">&times;</button>
+              </div>
+            </div>
             <button class="btn btn-secondary" (click)="triggerPdfUpload($event)">Scegli File</button>
-            <input type="file" hidden #pdfFileInput accept=".pdf" (change)="onPdfFileSelected($event)" />
+            <input type="file" hidden id="pdfFileInput" accept=".pdf" multiple (change)="onPdfFileSelected($event)" />
           </div>
-          <div class="import-actions" *ngIf="pdfFile">
+          <div class="import-actions" *ngIf="pdfFiles.length">
             <div class="form-group">
               <label for="clientId">Cliente *</label>
               <select id="clientId" class="form-control" (change)="onClientChange($event)">
@@ -43,10 +48,15 @@ import { ApiService } from '../../../core/services/api.service';
                 <option *ngFor="let client of clients" [value]="client.id">{{ client.ragioneSociale }}</option>
               </select>
             </div>
-            <button class="btn btn-success" (click)="analyzePdf()" [disabled]="isAnalyzing || !selectedClientId">
-              {{ isAnalyzing ? 'Analisi in corso...' : 'Analizza' }}
+            <button class="btn btn-success" (click)="analyzePdfs()" [disabled]="isAnalyzing || !selectedClientId">
+              {{ isAnalyzing ? 'Analisi in corso... (' + analyzedCount + '/' + pdfFiles.length + ')' : 'Analizza ' + pdfFiles.length + ' file' }}
             </button>
             <button class="btn btn-secondary" (click)="cancelPdf()">Annulla</button>
+          </div>
+          <div class="analysis-results" *ngIf="analysisResults.length">
+            <div class="result-item" *ngFor="let r of analysisResults" [ngClass]="r.success ? 'result-ok' : 'result-fail'">
+              <strong>{{ r.fileName }}:</strong> {{ r.message }}
+            </div>
           </div>
         </div>
       </div>
@@ -138,13 +148,61 @@ import { ApiService } from '../../../core/services/api.service';
       background: #f8d7da;
       color: #721c24;
     }
+    .file-list {
+      margin-bottom: 12px;
+      text-align: left;
+      max-height: 160px;
+      overflow-y: auto;
+    }
+    .file-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 10px;
+      background: #f8f9fa;
+      border-radius: 4px;
+      margin-bottom: 4px;
+    }
+    .file-item .file-name {
+      margin-bottom: 0;
+      font-size: 13px;
+    }
+    .btn-remove {
+      background: none;
+      border: none;
+      color: #e74c3c;
+      font-size: 18px;
+      cursor: pointer;
+      padding: 0 6px;
+      line-height: 1;
+    }
+    .btn-remove:hover { color: #c0392b; }
+    .analysis-results {
+      margin-top: 16px;
+    }
+    .result-item {
+      padding: 10px 14px;
+      border-radius: 4px;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+    .result-ok {
+      background: #d4edda;
+      color: #155724;
+    }
+    .result-fail {
+      background: #f8d7da;
+      color: #721c24;
+    }
   `]
 })
 export class ImportComponent implements OnInit {
   excelFile: File | null = null;
-  pdfFile: File | null = null;
+  pdfFiles: File[] = [];
   isImporting = false;
   isAnalyzing = false;
+  analyzedCount = 0;
+  analysisResults: { fileName: string; success: boolean; message: string }[] = [];
   message = '';
   messageType = '';
   clients: any[] = [];
@@ -188,9 +246,16 @@ export class ImportComponent implements OnInit {
 
   onPdfFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      this.pdfFile = input.files[0];
+    if (input.files && input.files.length) {
+      const newFiles = Array.from(input.files).filter(f => f.name.endsWith('.pdf'));
+      this.pdfFiles = [...this.pdfFiles, ...newFiles];
+      input.value = '';
     }
+  }
+
+  removePdf(index: number, event: Event) {
+    event.stopPropagation();
+    this.pdfFiles.splice(index, 1);
   }
 
   onDragOver(event: Event) {
@@ -208,8 +273,9 @@ export class ImportComponent implements OnInit {
   onDropPdf(event: Event) {
     event.preventDefault();
     const dataTransfer = event as DragEvent;
-    if (dataTransfer.dataTransfer?.files && dataTransfer.dataTransfer.files[0]) {
-      this.pdfFile = dataTransfer.dataTransfer.files[0];
+    if (dataTransfer.dataTransfer?.files && dataTransfer.dataTransfer.files.length) {
+      const newFiles = Array.from(dataTransfer.dataTransfer.files).filter(f => f.name.endsWith('.pdf'));
+      this.pdfFiles = [...this.pdfFiles, ...newFiles];
     }
   }
 
@@ -225,8 +291,10 @@ export class ImportComponent implements OnInit {
   }
 
   cancelPdf() {
-    this.pdfFile = null;
+    this.pdfFiles = [];
     this.selectedClientId = 0;
+    this.analysisResults = [];
+    this.analyzedCount = 0;
     const input = document.querySelector('#pdfFileInput') as HTMLInputElement;
     if (input) input.value = '';
   }
@@ -256,29 +324,52 @@ export class ImportComponent implements OnInit {
     });
   }
 
-  analyzePdf() {
-    if (!this.pdfFile || !this.selectedClientId) return;
+  analyzePdfs() {
+    if (!this.pdfFiles.length || !this.selectedClientId) return;
 
     this.isAnalyzing = true;
     this.message = '';
+    this.analyzedCount = 0;
+    this.analysisResults = [];
 
-    const formData = new FormData();
-    formData.append('clientId', this.selectedClientId.toString());
-    formData.append('pdfFile', this.pdfFile);
+    const files = [...this.pdfFiles];
 
-    this.apiService.uploadFile<any>('/safety-cards/analyze-pdf', formData).subscribe({
-      next: (response) => {
+    const analyzeNext = (index: number) => {
+      if (index >= files.length) {
         this.isAnalyzing = false;
-        this.message = 'Analisi completata! Scheda creata con successo.';
-        this.messageType = 'success';
-        this.cancelPdf();
-        setTimeout(() => this.message = '', 5000);
-      },
-      error: (error) => {
-        this.isAnalyzing = false;
-        this.message = 'Errore nell\'analisi: ' + (error.error?.message || error.message);
-        this.messageType = 'error';
+        const ok = this.analysisResults.filter(r => r.success).length;
+        this.message = `Analisi completata: ${ok}/${files.length} file elaborati con successo.`;
+        this.messageType = ok === files.length ? 'success' : 'error';
+        return;
       }
-    });
+
+      const file = files[index];
+      const formData = new FormData();
+      formData.append('clientId', this.selectedClientId.toString());
+      formData.append('pdfFile', file);
+
+      this.apiService.uploadFile<any>('/safety-cards/analyze-pdf', formData).subscribe({
+        next: (response) => {
+          this.analyzedCount = index + 1;
+          this.analysisResults.push({
+            fileName: file.name,
+            success: true,
+            message: response.message || 'Prodotto creato con successo'
+          });
+          analyzeNext(index + 1);
+        },
+        error: (error) => {
+          this.analyzedCount = index + 1;
+          this.analysisResults.push({
+            fileName: file.name,
+            success: false,
+            message: error.error?.message || error.message || 'Errore durante l\'analisi'
+          });
+          analyzeNext(index + 1);
+        }
+      });
+    };
+
+    analyzeNext(0);
   }
 }

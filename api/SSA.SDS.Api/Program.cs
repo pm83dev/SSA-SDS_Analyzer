@@ -2,9 +2,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SSA.SDS.Api.Data;
-using SSA.SDS.Api.Entities;
 using SSA.SDS.Api.Services;
-using System.IdentityModel.Tokens.Jwt;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +13,11 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<SdsDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+    options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+});
 
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var secretKey = jwtSettings["SecretKey"] ?? "SSA-SDS-SecretKey-2024-MustBeAtLeast32CharsLong!";
@@ -48,7 +51,7 @@ builder.Services.AddSwaggerGen(c =>
     {
         Title = "SSA-SDS API",
         Version = "v1",
-        Description = "API per la gestione delle Schede di Sicurezza"
+        Description = "API per la gestione delle Schede di Sicurezza e dei Prodotti Chimici"
     });
 
     c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
@@ -81,14 +84,19 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular", policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
+        policy.WithOrigins("http://localhost:4200", "http://127.0.0.1:4200")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
 
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddHttpClient();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IImportService, ImportService>();
+builder.Services.AddScoped<IExpirationService, ExpirationService>();
+builder.Services.AddSingleton<IFileStorageService, FileStorageService>();
+builder.Services.AddHostedService<ExpirationWorker>();
 
 var app = builder.Build();
 
@@ -113,6 +121,10 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.Migrate();
     var seedService = new SeedService(dbContext);
     await seedService.SeedDefaultAdminAsync();
+
+    var expiration = scope.ServiceProvider.GetRequiredService<IExpirationService>();
+    await expiration.RecalculateCardStatusesAsync();
+    await expiration.GenerateNotificationsAsync();
 }
 
 app.Run();

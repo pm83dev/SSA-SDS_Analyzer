@@ -10,7 +10,12 @@ services:
       - Jwt__SecretKey=SSA-SDS-SecretKey-2024-MustBeAtLeast32CharsLong!
       - Jwt__Issuer=SSA-SDS
       - Jwt__Audience=SSA-SDS-Client
-      - LLM__BaseUrl=http://llm-service:8000/api
+      - LLM__BaseUrl=http://llm-service:8000
+      - LLM__TimeoutSeconds=300
+      - FileStorage__UploadPath=/app/uploads
+      - FileStorage__MaxFileSizeMB=20
+    volumes:
+      - sds-uploads:/app/uploads
     extra_hosts:
       - "host.docker.internal:host-gateway"
     restart: unless-stopped
@@ -26,13 +31,20 @@ services:
     restart: unless-stopped
 
   llm-service:
+    # Servizio C# .NET 8 (SSA.LlmService) che fa da proxy al server LLM (llama.cpp)
     build:
       context: ./llm-service
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
     environment:
-      - LLM_BASE_URL=http://qwen-server:8080/v1
-      - EMBEDDING_URL=http://bge-embed:8081/embed
-      - RERANKING_URL=http://bge-rerank:8082/rerank
+      # URL del server llama.cpp (es. http://qwen-server:8080)
+      - LLM__BaseUrl=http://host.docker.internal:8080
+      - LLM__Model=local-model
+      - LLM__TimeoutSeconds=300
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     restart: unless-stopped
+
+volumes:
+  sds-uploads:

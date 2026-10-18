@@ -100,9 +100,11 @@ public class SafetyCardDto
     public DateTime? DataScadenza { get; set; }
     public int? ValiditaMesi { get; set; }
     public string Stato { get; set; } = "NotExpired";
+    public int? DaysRemaining { get; set; }
     public string? FrequenzaControllo { get; set; }
     public string? Osservazioni { get; set; }
     public string? PdfUrl { get; set; }
+    public bool HasPdf { get; set; }
     public bool LlmAnalyzed { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }

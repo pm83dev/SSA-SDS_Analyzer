@@ -33,10 +33,16 @@ export class SafetyCardService {
     return this.api.delete<void>(`/safety-cards/${id}`);
   }
 
-  uploadPdf(cardId: number, file: File): Observable<{ url: string }> {
-    const formData = new FormData();
-    formData.append('file', file);
-    return this.api.uploadFile<{ url: string }>(`/safety-cards/${cardId}/upload-pdf`, formData);
+  uploadPdf(cardId: number, formData: FormData): Observable<{ pdfPath: string }> {
+    return this.api.uploadFile<{ pdfPath: string }>(`/safety-cards/${cardId}/upload-pdf`, formData);
+  }
+
+  deletePdf(cardId: number): Observable<void> {
+    return this.api.delete<void>(`/safety-cards/${cardId}/pdf`);
+  }
+
+  getPdfUrl(cardId: number): Observable<string> {
+    return this.api.get<string>(`/safety-cards/${cardId}/pdf-url`);
   }
 
   analyzePdf(clientId: number, file: File): Observable<any> {
