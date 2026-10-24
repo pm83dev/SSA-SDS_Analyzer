@@ -1,7 +1,13 @@
+// Cliente collegato a una scheda
+export interface ClientRef {
+  id: number;
+  ragioneSociale: string;
+}
+
 export interface SafetyCard {
   id: number;
-  clientId: number;
-  clientName: string;
+  // Clienti collegati: la stessa scheda può essere di più clienti, o di nessuno (solo archivio)
+  clients: ClientRef[];
   tipologia: string;
   titolo: string;
   numeroProtocollo?: string;
@@ -25,6 +31,10 @@ export interface SafetyCard {
   densita?: string;
   sdsUrl?: string;
   pdfUrl?: string;
+  nomeFileImportato?: string;
+  // Campi che l'import PDF non ha ritrovato nel testo della SDS: il dato non è stato inserito
+  campiDaVerificare?: string[];
+  noteVerifica?: string;
   hasPdf?: boolean;
   llmAnalyzed: boolean;
   createdAt: Date;
@@ -32,7 +42,7 @@ export interface SafetyCard {
 }
 
 export interface CreateSafetyCard {
-  clientId: number;
+  clientIds: number[];
   tipologia: string;
   titolo: string;
   numeroProtocollo?: string;
@@ -53,6 +63,8 @@ export interface CreateSafetyCard {
   covPercent?: string;
   densita?: string;
   sdsUrl?: string;
+  // L'utente ha controllato i dati sulla scheda PDF: toglie tutti i "da verificare"
+  datiVerificati?: boolean;
 }
 
 export interface LoginResponse {

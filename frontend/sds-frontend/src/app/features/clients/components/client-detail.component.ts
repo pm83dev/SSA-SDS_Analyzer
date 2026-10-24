@@ -5,11 +5,13 @@ import { ClientService } from '../../../core/services/client.service';
 import { SafetyCardService } from '../../../core/services/safety-card.service';
 import { Client } from '../../../core/models/client.model';
 import { SafetyCard } from '../../../core/models/safety-card.model';
+import { SDS_FIELDS, columnLabel } from '../../../core/models/sds-fields';
+import { SdsValueComponent } from '../../../shared/components/sds-value.component';
 
 @Component({
   selector: 'app-client-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, SdsValueComponent],
   template: `
     <div class="client-detail-page" *ngIf="client">
       <div class="page-header">
@@ -59,32 +61,33 @@ import { SafetyCard } from '../../../core/models/safety-card.model';
 
       <div class="cards-section">
         <h2>Schede di Sicurezza ({{ cards.length }})</h2>
+        <!-- La stessa scheda può essere collegata a più clienti: qui si collegano schede già presenti nell'archivio -->
+        <div class="link-card">
+          <select class="form-select form-select-sm" [value]="cardToLink || ''" (change)="cardToLink = +$any($event.target).value || 0">
+            <option value="">Collega una scheda dall'archivio...</option>
+            <option *ngFor="let c of linkableCards" [value]="c.id">{{ c.titolo }}{{ c.enteEmittitore ? ' – ' + c.enteEmittitore : '' }}</option>
+          </select>
+          <button class="btn btn-small btn-primary" [disabled]="!cardToLink" (click)="linkCard(cardToLink)">Collega</button>
+        </div>
         <div class="table-container">
           <table class="data-table">
             <thead>
               <tr>
-                <th>Tipologia</th>
-                <th>Titolo</th>
-                <th>Data Rilascio</th>
-                <th>Data Scadenza</th>
-                <th>Stato</th>
+                <th *ngFor="let f of fields" [title]="f.hint || ''">{{ columnLabel(f) }}</th>
                 <th>Azioni</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngIf="cards.length === 0">
-                <td colspan="6" class="text-center">Nessuna scheda presente per questo cliente</td>
+                <td [attr.colspan]="fields.length + 1" class="text-center">Nessuna scheda presente per questo cliente</td>
               </tr>
               <tr *ngFor="let card of cards">
-                <td>{{ card.tipologia }}</td>
-                <td>{{ card.titolo }}</td>
-                <td>{{ card.dataRilascio | date:'dd/MM/yyyy' }}</td>
-                <td>{{ card.dataScadenza | date:'dd/MM/yyyy' }}</td>
-                <td>
-                  <span class="badge" [ngClass]="getStatusClass(card.stato)">{{ card.stato }}</span>
+                <td *ngFor="let f of fields" class="sds-cell">
+                  <app-sds-value [card]="card" [field]="f" mode="cell" (openPdf)="cardService.openPdf($event)"></app-sds-value>
                 </td>
                 <td class="actions">
                   <a [routerLink]="['/safety-cards', card.id, 'edit']" class="btn btn-small btn-secondary">Modifica</a>
+                  <button class="btn btn-small btn-warning" (click)="unlinkCard(card)" title="Toglie la scheda da questo cliente: la scheda resta nell'archivio">Scollega</button>
                 </td>
               </tr>
             </tbody>
@@ -147,12 +150,17 @@ import { SafetyCard } from '../../../core/models/safety-card.model';
       font-size: 18px;
     }
     .table-container { overflow-x: auto; }
+    .link-card { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; max-width: 560px; }
+    .btn-warning { background: #f0ad4e; color: white; }
+    .btn-warning:hover { background: #ec971f; }
+    .sds-cell { min-width: 110px; max-width: 260px; vertical-align: top; font-size: 13px; }
     .data-table {
-      width: 100%;
+      width: max-content;
+      min-width: 100%;
       border-collapse: collapse;
     }
     .data-table th, .data-table td {
-      padding: 12px 16px;
+      padding: 10px;
       text-align: left;
       border-bottom: 1px solid #eee;
     }
@@ -209,7 +217,18 @@ import { SafetyCard } from '../../../core/models/safety-card.model';
 })
 export class ClientDetailComponent implements OnInit {
   client?: Client;
+  // Colonne del file "dati per SDS.xlsx" (senza ID CLIENTE: si è già nella pagina del cliente)
+  protected readonly columnLabel = columnLabel;
+  readonly fields = SDS_FIELDS.filter(f => f.key !== 'clients');
   cards: SafetyCard[] = [];
+  // Tutte le schede dell'archivio, per collegarne una al cliente
+  allCards: SafetyCard[] = [];
+  cardToLink = 0;
+
+  get linkableCards(): SafetyCard[] {
+    const linked = new Set(this.cards.map(c => c.id));
+    return this.allCards.filter(c => !linked.has(c.id)).sort((a, b) => a.titolo.localeCompare(b.titolo));
+  }
   isLoading = true;
   clientId?: number;
 
@@ -217,7 +236,7 @@ export class ClientDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private clientService: ClientService,
-    private cardService: SafetyCardService
+    protected cardService: SafetyCardService
   ) {}
 
   ngOnInit() {
@@ -225,7 +244,28 @@ export class ClientDetailComponent implements OnInit {
     if (this.clientId) {
       this.loadClient();
       this.loadCards();
+      this.cardService.getCards().subscribe({ next: cards => this.allCards = cards, error: () => {} });
     }
+  }
+
+  linkCard(cardId: number) {
+    if (!this.clientId || !cardId) return;
+    this.cardService.linkToClient(this.clientId, cardId).subscribe({
+      next: () => {
+        this.cardToLink = 0;
+        this.loadCards();
+      },
+      error: () => alert('Errore nel collegamento della scheda')
+    });
+  }
+
+  unlinkCard(card: SafetyCard) {
+    if (!this.clientId) return;
+    if (!confirm(`Scollegare la scheda "${card.titolo}" da questo cliente?\nLa scheda resta nell'archivio.`)) return;
+    this.cardService.unlinkFromClient(this.clientId, card.id).subscribe({
+      next: () => this.loadCards(),
+      error: () => alert('Errore nello scollegamento della scheda')
+    });
   }
 
   private loadClient() {

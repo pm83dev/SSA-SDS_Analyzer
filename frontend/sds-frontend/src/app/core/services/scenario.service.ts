@@ -4,7 +4,7 @@ import { ApiService } from './api.service';
 
 export interface ExpiringCard {
   id: number;
-  clientId: number;
+  // Clienti collegati alla scheda, separati da virgola
   clientName: string;
   tipologia: string;
   titolo: string;

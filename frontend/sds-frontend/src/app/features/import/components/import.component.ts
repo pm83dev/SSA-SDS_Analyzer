@@ -44,13 +44,13 @@ import { Subscription } from 'rxjs';
           </div>
           <div class="import-actions" *ngIf="pdfFiles.length">
             <div class="form-group">
-              <label for="clientId">Cliente *</label>
+              <label for="clientId">Cliente (facoltativo)</label>
               <select id="clientId" class="form-control" (change)="onClientChange($event)">
-                <option value="">Seleziona cliente</option>
+                <option value="">Nessun cliente (solo archivio)</option>
                 <option *ngFor="let client of clients" [value]="client.id" [selected]="client.id === selectedClientId">{{ client.ragioneSociale }}</option>
               </select>
             </div>
-            <button class="btn btn-success" (click)="analyzePdfs()" [disabled]="isAnalyzing || !selectedClientId">
+            <button class="btn btn-success" (click)="analyzePdfs()" [disabled]="isAnalyzing">
               <span *ngIf="isAnalyzing" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
               {{ isAnalyzing ? 'Analisi in corso... (' + analyzedCount + '/' + pdfFiles.length + ')' : 'Analizza ' + pdfFiles.length + ' file' }}
             </button>
@@ -298,7 +298,8 @@ export class ImportComponent implements OnInit, OnDestroy {
 
   onClientChange(event: Event) {
     const target = event.target as HTMLSelectElement;
-    this.selectedClientId = parseInt(target.value);
+    // Vuoto = nessun cliente: la scheda va solo nell'archivio
+    this.selectedClientId = target.value ? parseInt(target.value, 10) : 0;
     this.importState.setSelectedClientId(this.selectedClientId);
   }
 
@@ -344,7 +345,7 @@ export class ImportComponent implements OnInit, OnDestroy {
   }
 
   analyzePdfs() {
-    if (!this.pdfFiles.length || !this.selectedClientId) return;
+    if (!this.pdfFiles.length) return;
 
     this.isAnalyzing = true;
     this.message = '';
@@ -366,7 +367,7 @@ export class ImportComponent implements OnInit, OnDestroy {
 
       const file = files[index];
       const formData = new FormData();
-      formData.append('clientId', this.selectedClientId.toString());
+      if (this.selectedClientId) formData.append('clientId', this.selectedClientId.toString());
       formData.append('pdfFile', file);
 
       this.apiService.uploadFile<any>('/safety-cards/analyze-pdf', formData).subscribe({

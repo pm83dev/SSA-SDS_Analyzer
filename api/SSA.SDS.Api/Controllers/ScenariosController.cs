@@ -30,7 +30,7 @@ public class ScenariosController : ControllerBase
 
         var limit = DateTime.Today.AddDays(days);
         var cards = await _context.SafetyCards
-            .Include(sc => sc.Client)
+            .Include(sc => sc.Clients)
             .Where(sc => sc.DataScadenza != null && sc.DataScadenza >= DateTime.Today.AddDays(-365) && sc.DataScadenza <= limit)
             .OrderBy(sc => sc.DataScadenza)
             .ToListAsync();
@@ -38,8 +38,7 @@ public class ScenariosController : ControllerBase
         return Ok(cards.Select(sc => new ExpiringCardDto
         {
             Id = sc.Id,
-            ClientId = sc.ClientId,
-            ClientName = sc.Client?.RagioneSociale ?? string.Empty,
+            ClientName = string.Join(", ", sc.Clients.Select(c => c.RagioneSociale).OrderBy(n => n)),
             Tipologia = sc.Tipologia,
             Titolo = sc.Titolo,
             DataScadenza = sc.DataScadenza,
@@ -54,7 +53,7 @@ public class ScenariosController : ControllerBase
         await _expirationService.RecalculateCardStatusesAsync();
 
         var cards = await _context.SafetyCards
-            .Include(sc => sc.Client)
+            .Include(sc => sc.Clients)
             .Where(sc => sc.DataScadenza != null)
             .OrderBy(sc => sc.DataScadenza)
             .ToListAsync();
@@ -62,8 +61,7 @@ public class ScenariosController : ControllerBase
         return Ok(cards.Select(sc => new ExpiringCardDto
         {
             Id = sc.Id,
-            ClientId = sc.ClientId,
-            ClientName = sc.Client?.RagioneSociale ?? string.Empty,
+            ClientName = string.Join(", ", sc.Clients.Select(c => c.RagioneSociale).OrderBy(n => n)),
             Tipologia = sc.Tipologia,
             Titolo = sc.Titolo,
             DataScadenza = sc.DataScadenza,

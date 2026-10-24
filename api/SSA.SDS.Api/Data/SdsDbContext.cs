@@ -26,20 +26,42 @@ public class SdsDbContext : DbContext
         modelBuilder.Entity<SafetyCard>(entity =>
         {
             entity.ToTable("safety_cards");
-            entity.HasIndex(sc => sc.ClientId);
             entity.HasIndex(sc => sc.DataScadenza);
+            entity.HasIndex(sc => sc.PdfHash);
+
+            // Molti-a-molti: eliminando un cliente o una scheda si eliminano solo i collegamenti
+            entity.HasMany(sc => sc.Clients)
+                  .WithMany(c => c.SafetyCards)
+                  .UsingEntity<Dictionary<string, object>>(
+                      "client_safety_cards",
+                      j => j.HasOne<Client>().WithMany().HasForeignKey("client_id").OnDelete(DeleteBehavior.Cascade),
+                      j => j.HasOne<SafetyCard>().WithMany().HasForeignKey("safety_card_id").OnDelete(DeleteBehavior.Cascade),
+                      j =>
+                      {
+                          j.ToTable("client_safety_cards");
+                          j.HasKey("client_id", "safety_card_id");
+                          j.HasIndex("safety_card_id");
+                      });
         });
 
         modelBuilder.Entity<ImportHistory>(entity =>
         {
             entity.ToTable("import_histories");
             entity.HasIndex(ih => ih.ClientId);
+            // Lo storico delle importazioni resta anche se il cliente viene eliminato (senza riferimento al cliente)
+            entity.HasOne(ih => ih.Client)
+                  .WithMany()
+                  .HasForeignKey(ih => ih.ClientId)
+                  .OnDelete(DeleteBehavior.SetNull);
         });
 
         modelBuilder.Entity<Notification>(entity =>
         {
             entity.ToTable("notifications");
             entity.HasIndex(n => n.ClientId);
+            entity.HasOne(n => n.Client).WithMany().HasForeignKey(n => n.ClientId).OnDelete(DeleteBehavior.SetNull);
+            // Eliminando una scheda si eliminano anche le sue notifiche di scadenza
+            entity.HasOne(n => n.SafetyCard).WithMany().HasForeignKey(n => n.CardId).OnDelete(DeleteBehavior.Cascade);
             entity.HasIndex(n => n.IsRead);
         });
 

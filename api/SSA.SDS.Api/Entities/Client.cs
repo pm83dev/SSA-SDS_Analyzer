@@ -45,5 +45,6 @@ public class Client
     [Column("updated_at")]
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
+    // Schede collegate al cliente (la stessa scheda può essere collegata a più clienti)
     public ICollection<SafetyCard> SafetyCards { get; set; } = new List<SafetyCard>();
 }

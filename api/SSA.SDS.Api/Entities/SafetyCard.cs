@@ -9,10 +9,6 @@ public class SafetyCard
     public int Id { get; set; }
 
     [Required]
-    [Column("client_id")]
-    public int ClientId { get; set; }
-
-    [Required]
     [Column("tipologia")]
     public string Tipologia { get; set; } = string.Empty;
 
@@ -86,6 +82,19 @@ public class SafetyCard
     [Column("pdf_url")]
     public string? PdfUrl { get; set; }
 
+    // Nome originale del file (PDF o Excel) da cui la scheda è stata importata
+    [Column("nome_file_importato")]
+    public string? NomeFileImportato { get; set; }
+
+    // Campi (nomi come nell'API, separati da virgola) che l'analisi del PDF non ha potuto verificare
+    // nel testo della SDS: il dato non è stato inserito e va controllato sulla scheda
+    [Column("campi_da_verificare")]
+    public string? CampiDaVerificare { get; set; }
+
+    // Motivo per ogni campo da verificare, una riga per campo ("campo: motivo")
+    [Column("note_verifica")]
+    public string? NoteVerifica { get; set; }
+
     [Column("llm_analyzed")]
     public bool LlmAnalyzed { get; set; }
 
@@ -98,6 +107,11 @@ public class SafetyCard
     [Column("updated_at")]
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
-    [ForeignKey("ClientId")]
-    public Client? Client { get; set; }
+    // SHA-256 del PDF importato: lo stesso file importato di nuovo riusa questa scheda invece di duplicarla
+    [Column("pdf_hash")]
+    [MaxLength(64)]
+    public string? PdfHash { get; set; }
+
+    // Una scheda può essere collegata a più clienti (o a nessuno: resta nell'archivio)
+    public ICollection<Client> Clients { get; set; } = new List<Client>();
 }

@@ -146,7 +146,7 @@ namespace SSA.SDS.Api.Migrations
                         .HasColumnType("int")
                         .HasColumnName("card_id");
 
-                    b.Property<int>("ClientId")
+                    b.Property<int?>("ClientId")
                         .HasColumnType("int")
                         .HasColumnName("client_id");
 
@@ -191,9 +191,9 @@ namespace SSA.SDS.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ClientId")
-                        .HasColumnType("int")
-                        .HasColumnName("client_id");
+                    b.Property<string>("CampiDaVerificare")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("campi_da_verificare");
 
                     b.Property<string>("Composizione")
                         .HasColumnType("nvarchar(max)")
@@ -255,6 +255,14 @@ namespace SSA.SDS.Api.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("llm_raw_response");
 
+                    b.Property<string>("NomeFileImportato")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("nome_file_importato");
+
+                    b.Property<string>("NoteVerifica")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("note_verifica");
+
                     b.Property<string>("NumeroProtocollo")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("numero_protocollo");
@@ -262,6 +270,11 @@ namespace SSA.SDS.Api.Migrations
                     b.Property<string>("Osservazioni")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("osservazioni");
+
+                    b.Property<string>("PdfHash")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .HasColumnName("pdf_hash");
 
                     b.Property<string>("PdfUrl")
                         .HasColumnType("nvarchar(max)")
@@ -308,9 +321,9 @@ namespace SSA.SDS.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
-
                     b.HasIndex("DataScadenza");
+
+                    b.HasIndex("PdfHash");
 
                     b.ToTable("safety_cards", (string)null);
                 });
@@ -374,11 +387,27 @@ namespace SSA.SDS.Api.Migrations
                     b.ToTable("users", (string)null);
                 });
 
+            modelBuilder.Entity("client_safety_cards", b =>
+                {
+                    b.Property<int>("client_id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("safety_card_id")
+                        .HasColumnType("int");
+
+                    b.HasKey("client_id", "safety_card_id");
+
+                    b.HasIndex("safety_card_id");
+
+                    b.ToTable("client_safety_cards", (string)null);
+                });
+
             modelBuilder.Entity("SSA.SDS.Api.Entities.ImportHistory", b =>
                 {
                     b.HasOne("SSA.SDS.Api.Entities.Client", "Client")
                         .WithMany()
-                        .HasForeignKey("ClientId");
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Client");
                 });
@@ -387,33 +416,32 @@ namespace SSA.SDS.Api.Migrations
                 {
                     b.HasOne("SSA.SDS.Api.Entities.SafetyCard", "SafetyCard")
                         .WithMany()
-                        .HasForeignKey("CardId");
+                        .HasForeignKey("CardId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SSA.SDS.Api.Entities.Client", "Client")
                         .WithMany()
                         .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Client");
 
                     b.Navigation("SafetyCard");
                 });
 
-            modelBuilder.Entity("SSA.SDS.Api.Entities.SafetyCard", b =>
+            modelBuilder.Entity("client_safety_cards", b =>
                 {
-                    b.HasOne("SSA.SDS.Api.Entities.Client", "Client")
-                        .WithMany("SafetyCards")
-                        .HasForeignKey("ClientId")
+                    b.HasOne("SSA.SDS.Api.Entities.Client", null)
+                        .WithMany()
+                        .HasForeignKey("client_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Client");
-                });
-
-            modelBuilder.Entity("SSA.SDS.Api.Entities.Client", b =>
-                {
-                    b.Navigation("SafetyCards");
+                    b.HasOne("SSA.SDS.Api.Entities.SafetyCard", null)
+                        .WithMany()
+                        .HasForeignKey("safety_card_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

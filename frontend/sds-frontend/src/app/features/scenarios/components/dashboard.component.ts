@@ -57,7 +57,7 @@ import { SafetyCard } from '../../../core/models/safety-card.model';
                 <td colspan="5" class="text-center">Nessuna scheda presente</td>
               </tr>
               <tr *ngFor="let card of recentCards">
-                <td>{{ card.clientName }}</td>
+                <td>{{ clientNames(card) || '—' }}</td>
                 <td>{{ card.titolo }}</td>
                 <td>{{ card.tipologia }}</td>
                 <td>{{ card.dataScadenza | date:'dd/MM/yyyy' }}</td>
@@ -202,6 +202,10 @@ export class DashboardComponent implements OnInit {
       },
       error: () => console.error('Errore caricamento schede')
     });
+  }
+
+  clientNames(card: SafetyCard): string {
+    return card.clients.map(c => c.ragioneSociale).join(', ');
   }
 
   getStatusClass(status: string): string {

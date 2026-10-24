@@ -1,10 +1,10 @@
 import {
   ScenarioService
-} from "./chunk-M5BBEHHV.js";
+} from "./chunk-HR5Y3KXV.js";
 import {
   AuthService
-} from "./chunk-CP6AIUXT.js";
-import "./chunk-PX24KK2F.js";
+} from "./chunk-TX7OKUSU.js";
+import "./chunk-26ID2PJJ.js";
 import {
   NavigationEnd,
   Router,
@@ -13,7 +13,7 @@ import {
   RouterOutlet,
   bootstrapApplication,
   provideRouter
-} from "./chunk-U3ABJN4X.js";
+} from "./chunk-NBCZAAC7.js";
 import {
   CommonModule,
   NgClass,
@@ -45,7 +45,7 @@ import {
   ɵɵtext,
   ɵɵtextInterpolate,
   ɵɵtextInterpolate1
-} from "./chunk-HDSUHL5P.js";
+} from "./chunk-YE2GV6RL.js";
 
 // src/app/app.routes.ts
 function authGuard() {
@@ -69,7 +69,7 @@ function redirectIfAuthenticated() {
 var routes = [
   {
     path: "login",
-    loadComponent: () => import("./chunk-INBEFMQU.js").then((m) => m.LoginComponent),
+    loadComponent: () => import("./chunk-POCJ4ZUX.js").then((m) => m.LoginComponent),
     canActivate: [redirectIfAuthenticated]
   },
   {
@@ -79,52 +79,52 @@ var routes = [
   },
   {
     path: "dashboard",
-    loadComponent: () => import("./chunk-HXF3W6J7.js").then((m) => m.DashboardComponent),
+    loadComponent: () => import("./chunk-DZIXBOJD.js").then((m) => m.DashboardComponent),
     canActivate: [authGuard]
   },
   {
     path: "clients",
-    loadComponent: () => import("./chunk-JAVI6TLE.js").then((m) => m.ClientListComponent),
+    loadComponent: () => import("./chunk-FXS5DFMI.js").then((m) => m.ClientListComponent),
     canActivate: [authGuard]
   },
   {
     path: "clients/new",
-    loadComponent: () => import("./chunk-WJEIANBE.js").then((m) => m.ClientFormComponent),
+    loadComponent: () => import("./chunk-2C3OO23U.js").then((m) => m.ClientFormComponent),
     canActivate: [authGuard]
   },
   {
     path: "clients/:id",
-    loadComponent: () => import("./chunk-QLTIL64G.js").then((m) => m.ClientDetailComponent),
+    loadComponent: () => import("./chunk-QZTUJB4B.js").then((m) => m.ClientDetailComponent),
     canActivate: [authGuard]
   },
   {
     path: "clients/:id/edit",
-    loadComponent: () => import("./chunk-WJEIANBE.js").then((m) => m.ClientFormComponent),
+    loadComponent: () => import("./chunk-2C3OO23U.js").then((m) => m.ClientFormComponent),
     canActivate: [authGuard]
   },
   {
     path: "safety-cards",
-    loadComponent: () => import("./chunk-JCXIL6A7.js").then((m) => m.CardListComponent),
+    loadComponent: () => import("./chunk-FW2GNGOG.js").then((m) => m.CardListComponent),
     canActivate: [authGuard]
   },
   {
     path: "safety-cards/new",
-    loadComponent: () => import("./chunk-JU3WJE7U.js").then((m) => m.CardFormComponent),
+    loadComponent: () => import("./chunk-KQ6CF4B6.js").then((m) => m.CardFormComponent),
     canActivate: [authGuard]
   },
   {
     path: "safety-cards/:id/edit",
-    loadComponent: () => import("./chunk-JU3WJE7U.js").then((m) => m.CardFormComponent),
+    loadComponent: () => import("./chunk-KQ6CF4B6.js").then((m) => m.CardFormComponent),
     canActivate: [authGuard]
   },
   {
     path: "import",
-    loadComponent: () => import("./chunk-JAN3LKRO.js").then((m) => m.ImportComponent),
+    loadComponent: () => import("./chunk-6PE43KCC.js").then((m) => m.ImportComponent),
     canActivate: [authGuard]
   },
   {
     path: "scenarios",
-    loadComponent: () => import("./chunk-5F4O2UNP.js").then((m) => m.ScenariosComponent),
+    loadComponent: () => import("./chunk-UFQZVOAM.js").then((m) => m.ScenariosComponent),
     canActivate: [authGuard]
   },
   {

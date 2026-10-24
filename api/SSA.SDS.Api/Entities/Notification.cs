@@ -8,9 +8,9 @@ public class Notification
     [Key]
     public int Id { get; set; }
 
-    [Required]
+    // Le notifiche di scadenza riguardano la scheda, che può essere di più clienti: il cliente è facoltativo
     [Column("client_id")]
-    public int ClientId { get; set; }
+    public int? ClientId { get; set; }
 
     [Column("card_id")]
     public int? CardId { get; set; }

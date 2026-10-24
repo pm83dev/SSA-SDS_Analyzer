@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using ClosedXML.Excel;
 using Microsoft.EntityFrameworkCore;
 using SSA.SDS.Api.Data;
@@ -9,7 +10,7 @@ namespace SSA.SDS.Api.Services;
 public interface IImportService
 {
     Task<ImportExcelResultDto> ImportExcelAsync(Stream fileStream, string fileName);
-    Task<AnalyzePdfResultDto> AnalyzePdfAsync(Stream pdfStream, int clientId, string? fileName);
+    Task<AnalyzePdfResultDto> AnalyzePdfAsync(Stream pdfStream, int? clientId, string? fileName);
 }
 
 public class ImportService : IImportService
@@ -84,7 +85,10 @@ public class ImportService : IImportService
             }
 
             var clients = await _context.Clients.ToDictionaryAsync(c => c.Id);
-            var seenCards = new HashSet<string>();
+            // Stesso prodotto (nome + produttore) per più clienti: una sola scheda collegata a tutti
+            var cardsByKey = (await _context.SafetyCards.Include(sc => sc.Clients).ToListAsync())
+                .GroupBy(sc => CardKey(sc.Titolo, sc.EnteEmittitore))
+                .ToDictionary(g => g.Key, g => g.First());
 
             for (var row = 2; row <= sheet.RowsUsed().Count(); row++)
             {
@@ -99,20 +103,28 @@ public class ImportService : IImportService
                     continue;
                 }
 
-                var key = $"{clientId}|{name.ToLower()}";
-                if (!seenCards.Add(key))
+                var key = CardKey(name, Clean(GetCell(sheet, row, producerCol)));
+                if (cardsByKey.TryGetValue(key, out var existing))
                 {
-                    result.Errors++;
-                    result.ErrorDetails.Add($"Riga {row}: scheda '{name}' già presente nel file per il cliente {clientId}");
+                    if (existing.Clients.Any(c => c.Id == clientId))
+                    {
+                        result.Errors++;
+                        result.ErrorDetails.Add($"Riga {row}: scheda '{name}' già collegata al cliente {clientId}");
+                    }
+                    else
+                    {
+                        existing.Clients.Add(clients[clientId]);
+                        result.LinksAdded++;
+                    }
                     continue;
                 }
 
                 // Ogni riga del file è la scheda di sicurezza (SDS) di un prodotto chimico
                 var card = new SafetyCard
                 {
-                    ClientId = clientId,
                     Tipologia = "SDS",
                     Titolo = name,
+                    NomeFileImportato = fileName,
                     EnteEmittitore = Clean(GetCell(sheet, row, producerCol)),
                     DataRilascio = GetDateCell(sheet, row, sdsDateCol),
                     FrasiH = Clean(GetCell(sheet, row, hPhrasesCol)),
@@ -134,20 +146,23 @@ public class ImportService : IImportService
                     UpdatedAt = DateTime.UtcNow
                 };
 
+                card.Clients.Add(clients[clientId]);
                 _context.SafetyCards.Add(card);
+                cardsByKey[key] = card;
                 result.CardsImported++;
             }
 
             await _context.SaveChangesAsync();
 
             history.ClientId = null;
-            history.RecordsImported = result.CardsImported;
-            history.Status = result.Errors > 0 && result.CardsImported == 0 ? "Error" : "Success";
+            history.RecordsImported = result.CardsImported + result.LinksAdded;
+            history.Status = result.Errors > 0 && result.CardsImported + result.LinksAdded == 0 ? "Error" : "Success";
             history.ErrorMessage = result.Errors > 0 ? string.Join("; ", result.ErrorDetails.Take(10)) : null;
             await _context.SaveChangesAsync();
 
             result.HistoryId = history.Id;
-            _logger.LogInformation("Import Excel completato: {Cards} schede, {Errors} errori", result.CardsImported, result.Errors);
+            _logger.LogInformation("Import Excel completato: {Cards} schede nuove, {Links} collegamenti a schede esistenti, {Errors} errori",
+                result.CardsImported, result.LinksAdded, result.Errors);
         }
         catch (Exception ex)
         {
@@ -167,20 +182,54 @@ public class ImportService : IImportService
         return result;
     }
 
-    public async Task<AnalyzePdfResultDto> AnalyzePdfAsync(Stream pdfStream, int clientId, string? fileName)
+    // clientId facoltativo: senza cliente la scheda resta solo nell'archivio
+    public async Task<AnalyzePdfResultDto> AnalyzePdfAsync(Stream pdfStream, int? clientId, string? fileName)
     {
         var result = new AnalyzePdfResultDto { Success = false };
 
-        var clientName = await _context.Clients.Where(c => c.Id == clientId).Select(c => c.RagioneSociale).FirstOrDefaultAsync();
-        if (clientName == null)
+        Client? client = null;
+        if (clientId != null)
         {
-            result.Message = "Cliente non trovato";
-            return result;
+            client = await _context.Clients.FindAsync(clientId.Value);
+            if (client == null)
+            {
+                result.Message = "Cliente non trovato";
+                return result;
+            }
         }
 
         // Il PDF serve due volte: per estrarre il testo e per allegarlo alla scheda
         using var pdfBuffer = new MemoryStream();
         await pdfStream.CopyToAsync(pdfBuffer);
+
+        // Lo stesso PDF già importato (anche per un altro cliente): si collega la scheda esistente, senza rianalizzarlo
+        var pdfHash = Convert.ToHexString(SHA256.HashData(pdfBuffer.ToArray()));
+        var existing = await FindCardByPdfHashAsync(pdfHash);
+        if (existing != null)
+        {
+            var linked = client != null && !existing.Clients.Any(c => c.Id == client.Id);
+            if (linked) existing.Clients.Add(client!);
+            _context.ImportHistories.Add(new ImportHistory
+            {
+                FileName = fileName ?? "pdf-llm",
+                FileType = "Pdf",
+                ClientId = clientId,
+                RecordsImported = linked ? 1 : 0,
+                Status = "Success",
+                CreatedAt = DateTime.UtcNow
+            });
+            await _context.SaveChangesAsync();
+
+            result.Success = true;
+            result.AlreadyExisting = true;
+            result.Message = client == null
+                ? $"PDF già presente nell'archivio: scheda \"{existing.Titolo}\""
+                : linked
+                    ? $"PDF già presente nell'archivio: scheda \"{existing.Titolo}\" collegata a {client.RagioneSociale}"
+                    : $"PDF già presente: la scheda \"{existing.Titolo}\" è già collegata a {client.RagioneSociale}";
+            result.Card = SafetyCardDto.From(existing);
+            return result;
+        }
 
         string text;
         try
@@ -201,7 +250,9 @@ public class ImportService : IImportService
             return result;
         }
 
-        var truncated = text.Length > 20000 ? text[..20000] : text;
+        // Quanto testo inviare all'LLM: i dati oltre il limite non vengono letti (e quindi non verificabili)
+        var maxChars = int.TryParse(_configuration["LLM:MaxTextChars"], out var mc) && mc > 0 ? mc : 20000;
+        var truncated = text.Length > maxChars ? text[..maxChars] : text;
         var json = await CallLlmAsync(truncated);
         if (json == null)
         {
@@ -212,22 +263,23 @@ public class ImportService : IImportService
         // L'analisi di un PDF SDS crea una scheda di sicurezza (non un prodotto chimico)
         var card = new SafetyCard
         {
-            ClientId = clientId,
             Tipologia = "SDS",
+            NomeFileImportato = fileName,
+            PdfHash = pdfHash,
             LlmAnalyzed = true,
             LlmRawResponse = json,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
 
+        bool? llmDiisocianati = null;
         try
         {
             using var doc = System.Text.Json.JsonDocument.Parse(json);
             var root = doc.RootElement;
 
-            card.Titolo = GetJsonString(root, "titolo", "nome_prodotto", "product_name")
-                ?? Path.GetFileNameWithoutExtension(fileName)
-                ?? "Scheda di sicurezza";
+            // Se manca il nome, SdsVerifier mette il nome del file come segnaposto e lo segnala
+            card.Titolo = GetJsonString(root, "titolo", "nome_prodotto", "product_name") ?? string.Empty;
             card.EnteEmittitore = GetJsonString(root, "produttore", "ente_emittitore", "producer");
             card.NumeroProtocollo = GetJsonString(root, "versione", "revisione", "version");
             card.DataRilascio = ParseDate(GetJsonString(root, "data_sds", "data_revisione", "sds_date"));
@@ -240,16 +292,38 @@ public class ImportService : IImportService
             card.StatoFisico = GetJsonString(root, "stato_fisico", "physical_state");
             card.TemperaturaEbollizione = GetJsonString(root, "teb", "punto_di_ebollizione", "boiling_point");
             card.Densita = GetJsonString(root, "densita", "density");
-            card.CovPercent = NormalizeCov(GetJsonString(root, "cov_percent", "voc_percent", "vocs"), card.Densita);
+            card.CovPercent = GetJsonString(root, "cov_percent", "voc_percent", "vocs");
             card.SdsUrl = GetJsonString(root, "sds_url");
-            card.ContieneDiisocianati = ParseYesNo(GetJsonString(root, "diisocianati"))
-                ?? DetectDiisocyanates(card.Composizione, card.ComposizioneCasSopra, card.ComposizioneCasSotto);
+            llmDiisocianati = ParseYesNo(GetJsonString(root, "diisocianati"));
         }
         catch (Exception ex)
         {
             _logger.LogWarning(ex, "Errore nel parsing della risposta LLM: {Json}", json);
             result.Message = "La risposta del servizio LLM non è un JSON valido";
             return result;
+        }
+
+        // Nessun dato inventato: ogni valore deve essere scritto nel testo della SDS,
+        // altrimenti non viene salvato e il campo resta "da verificare" sulla scheda PDF
+        var verifier = new SdsVerifier(truncated);
+        verifier.Verify(card, fileName);
+
+        // Calcoli fatti solo su dati verificati: COV da g/l a % con la densità, diisocianati dalla composizione
+        card.CovPercent = NormalizeCov(card.CovPercent, card.Densita);
+        var detected = DetectDiisocyanates(card.Composizione, card.ComposizioneCasSopra, card.ComposizioneCasSotto);
+        if (detected == true)
+            card.ContieneDiisocianati = true;
+        else if (llmDiisocianati == true)
+            verifier.Issues.Add(("contieneDiisocianati", "indicati dal modello ma non riconoscibili nella composizione verificata"));
+        else if (llmDiisocianati == false && (card.Composizione ?? card.ComposizioneCasSopra) != null)
+            card.ContieneDiisocianati = false;
+
+        if (verifier.Issues.Count > 0)
+        {
+            card.CampiDaVerificare = string.Join(",", verifier.Issues.Select(i => i.Campo).Distinct());
+            card.NoteVerifica = string.Join("\n", verifier.Issues.Select(i => $"{i.Campo}: {i.Motivo}"));
+            _logger.LogInformation("Scheda {File}: {Count} dati non verificati nel testo della SDS\n{Note}",
+                fileName, verifier.Issues.Count, card.NoteVerifica);
         }
 
         if (card.DataScadenza != null)
@@ -259,6 +333,7 @@ public class ImportService : IImportService
             card.DaysRemaining = days;
         }
 
+        if (client != null) card.Clients.Add(client);
         _context.SafetyCards.Add(card);
         await _context.SaveChangesAsync();
 
@@ -266,7 +341,7 @@ public class ImportService : IImportService
         try
         {
             pdfBuffer.Position = 0;
-            card.PdfUrl = await _fileStorage.SavePdfAsync(clientId, card.Id, pdfBuffer, fileName ?? "sds.pdf");
+            card.PdfUrl = await _fileStorage.SavePdfAsync(card.Id, pdfBuffer, fileName ?? "sds.pdf");
             await _context.SaveChangesAsync();
         }
         catch (Exception ex)
@@ -275,10 +350,13 @@ public class ImportService : IImportService
         }
 
         result.Success = true;
-        result.Message = card.PdfUrl != null
+        result.Message = (card.PdfUrl != null
             ? $"Scheda \"{card.Titolo}\" creata con PDF allegato"
-            : $"Scheda \"{card.Titolo}\" creata (PDF non allegato)";
-        result.Card = SafetyCardDto.From(card, clientName);
+            : $"Scheda \"{card.Titolo}\" creata (PDF non allegato)")
+            + (verifier.Issues.Count > 0
+                ? $": {card.CampiDaVerificare!.Split(',').Length} campi da verificare sulla scheda"
+                : "");
+        result.Card = SafetyCardDto.From(card);
 
         var history = new ImportHistory
         {
@@ -295,6 +373,26 @@ public class ImportService : IImportService
         return result;
     }
 
+    // Scheda con lo stesso PDF. Per le schede importate prima dell'impronta SHA-256, la si calcola dal file salvato
+    private async Task<SafetyCard?> FindCardByPdfHashAsync(string hash)
+    {
+        var card = await _context.SafetyCards.Include(sc => sc.Clients).FirstOrDefaultAsync(sc => sc.PdfHash == hash);
+        if (card != null) return card;
+
+        var withoutHash = await _context.SafetyCards.Include(sc => sc.Clients)
+            .Where(sc => sc.PdfHash == null && sc.PdfUrl != null).ToListAsync();
+        SafetyCard? match = null;
+        foreach (var sc in withoutHash)
+        {
+            var path = _fileStorage.GetFilePath(sc.PdfUrl!);
+            if (path == null) continue;
+            sc.PdfHash = Convert.ToHexString(SHA256.HashData(await File.ReadAllBytesAsync(path)));
+            if (sc.PdfHash == hash) match ??= sc;
+        }
+        if (withoutHash.Count > 0) await _context.SaveChangesAsync();
+        return match;
+    }
+
     private string ExtractPdfText(Stream pdfStream)
     {
         using var ms = new MemoryStream();
@@ -307,7 +405,8 @@ public class ImportService : IImportService
 
     private async Task<string?> CallLlmAsync(string pdfText)
     {
-        var baseUrl = _configuration["LLM:BaseUrl"] ?? "http://localhost:8000";
+        // Lo slash finale nella configurazione (es. "http://host:9005/") produrrebbe "//v1/..." e un 404
+        var baseUrl = (_configuration["LLM:BaseUrl"] ?? "http://localhost:8000").TrimEnd('/');
         var model = _configuration["LLM:Model"] ?? "hexagon";
         var apiKey = _configuration["LLM:ApiKey"];
         var timeout = int.TryParse(_configuration["LLM:TimeoutSeconds"], out var t) ? t : 300;
@@ -318,36 +417,40 @@ public class ImportService : IImportService
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiKey);
         }
 
-        var prompt = "Sei un analista di schede di sicurezza (SDS) chimiche. Dal testo della SDS estrai i dati e restituisci SOLO un JSON valido con questa struttura: " +
+        // Regola principale: solo dati scritti nella SDS. Ogni valore viene poi controllato da SdsVerifier
+        // sul testo: quello che non si ritrova non viene salvato
+        var prompt = "Dal testo della SDS estrai i dati e restituisci SOLO un JSON valido con questa struttura: " +
             "{ " +
             "\"titolo\": \"nome del prodotto chimico (punto 1.1)\", " +
-            "\"produttore\": \"produttore/distributore (punto 1.3)\", " +
-            "\"frasi_h\": \"codici delle frasi H (es. H225, H315) separate da virgola (punto 2.1)\", " +
-            "\"pittogramma\": \"codici dei pittogrammi (es. GHS02) separati da virgola (punto 2.2): serve il codice GHS, non la descrizione del simbolo\", " +
-            "\"composizione_cas_sopra_01\": \"componenti con n. CAS e % > 0,1% (punto 3)\", " +
-            "\"composizione_cas_sotto_01\": \"componenti con n. CAS e % < 0,1% (punto 3)\", " +
-            "\"composizione\": \"composizione completa del prodotto (punto 3)\", " +
-            "\"diisocianati\": \"si se nella composizione ci sono diisocianati (riconoscibili da 'diiso' o 'di-iso' nel nome), altrimenti no\", " +
+            "\"produttore\": \"nome della società produttrice/fornitrice (punto 1.3), senza indirizzo\", " +
+            "\"frasi_h\": \"codici delle frasi H e EUH della sezione 2.1 (es. H225, H315, EUH066) separati da virgola. Se nella SDS c'è solo la descrizione della frase H, riporta il codice corrispondente. Le frasi R (es. R35) non sono frasi H: non riportarle\", " +
+            "\"pittogramma\": \"codici dei pittogrammi GHS (es. GHS02) scritti nella sezione 2.2, separati da virgola. Se nel testo non compare il codice GHS usa null: non dedurlo dalle frasi H o dai simboli\", " +
+            "\"composizione_cas_sopra_01\": \"componenti presenti in quantità > 0,1% (punto 3) nel formato nome|n. CAS|%, separati da virgola. Il n. CAS ha il formato 64-17-5: NON usare il numero CE/EC (es. 200-578-6) né il numero indice CLP (es. 603-002-00-5); se il CAS manca lascia vuoto quel campo. Riporta la percentuale esattamente come scritta (es. '30 - 32,5%'), senza calcolare valori medi\", " +
+            "\"composizione_cas_sotto_01\": \"componenti presenti in quantità < 0,1% (punto 3), stesso formato nome|n. CAS|%. Classifica ogni componente in base al limite superiore del suo intervallo: va qui solo se è inferiore a 0,1% (es. 0,05%); 0,5% o '<1%' sono maggiori di 0,1% e vanno in composizione_cas_sopra_01\", " +
+            "\"composizione\": \"composizione del prodotto (punto 3): nome e percentuale di ogni componente come scritti nella SDS\", " +
+            "\"diisocianati\": \"si se nel nome di un componente compare 'diiso' o 'di-iso', altrimenti no\", " +
             "\"stato_fisico\": \"stato fisico (punto 9)\", " +
-            "\"teb\": \"temperatura di ebollizione (punto 9)\", " +
-            "\"cov_percent\": \"COV/VOC in percentuale (es. 5%). Se la SDS lo riporta in g/l restituisci il valore con l'unità (es. '650 g/l'), verrà convertito. Se non è indicato calcolalo come somma delle % dei componenti organici volatili (solventi) della sezione 3, scrivendo il valore seguito da '(stimato)'\", " +
-            "\"densita\": \"densita (punto 9)\", " +
-            "\"sds_url\": \"URL o riferimento della SDS se presente, altrimenti null\", " +
-            "\"data_sds\": \"data di compilazione/revisione della SDS in formato YYYY-MM-DD, se presente, altrimenti null\", " +
-            "\"versione\": \"numero di versione o revisione della SDS, se presente, altrimenti null\", " +
-            "\"data_scadenza\": \"data di scadenza/validità della SDS in formato YYYY-MM-DD solo se indicata esplicitamente, altrimenti null\" " +
+            "\"teb\": \"temperatura di ebollizione (punto 9) come scritta, con l'unità\", " +
+            "\"cov_percent\": \"COV/VOC esattamente come riportato nella SDS, in % oppure in g/l con l'unità (es. '650 g/l'). Se non è riportato usa null: non stimarlo e non calcolarlo\", " +
+            "\"densita\": \"densità (punto 9) come scritta, con l'unità\", " +
+            "\"sds_url\": \"URL della SDS se scritto nel testo, altrimenti null\", " +
+            "\"data_sds\": \"data di compilazione/revisione della SDS in formato YYYY-MM-DD, se scritta, altrimenti null\", " +
+            "\"versione\": \"numero di versione o revisione della SDS come scritto, altrimenti null\", " +
+            "\"data_scadenza\": \"data di scadenza/validità della SDS in formato YYYY-MM-DD solo se scritta esplicitamente, altrimenti null\" " +
             "} " +
-            "Usa null per i campi non presenti. Non aggiungere testo fuori dal JSON.";
+            "REGOLE: riporta solo dati scritti esplicitamente nel testo della SDS. Non dedurre, non stimare, non calcolare, " +
+            "non completare con conoscenze generali sulle sostanze. Se un dato manca, è illeggibile o hai dubbi usa null: " +
+            "un campo vuoto verrà controllato a mano sulla scheda, un dato sbagliato no. Non aggiungere testo fuori dal JSON.";
 
         var payload = new
         {
             model = model,
             messages = new[]
             {
-                new { role = "system", content = "Sei un analista di schede di sicurezza (SDS) chimiche. Estrai i dati dal testo fornito e rispondi SEMPRE con un solo oggetto JSON valido, senza testo aggiuntivo." },
+                new { role = "system", content = "Sei un analista di schede di sicurezza (SDS) chimiche. Estrai solo i dati scritti nel testo fornito, senza inventare né dedurre nulla: se un dato non c'è o è incerto usa null. Rispondi SEMPRE con un solo oggetto JSON valido, senza testo aggiuntivo." },
                 new { role = "user", content = prompt + "\n\nTESTO DELLA SDS:\n" + pdfText }
             },
-            temperature = 0.1,
+            temperature = 0,
             max_tokens = 2000
         };
 
@@ -502,6 +605,10 @@ public class ImportService : IImportService
         var cleaned = value.Replace("si trova al punto", "").Trim();
         return cleaned.Length > 0 ? cleaned : null;
     }
+
+    // Chiave per riconoscere lo stesso prodotto: nome + produttore, senza differenze di maiuscole e spazi
+    private static string CardKey(string? titolo, string? produttore) =>
+        System.Text.RegularExpressions.Regex.Replace($"{titolo}|{produttore}".ToLowerInvariant(), @"\s+", " ").Trim();
 
     private static DateTime? ParseDate(string? value)
     {

@@ -2,7 +2,7 @@ namespace SSA.SDS.Api.Services;
 
 public interface IFileStorageService
 {
-    Task<string> SavePdfAsync(int clientId, int cardId, Stream content, string fileName);
+    Task<string> SavePdfAsync(int cardId, Stream content, string fileName);
     bool DeletePdf(string relativePath);
     string? GetFilePath(string relativePath);
     string GetBaseUrl();
@@ -24,16 +24,17 @@ public class FileStorageService : IFileStorageService
         Directory.CreateDirectory(_rootPath);
     }
 
-    public async Task<string> SavePdfAsync(int clientId, int cardId, Stream content, string fileName)
+    // I PDF sono salvati per scheda: una scheda può essere di più clienti o di nessuno
+    public async Task<string> SavePdfAsync(int cardId, Stream content, string fileName)
     {
         if (content.Length > _maxFileSizeMB * 1024L * 1024L)
             throw new InvalidOperationException($"File troppo grande (max {_maxFileSizeMB}MB)");
 
         var safeName = SanitizeFileName(fileName);
-        var folder = Path.Combine(_rootPath, "pdf", clientId.ToString());
+        var folder = Path.Combine(_rootPath, "pdf", "schede");
         Directory.CreateDirectory(folder);
 
-        var relativePath = $"pdf/{clientId}/{cardId}_{DateTime.UtcNow:yyyyMMddHHmmss}_{safeName}";
+        var relativePath = $"pdf/schede/{cardId}_{DateTime.UtcNow:yyyyMMddHHmmss}_{safeName}";
         var fullPath = Path.Combine(_rootPath, relativePath.Replace('/', Path.DirectorySeparatorChar));
 
         using (var fs = new FileStream(fullPath, FileMode.Create))

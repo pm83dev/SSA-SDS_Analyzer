@@ -13,7 +13,7 @@ public class DashboardStatsDto
 public class ExpiringCardDto
 {
     public int Id { get; set; }
-    public int ClientId { get; set; }
+    // Clienti collegati alla scheda, separati da virgola
     public string ClientName { get; set; } = string.Empty;
     public string Tipologia { get; set; } = string.Empty;
     public string Titolo { get; set; } = string.Empty;
@@ -25,7 +25,7 @@ public class ExpiringCardDto
 public class NotificationDto
 {
     public int Id { get; set; }
-    public int ClientId { get; set; }
+    public int? ClientId { get; set; }
     public string ClientName { get; set; } = string.Empty;
     public int? CardId { get; set; }
     public string? CardTitle { get; set; }

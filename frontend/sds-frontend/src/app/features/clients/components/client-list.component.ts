@@ -47,7 +47,7 @@ import { Client } from '../../../core/models/client.model';
               <td>{{ client.totalCards }}</td>
               <td class="actions">
                 <a [routerLink]="['/clients', client.id, 'edit']" class="btn btn-small btn-secondary">Modifica</a>
-                <button class="btn btn-small btn-danger" (click)="onDelete(client.id)">Elimina</button>
+                <button class="btn btn-small btn-danger" (click)="onDelete(client)">Elimina</button>
               </td>
             </tr>
           </tbody>
@@ -167,9 +167,13 @@ export class ClientListComponent implements OnInit {
     );
   }
 
-  onDelete(id: number) {
-    if (confirm('Sei sicuro di voler eliminare questo cliente?')) {
-      this.clientService.delete(id).subscribe({
+  onDelete(client: Client) {
+    // Le schede non vengono eliminate: si toglie solo il collegamento con il cliente
+    const schede = client.totalCards > 0
+      ? `\n\nLe sue ${client.totalCards} schede di sicurezza restano nell'archivio (vengono solo scollegate).`
+      : '';
+    if (confirm(`Sei sicuro di voler eliminare il cliente "${client.ragioneSociale}"?${schede}`)) {
+      this.clientService.delete(client.id).subscribe({
         next: () => {
           alert('Cliente eliminato con successo');
           this.loadClients();

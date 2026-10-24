@@ -118,6 +118,7 @@ public class ClientsController : ControllerBase
         var client = await _context.Clients.FindAsync(id);
         if (client == null) return NotFound();
 
+        // Si eliminano solo i collegamenti con le schede: le schede restano nell'archivio con i loro PDF
         _context.Clients.Remove(client);
         await _context.SaveChangesAsync();
         return NoContent();
@@ -127,12 +128,42 @@ public class ClientsController : ControllerBase
     public async Task<IActionResult> GetCards(int id)
     {
         var cards = await _context.SafetyCards
-            .Where(sc => sc.ClientId == id)
+            .Include(sc => sc.Clients)
+            .Where(sc => sc.Clients.Any(c => c.Id == id))
             .OrderByDescending(sc => sc.CreatedAt)
             .ToListAsync();
 
-        var client = await _context.Clients.FirstOrDefaultAsync(c => c.Id == id);
+        return Ok(cards.Select(SafetyCardDto.From));
+    }
 
-        return Ok(cards.Select(sc => SafetyCardDto.From(sc, client?.RagioneSociale)));
+    // Collega al cliente una scheda già presente nell'archivio
+    [HttpPost("{id}/cards/{cardId:int}")]
+    public async Task<IActionResult> LinkCard(int id, int cardId)
+    {
+        var client = await _context.Clients.FindAsync(id);
+        var card = await _context.SafetyCards.Include(sc => sc.Clients).FirstOrDefaultAsync(sc => sc.Id == cardId);
+        if (client == null || card == null) return NotFound();
+
+        if (!card.Clients.Any(c => c.Id == id))
+        {
+            card.Clients.Add(client);
+            await _context.SaveChangesAsync();
+        }
+        return Ok(SafetyCardDto.From(card));
+    }
+
+    // Scollega la scheda dal cliente: la scheda resta nell'archivio
+    [HttpDelete("{id}/cards/{cardId:int}")]
+    public async Task<IActionResult> UnlinkCard(int id, int cardId)
+    {
+        var card = await _context.SafetyCards.Include(sc => sc.Clients).FirstOrDefaultAsync(sc => sc.Id == cardId);
+        if (card == null) return NotFound();
+
+        var client = card.Clients.FirstOrDefault(c => c.Id == id);
+        if (client == null) return NotFound();
+
+        card.Clients.Remove(client);
+        await _context.SaveChangesAsync();
+        return NoContent();
     }
 }

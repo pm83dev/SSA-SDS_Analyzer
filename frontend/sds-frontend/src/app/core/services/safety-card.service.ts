@@ -1,4 +1,6 @@
 import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
 import { CreateSafetyCard, SafetyCard } from '../models/safety-card.model';
 import { ApiService } from './api.service';
@@ -8,6 +10,7 @@ import { ApiService } from './api.service';
 })
 export class SafetyCardService {
   private api = inject(ApiService);
+  private http = inject(HttpClient);
 
   getCards(): Observable<SafetyCard[]> {
     return this.api.get<SafetyCard[]>('/safety-cards');
@@ -19,6 +22,16 @@ export class SafetyCardService {
 
   getCardsByClient(clientId: number): Observable<SafetyCard[]> {
     return this.api.get<SafetyCard[]>(`/clients/${clientId}/cards`);
+  }
+
+  // Collega al cliente una scheda già presente nell'archivio
+  linkToClient(clientId: number, cardId: number): Observable<SafetyCard> {
+    return this.api.post<SafetyCard>(`/clients/${clientId}/cards/${cardId}`, {});
+  }
+
+  // Scollega la scheda dal cliente: la scheda resta nell'archivio
+  unlinkFromClient(clientId: number, cardId: number): Observable<void> {
+    return this.api.delete<void>(`/clients/${clientId}/cards/${cardId}`);
   }
 
   createCard(request: CreateSafetyCard): Observable<SafetyCard> {
@@ -45,10 +58,25 @@ export class SafetyCardService {
     return this.api.get<string>(`/safety-cards/${cardId}/pdf-url`);
   }
 
-  analyzePdf(clientId: number, file: File): Observable<any> {
+  // Cliente facoltativo: senza cliente la scheda va solo nell'archivio
+  analyzePdf(clientId: number | null, file: File): Observable<any> {
     const formData = new FormData();
-    formData.append('clientId', clientId.toString());
+    if (clientId) formData.append('clientId', clientId.toString());
     formData.append('pdfFile', file);
     return this.api.uploadFile<any>('/safety-cards/analyze-pdf', formData);
+  }
+
+  // Il PDF è servito da un endpoint protetto: un semplice <a href> non invia il token,
+  // quindi lo si scarica con HttpClient (che aggiunge il token) e lo si apre in una nuova scheda
+  openPdf(card: SafetyCard): void {
+    if (!card.pdfUrl) return;
+    this.http.get(`${environment.apiUrl}${card.pdfUrl}`, { responseType: 'blob' }).subscribe({
+      next: (blob) => {
+        const url = URL.createObjectURL(blob);
+        window.open(url, '_blank');
+        setTimeout(() => URL.revokeObjectURL(url), 60000);
+      },
+      error: () => alert('Errore nell\x27apertura del PDF')
+    });
   }
 }

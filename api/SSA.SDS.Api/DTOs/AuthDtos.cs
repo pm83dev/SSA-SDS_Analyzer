@@ -75,7 +75,8 @@ public class ClientDto
 
 public class CreateSafetyCardDto
 {
-    public int ClientId { get; set; }
+    // Clienti collegati alla scheda: zero, uno o più (la scheda esiste anche senza clienti)
+    public List<int> ClientIds { get; set; } = new();
     public string Tipologia { get; set; } = string.Empty;
     public string Titolo { get; set; } = string.Empty;
     public string? NumeroProtocollo { get; set; }
@@ -97,9 +98,11 @@ public class CreateSafetyCardDto
     public string? Densita { get; set; }
     public string? SdsUrl { get; set; }
 
+    // true dal form quando l'utente ha controllato i dati sulla scheda PDF: toglie tutti i "da verificare"
+    public bool DatiVerificati { get; set; }
+
     public void ApplyTo(SSA.SDS.Api.Entities.SafetyCard card)
     {
-        card.ClientId = ClientId;
         card.Tipologia = Tipologia;
         card.Titolo = Titolo;
         card.NumeroProtocollo = NumeroProtocollo;
@@ -126,8 +129,7 @@ public class CreateSafetyCardDto
 public class SafetyCardDto
 {
     public int Id { get; set; }
-    public int ClientId { get; set; }
-    public string ClientName { get; set; } = string.Empty;
+    public List<ClientRefDto> Clients { get; set; } = new();
     public string Tipologia { get; set; } = string.Empty;
     public string Titolo { get; set; } = string.Empty;
     public string? NumeroProtocollo { get; set; }
@@ -151,16 +153,20 @@ public class SafetyCardDto
     public string? Densita { get; set; }
     public string? SdsUrl { get; set; }
     public string? PdfUrl { get; set; }
+    public string? NomeFileImportato { get; set; }
+    public List<string> CampiDaVerificare { get; set; } = new();
+    public string? NoteVerifica { get; set; }
     public bool HasPdf { get; set; }
     public bool LlmAnalyzed { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 
-    public static SafetyCardDto From(SSA.SDS.Api.Entities.SafetyCard sc, string? clientName = null) => new()
+    // sc.Clients deve essere caricato (Include) per riportare i clienti collegati
+    public static SafetyCardDto From(SSA.SDS.Api.Entities.SafetyCard sc) => new()
     {
         Id = sc.Id,
-        ClientId = sc.ClientId,
-        ClientName = clientName ?? sc.Client?.RagioneSociale ?? string.Empty,
+        Clients = sc.Clients.OrderBy(c => c.RagioneSociale)
+            .Select(c => new ClientRefDto { Id = c.Id, RagioneSociale = c.RagioneSociale }).ToList(),
         Tipologia = sc.Tipologia,
         Titolo = sc.Titolo,
         NumeroProtocollo = sc.NumeroProtocollo,
@@ -184,9 +190,21 @@ public class SafetyCardDto
         Densita = sc.Densita,
         SdsUrl = sc.SdsUrl,
         PdfUrl = sc.PdfUrl != null ? $"/api/files/{sc.PdfUrl.Replace('\\', '/')}" : null,
+        NomeFileImportato = sc.NomeFileImportato,
+        CampiDaVerificare = string.IsNullOrWhiteSpace(sc.CampiDaVerificare)
+            ? new List<string>()
+            : sc.CampiDaVerificare.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList(),
+        NoteVerifica = sc.NoteVerifica,
         HasPdf = !string.IsNullOrEmpty(sc.PdfUrl),
         LlmAnalyzed = sc.LlmAnalyzed,
         CreatedAt = sc.CreatedAt,
         UpdatedAt = sc.UpdatedAt
     };
+}
+
+// Riferimento a un cliente collegato a una scheda
+public class ClientRefDto
+{
+    public int Id { get; set; }
+    public string RagioneSociale { get; set; } = string.Empty;
 }

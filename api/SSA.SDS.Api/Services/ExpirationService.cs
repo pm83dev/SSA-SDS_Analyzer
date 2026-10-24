@@ -58,7 +58,6 @@ public class ExpirationService : IExpirationService
     {
         var today = DateTime.Today;
         var cards = await _context.SafetyCards
-            .Include(c => c.Client)
             .Where(c => c.DataScadenza != null && c.DataScadenza >= today.AddDays(-1))
             .ToListAsync();
 
@@ -94,7 +93,7 @@ public class ExpirationService : IExpirationService
             {
                 _context.Notifications.Add(new Notification
                 {
-                    ClientId = card.ClientId,
+                    // Notifica della scheda (che può essere di più clienti o di nessuno)
                     CardId = card.Id,
                     Type = type,
                     Message = message,
