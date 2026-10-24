@@ -18,7 +18,7 @@ export interface ImportExcelResult {
   historyId: number;
   status: string;
   clientsImported: number;
-  productsImported: number;
+  cardsImported: number;
   errors: number;
   errorDetails: string[];
 }

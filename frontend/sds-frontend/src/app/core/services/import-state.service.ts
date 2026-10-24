@@ -33,6 +33,11 @@ export class ImportStateService {
   private stateSubject = new BehaviorSubject<ImportState>(this.loadState());
   state$: Observable<ImportState> = this.stateSubject.asObservable();
 
+  constructor() {
+    // Allinea lo stato interno a quello ripristinato da sessionStorage
+    this.state = this.stateSubject.value;
+  }
+
   get current(): ImportState {
     return this.state;
   }
@@ -48,7 +53,14 @@ export class ImportStateService {
   }
 
   addAnalysisResult(result: AnalysisResult) {
-    this.state.analysisResults.push(result);
+    this.state.analysisResults = [...this.state.analysisResults, result];
+    this.saveState();
+  }
+
+  clearResults() {
+    this.state.analysisResults = [];
+    this.state.message = '';
+    this.state.messageType = '';
     this.saveState();
   }
 

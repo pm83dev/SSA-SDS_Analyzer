@@ -32,7 +32,6 @@ export interface DashboardStats {
   expiringCards: number;
   expiredCards: number;
   validCards: number;
-  totalProducts: number;
   unreadNotifications: number;
 }
 

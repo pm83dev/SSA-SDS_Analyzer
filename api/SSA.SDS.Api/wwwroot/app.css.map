@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/app.css"],
+  "sourcesContent": [":host {\n  display: flex;\n  flex-direction: column;\n  min-height: 100vh;\n}\n\nmain {\n  flex: 1;\n}\n"],
+  "mappings": ";AAAA;AACE,WAAS;AACT,kBAAgB;AAChB,cAAY;AACd;AAEA;AACE,QAAM;AACR;",
+  "names": []
+}

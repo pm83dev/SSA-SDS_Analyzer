@@ -85,6 +85,42 @@ public class CreateSafetyCardDto
     public int? ValiditaMesi { get; set; }
     public string? FrequenzaControllo { get; set; }
     public string? Osservazioni { get; set; }
+    public string? FrasiH { get; set; }
+    public string? Pittogrammi { get; set; }
+    public string? ComposizioneCasSopra { get; set; }
+    public string? ComposizioneCasSotto { get; set; }
+    public string? Composizione { get; set; }
+    public bool? ContieneDiisocianati { get; set; }
+    public string? StatoFisico { get; set; }
+    public string? TemperaturaEbollizione { get; set; }
+    public string? CovPercent { get; set; }
+    public string? Densita { get; set; }
+    public string? SdsUrl { get; set; }
+
+    public void ApplyTo(SSA.SDS.Api.Entities.SafetyCard card)
+    {
+        card.ClientId = ClientId;
+        card.Tipologia = Tipologia;
+        card.Titolo = Titolo;
+        card.NumeroProtocollo = NumeroProtocollo;
+        card.EnteEmittitore = EnteEmittitore;
+        card.DataRilascio = DataRilascio;
+        card.DataScadenza = DataScadenza;
+        card.ValiditaMesi = ValiditaMesi;
+        card.FrequenzaControllo = FrequenzaControllo;
+        card.Osservazioni = Osservazioni;
+        card.FrasiH = FrasiH;
+        card.Pittogrammi = Pittogrammi;
+        card.ComposizioneCasSopra = ComposizioneCasSopra;
+        card.ComposizioneCasSotto = ComposizioneCasSotto;
+        card.Composizione = Composizione;
+        card.ContieneDiisocianati = ContieneDiisocianati;
+        card.StatoFisico = StatoFisico;
+        card.TemperaturaEbollizione = TemperaturaEbollizione;
+        card.CovPercent = CovPercent;
+        card.Densita = Densita;
+        card.SdsUrl = SdsUrl;
+    }
 }
 
 public class SafetyCardDto
@@ -103,9 +139,54 @@ public class SafetyCardDto
     public int? DaysRemaining { get; set; }
     public string? FrequenzaControllo { get; set; }
     public string? Osservazioni { get; set; }
+    public string? FrasiH { get; set; }
+    public string? Pittogrammi { get; set; }
+    public string? ComposizioneCasSopra { get; set; }
+    public string? ComposizioneCasSotto { get; set; }
+    public string? Composizione { get; set; }
+    public bool? ContieneDiisocianati { get; set; }
+    public string? StatoFisico { get; set; }
+    public string? TemperaturaEbollizione { get; set; }
+    public string? CovPercent { get; set; }
+    public string? Densita { get; set; }
+    public string? SdsUrl { get; set; }
     public string? PdfUrl { get; set; }
     public bool HasPdf { get; set; }
     public bool LlmAnalyzed { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
+
+    public static SafetyCardDto From(SSA.SDS.Api.Entities.SafetyCard sc, string? clientName = null) => new()
+    {
+        Id = sc.Id,
+        ClientId = sc.ClientId,
+        ClientName = clientName ?? sc.Client?.RagioneSociale ?? string.Empty,
+        Tipologia = sc.Tipologia,
+        Titolo = sc.Titolo,
+        NumeroProtocollo = sc.NumeroProtocollo,
+        EnteEmittitore = sc.EnteEmittitore,
+        DataRilascio = sc.DataRilascio,
+        DataScadenza = sc.DataScadenza,
+        ValiditaMesi = sc.ValiditaMesi,
+        Stato = sc.Stato,
+        DaysRemaining = sc.DaysRemaining,
+        FrequenzaControllo = sc.FrequenzaControllo,
+        Osservazioni = sc.Osservazioni,
+        FrasiH = sc.FrasiH,
+        Pittogrammi = sc.Pittogrammi,
+        ComposizioneCasSopra = sc.ComposizioneCasSopra,
+        ComposizioneCasSotto = sc.ComposizioneCasSotto,
+        Composizione = sc.Composizione,
+        ContieneDiisocianati = sc.ContieneDiisocianati,
+        StatoFisico = sc.StatoFisico,
+        TemperaturaEbollizione = sc.TemperaturaEbollizione,
+        CovPercent = sc.CovPercent,
+        Densita = sc.Densita,
+        SdsUrl = sc.SdsUrl,
+        PdfUrl = sc.PdfUrl != null ? $"/api/files/{sc.PdfUrl.Replace('\\', '/')}" : null,
+        HasPdf = !string.IsNullOrEmpty(sc.PdfUrl),
+        LlmAnalyzed = sc.LlmAnalyzed,
+        CreatedAt = sc.CreatedAt,
+        UpdatedAt = sc.UpdatedAt
+    };
 }

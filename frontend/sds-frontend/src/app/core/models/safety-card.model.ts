@@ -13,6 +13,17 @@ export interface SafetyCard {
   daysRemaining?: number;
   frequenzaControllo?: string;
   osservazioni?: string;
+  frasiH?: string;
+  pittogrammi?: string;
+  composizioneCasSopra?: string;
+  composizioneCasSotto?: string;
+  composizione?: string;
+  contieneDiisocianati?: boolean;
+  statoFisico?: string;
+  temperaturaEbollizione?: string;
+  covPercent?: string;
+  densita?: string;
+  sdsUrl?: string;
   pdfUrl?: string;
   hasPdf?: boolean;
   llmAnalyzed: boolean;
@@ -31,6 +42,17 @@ export interface CreateSafetyCard {
   validitaMesi?: number;
   frequenzaControllo?: string;
   osservazioni?: string;
+  frasiH?: string;
+  pittogrammi?: string;
+  composizioneCasSopra?: string;
+  composizioneCasSotto?: string;
+  composizione?: string;
+  contieneDiisocianati?: boolean;
+  statoFisico?: string;
+  temperaturaEbollizione?: string;
+  covPercent?: string;
+  densita?: string;
+  sdsUrl?: string;
 }
 
 export interface LoginResponse {
@@ -40,9 +62,3 @@ export interface LoginResponse {
   role: string;
 }
 
-export enum Tipologia {
-  Sds = 'SDS',
-  Certificato = 'Certificato',
-  Dichiarazione = 'Dichiarazione',
-  Altro = 'Altro'
-}

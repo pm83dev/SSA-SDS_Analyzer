@@ -47,6 +47,42 @@ public class SafetyCard
     [Column("osservazioni")]
     public string? Osservazioni { get; set; }
 
+    // Dati estratti dalla scheda di sicurezza (SDS) del prodotto chimico.
+    // Il produttore è in EnteEmittitore e la data della SDS in DataRilascio.
+
+    [Column("frasi_h")]
+    public string? FrasiH { get; set; }
+
+    [Column("pittogrammi")]
+    public string? Pittogrammi { get; set; }
+
+    [Column("composizione_cas_sopra")]
+    public string? ComposizioneCasSopra { get; set; }
+
+    [Column("composizione_cas_sotto")]
+    public string? ComposizioneCasSotto { get; set; }
+
+    [Column("composizione")]
+    public string? Composizione { get; set; }
+
+    [Column("contiene_diisocianati")]
+    public bool? ContieneDiisocianati { get; set; }
+
+    [Column("stato_fisico")]
+    public string? StatoFisico { get; set; }
+
+    [Column("temperatura_ebollizione")]
+    public string? TemperaturaEbollizione { get; set; }
+
+    [Column("cov_percent")]
+    public string? CovPercent { get; set; }
+
+    [Column("densita")]
+    public string? Densita { get; set; }
+
+    [Column("sds_url")]
+    public string? SdsUrl { get; set; }
+
     [Column("pdf_url")]
     public string? PdfUrl { get; set; }
 

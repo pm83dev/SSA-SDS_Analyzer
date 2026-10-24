@@ -14,12 +14,12 @@ import { Subscription } from 'rxjs';
       <div class="import-options">
         <div class="import-card">
           <h2>Import da Excel</h2>
-          <p>Carica un file Excel (.xlsx) per importare clienti e/o schede di sicurezza</p>
+          <p>Carica un file Excel (.xlsx): ogni riga diventa una scheda di sicurezza (SDS) del cliente indicato</p>
           <div class="drop-zone" (click)="triggerExcelUpload()" (dragover)="onDragOver($event)" (drop)="onDropExcel($event)">
             <p *ngIf="!excelFile">Trascina qui il file Excel oppure</p>
             <p *ngIf="excelFile" class="file-name">{{ excelFile.name }}</p>
             <button class="btn btn-primary" (click)="triggerExcelUpload($event)">Scegli File</button>
-            <input type="file" hidden #excelFileInput accept=".xlsx,.xls" (change)="onExcelFileSelected($event)" />
+            <input type="file" hidden id="excelFileInput" accept=".xlsx,.xls" (change)="onExcelFileSelected($event)" />
           </div>
           <div class="import-actions" *ngIf="excelFile">
             <button class="btn btn-success" (click)="importExcel()" [disabled]="isImporting">
@@ -30,7 +30,7 @@ import { Subscription } from 'rxjs';
         </div>
         <div class="import-card">
           <h2>Analisi PDF con LLM</h2>
-          <p>Carica una o più schede di sicurezza in PDF per l'analisi automatica</p>
+          <p>Carica una o più schede di sicurezza (SDS) in PDF: per ognuna viene creata una scheda con il PDF allegato</p>
           <div class="drop-zone" (click)="triggerPdfUpload()" (dragover)="onDragOver($event)" (drop)="onDropPdf($event)">
             <p *ngIf="!pdfFiles.length">Trascina qui i file PDF oppure</p>
             <div *ngIf="pdfFiles.length" class="file-list">
@@ -47,7 +47,7 @@ import { Subscription } from 'rxjs';
               <label for="clientId">Cliente *</label>
               <select id="clientId" class="form-control" (change)="onClientChange($event)">
                 <option value="">Seleziona cliente</option>
-                <option *ngFor="let client of clients" [value]="client.id">{{ client.ragioneSociale }}</option>
+                <option *ngFor="let client of clients" [value]="client.id" [selected]="client.id === selectedClientId">{{ client.ragioneSociale }}</option>
               </select>
             </div>
             <button class="btn btn-success" (click)="analyzePdfs()" [disabled]="isAnalyzing || !selectedClientId">
@@ -330,7 +330,7 @@ export class ImportComponent implements OnInit, OnDestroy {
     this.apiService.uploadFile<any>('/import/excel', formData).subscribe({
       next: (response) => {
         this.isImporting = false;
-        this.message = 'Importazione completata con successo!';
+        this.message = `Importazione completata: ${response?.cardsImported ?? 0} schede create` + (response?.errors ? `, ${response.errors} righe scartate` : '');
         this.messageType = 'success';
         this.cancelExcel();
         setTimeout(() => this.message = '', 5000);
@@ -349,7 +349,8 @@ export class ImportComponent implements OnInit, OnDestroy {
     this.isAnalyzing = true;
     this.message = '';
     this.analyzedCount = 0;
-    this.analysisResults = [];
+    // I risultati vivono nello stato condiviso: la subscription aggiorna analysisResults
+    this.importState.clearResults();
 
     const files = [...this.pdfFiles];
 
@@ -359,6 +360,7 @@ export class ImportComponent implements OnInit, OnDestroy {
         const ok = this.analysisResults.filter(r => r.success).length;
         this.message = `Analisi completata: ${ok}/${files.length} file elaborati con successo.`;
         this.messageType = ok === files.length ? 'success' : 'error';
+        this.importState.setMessage(this.message, this.messageType as 'success' | 'error');
         return;
       }
 
@@ -373,9 +375,8 @@ export class ImportComponent implements OnInit, OnDestroy {
           const result: AnalysisResult = {
             fileName: file.name,
             success: true,
-            message: response.message || 'Prodotto creato con successo'
+            message: response.message || 'Scheda creata con successo'
           };
-          this.analysisResults.push(result);
           this.importState.addAnalysisResult(result);
           analyzeNext(index + 1);
         },
@@ -386,7 +387,6 @@ export class ImportComponent implements OnInit, OnDestroy {
             success: false,
             message: error.error?.message || error.message || 'Errore durante l\'analisi'
           };
-          this.analysisResults.push(result);
           this.importState.addAnalysisResult(result);
           analyzeNext(index + 1);
         }

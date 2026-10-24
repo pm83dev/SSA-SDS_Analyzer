@@ -64,19 +64,8 @@ public class SafetyCardsController : ControllerBase
         if (!await _context.Clients.AnyAsync(c => c.Id == dto.ClientId))
             return BadRequest(new { message = "Cliente non trovato" });
 
-        var card = new SafetyCard
-        {
-            ClientId = dto.ClientId,
-            Tipologia = dto.Tipologia,
-            Titolo = dto.Titolo,
-            NumeroProtocollo = dto.NumeroProtocollo,
-            EnteEmittitore = dto.EnteEmittitore,
-            DataRilascio = dto.DataRilascio,
-            DataScadenza = dto.DataScadenza,
-            ValiditaMesi = dto.ValiditaMesi,
-            FrequenzaControllo = dto.FrequenzaControllo,
-            Osservazioni = dto.Osservazioni
-        };
+        var card = new SafetyCard();
+        dto.ApplyTo(card);
 
         if (card.DataScadenza != null)
         {
@@ -99,16 +88,7 @@ public class SafetyCardsController : ControllerBase
         if (!await _context.Clients.AnyAsync(c => c.Id == dto.ClientId))
             return BadRequest(new { message = "Cliente non trovato" });
 
-        card.ClientId = dto.ClientId;
-        card.Tipologia = dto.Tipologia;
-        card.Titolo = dto.Titolo;
-        card.NumeroProtocollo = dto.NumeroProtocollo;
-        card.EnteEmittitore = dto.EnteEmittitore;
-        card.DataRilascio = dto.DataRilascio;
-        card.DataScadenza = dto.DataScadenza;
-        card.ValiditaMesi = dto.ValiditaMesi;
-        card.FrequenzaControllo = dto.FrequenzaControllo;
-        card.Osservazioni = dto.Osservazioni;
+        dto.ApplyTo(card);
 
         if (card.DataScadenza != null)
         {
@@ -204,26 +184,5 @@ public class SafetyCardsController : ControllerBase
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
-    private static SafetyCardDto MapCard(SafetyCard sc) => new()
-    {
-        Id = sc.Id,
-        ClientId = sc.ClientId,
-        ClientName = sc.Client != null ? sc.Client.RagioneSociale : string.Empty,
-        Tipologia = sc.Tipologia,
-        Titolo = sc.Titolo,
-        NumeroProtocollo = sc.NumeroProtocollo,
-        EnteEmittitore = sc.EnteEmittitore,
-        DataRilascio = sc.DataRilascio,
-        DataScadenza = sc.DataScadenza,
-        ValiditaMesi = sc.ValiditaMesi,
-        Stato = sc.Stato,
-        DaysRemaining = sc.DaysRemaining,
-        FrequenzaControllo = sc.FrequenzaControllo,
-        Osservazioni = sc.Osservazioni,
-        PdfUrl = sc.PdfUrl != null ? $"/api/files/{sc.PdfUrl.Replace('\\', '/')}" : null,
-        HasPdf = !string.IsNullOrEmpty(sc.PdfUrl),
-        LlmAnalyzed = sc.LlmAnalyzed,
-        CreatedAt = sc.CreatedAt,
-        UpdatedAt = sc.UpdatedAt
-    };
+    private static SafetyCardDto MapCard(SafetyCard sc) => SafetyCardDto.From(sc);
 }

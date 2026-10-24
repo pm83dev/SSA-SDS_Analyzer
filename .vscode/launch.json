@@ -2,6 +2,26 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "SPA (API + Angular su :5007)",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/api/SSA.SDS.Api/bin/Debug/net8.0/SSA.SDS.Api.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/api/SSA.SDS.Api",
+      "stopAtEntry": false,
+      "console": "internalConsole",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://localhost:5007"
+      },
+      "preLaunchTask": "build-spa",
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "Now listening on:\\s+(https?://\\S+)",
+        "uriFormat": "%s"
+      }
+    },
+    {
       "name": "API (Backend :5007)",
       "type": "coreclr",
       "request": "launch",
@@ -32,7 +52,7 @@
       "preLaunchTask": "build-llm"
     },
     {
-      "name": "Frontend (Angular :4200)",
+      "name": "Frontend dev server (ng serve :4200, hot reload)",
       "type": "chrome",
       "request": "launch",
       "url": "http://localhost:4200",
@@ -42,13 +62,28 @@
   ],
   "compounds": [
     {
-      "name": "Full Stack (F5) - API + LLM + Frontend",
-      "configurations": ["API (Backend :5007)", "LLM Service (Backend :9010)", "Frontend (Angular :4200)"],
+      "name": "SPA :5007 + LLM",
+      "configurations": [
+        "SPA (API + Angular su :5007)",
+        "LLM Service (Backend :9010)"
+      ],
       "stopAll": true
     },
     {
-      "name": "API + Frontend",
-      "configurations": ["API (Backend :5007)", "Frontend (Angular :4200)"],
+      "name": "Sviluppo: API + LLM + ng serve :4200",
+      "configurations": [
+        "API (Backend :5007)",
+        "LLM Service (Backend :9010)",
+        "Frontend dev server (ng serve :4200, hot reload)"
+      ],
+      "stopAll": true
+    },
+    {
+      "name": "Sviluppo: API + ng serve :4200",
+      "configurations": [
+        "API (Backend :5007)",
+        "Frontend dev server (ng serve :4200, hot reload)"
+      ],
       "stopAll": true
     }
   ]

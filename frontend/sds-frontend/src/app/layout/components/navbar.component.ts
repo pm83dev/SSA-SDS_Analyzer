@@ -27,9 +27,6 @@ import { ScenarioService, AppNotification } from '../../core/services/scenario.s
               <a class="nav-link" routerLink="/safety-cards" routerLinkActive="active">Schede</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" routerLink="/products" routerLinkActive="active">Prodotti</a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link" routerLink="/import" routerLinkActive="active">Import</a>
             </li>
             <li class="nav-item">
@@ -38,26 +35,26 @@ import { ScenarioService, AppNotification } from '../../core/services/scenario.s
           </ul>
           <ul class="navbar-nav">
             <li class="nav-item dropdown me-2" *ngIf="unreadCount > 0">
-              <a class="nav-link position-relative" href="#" data-bs-toggle="dropdown">
+              <a class="nav-link position-relative" href="#" role="button" data-bs-toggle="dropdown" (click)="$event.preventDefault()">
                 Notifiche
                 <span class="badge-notif">{{ unreadCount }}</span>
               </a>
               <ul class="dropdown-menu dropdown-menu-end">
                 <li *ngFor="let n of notifications">
-                  <a class="dropdown-item" href="#" (click)="markRead(n.id)">
+                  <a class="dropdown-item" href="#" (click)="$event.preventDefault(); markRead(n.id)">
                     <span [ngClass]="n.type === 'Expired' ? 'notif-expired' : 'notif-warning'">{{ n.message }}</span>
                   </a>
                 </li>
                 <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item text-center" href="#" (click)="markAllRead()">Segna tutte come lette</a></li>
+                <li><a class="dropdown-item text-center" href="#" (click)="$event.preventDefault(); markAllRead()">Segna tutte come lette</a></li>
               </ul>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link" href="#" data-bs-toggle="dropdown">
+              <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" (click)="$event.preventDefault()">
                 {{ username }}
               </a>
               <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="#" (click)="logout()">Esci</a></li>
+                <li><a class="dropdown-item" href="#" (click)="$event.preventDefault(); logout()">Esci</a></li>
               </ul>
             </li>
           </ul>

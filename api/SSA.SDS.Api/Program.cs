@@ -112,12 +112,30 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
+    // Swagger sotto /api/swagger così non entra in conflitto con le route della SPA
+    app.UseSwagger(c => c.RouteTemplate = "api/swagger/{documentName}/swagger.json");
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "SSA-SDS API V1");
+        c.RoutePrefix = "api/swagger";
     });
 }
+
+// Serve Angular frontend (wwwroot) as static files
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = ctx =>
+    {
+        // I bundle di produzione hanno l'hash nel nome (main-ABCD1234.js): si possono mettere in cache a lungo.
+        // index.html e i bundle di sviluppo senza hash (main.js) non vanno in cache,
+        // altrimenti dopo un deploy o una build il browser usa file vecchi.
+        var headers = ctx.Context.Response.Headers;
+        if (HashedAssetName().IsMatch(ctx.File.Name))
+            headers.CacheControl = "public, max-age=31536000, immutable";
+        else
+            headers.CacheControl = "no-cache";
+    }
+});
 
 app.UseCors("AllowAll");
 app.UseAuthentication();
@@ -126,19 +144,14 @@ app.UseAuthorization();
 // Map API controllers (they already have /api prefix in their Route attribute)
 app.MapControllers();
 
-// Serve Angular frontend as static files
-var angularPath = Path.Combine(app.Environment.ContentRootPath, "wwwroot");
-if (Directory.Exists(angularPath))
-{
-    app.UseStaticFiles(new StaticFileOptions
-    {
-        FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(angularPath),
-        RequestPath = ""
-    });
+// Le route /api sconosciute devono restituire 404, non la pagina della SPA
+app.MapFallback("/api/{**path}", () => Results.NotFound(new { message = "Endpoint non trovato" }));
 
-    // Fallback to index.html for Angular routing (SPA)
-    app.MapFallbackToFile("index.html");
-}
+// Fallback to index.html for Angular routing (SPA): deep link come /clients/1 funzionano al refresh
+app.MapFallbackToFile("index.html", new StaticFileOptions
+{
+    OnPrepareResponse = ctx => ctx.Context.Response.Headers.CacheControl = "no-cache, no-store, must-revalidate"
+});
 
 using (var scope = app.Services.CreateScope())
 {
@@ -153,3 +166,10 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.Run();
+
+public partial class Program
+{
+    // Nome di un bundle Angular di produzione con hash, es. main-4SWC56EF.js / styles-EGL6PHTI.css
+    [System.Text.RegularExpressions.GeneratedRegex(@"-[A-Z0-9]{8}\.(js|css)$")]
+    private static partial System.Text.RegularExpressions.Regex HashedAssetName();
+}

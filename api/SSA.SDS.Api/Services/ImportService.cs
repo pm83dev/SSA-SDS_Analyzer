@@ -18,17 +18,20 @@ public class ImportService : IImportService
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IConfiguration _configuration;
     private readonly ILogger<ImportService> _logger;
+    private readonly IFileStorageService _fileStorage;
 
     public ImportService(
         SdsDbContext context,
         IHttpClientFactory httpClientFactory,
         IConfiguration configuration,
-        ILogger<ImportService> logger)
+        ILogger<ImportService> logger,
+        IFileStorageService fileStorage)
     {
         _context = context;
         _httpClientFactory = httpClientFactory;
         _configuration = configuration;
         _logger = logger;
+        _fileStorage = fileStorage;
     }
 
     public async Task<ImportExcelResultDto> ImportExcelAsync(Stream fileStream, string fileName)
@@ -64,11 +67,13 @@ public class ImportService : IImportService
             var producerCol = FindColumn(colMap, "Produttore", "produttore");
             var hPhrasesCol = FindColumn(colMap, "Frasi H", "frasi h");
             var pictogramCol = FindColumn(colMap, "Pittogramma", "pittogrammi", "pittogrammi");
-            var casAboveCol = FindColumn(colMap, "Composizione n. CAS");
-            var compositionCol = FindColumn(colMap, "Composizione", "composizione");
+            var casAboveCol = FindColumn(colMap, "Composizione n. CAS > 0,1%", "Composizione n. CAS");
+            var casBelowCol = FindColumn(colMap, "Composizione n. CAS < 0,1%");
+            var compositionCol = FindColumn(colMap, "Composizione");
+            var diisoCol = FindColumn(colMap, "Diisocianati");
             var physicalStateCol = FindColumn(colMap, "Stato fisico", "stato fisico");
             var boilingPointCol = FindColumn(colMap, "Teb", "teb");
-            var vocCol = FindColumn(colMap, "COV", "VOC");
+            var vocCol = FindColumn(colMap, "%COV o VOC", "COV", "VOC");
             var densityCol = FindColumn(colMap, "Densità", "densità");
             var sdsCol = FindColumn(colMap, "SDS");
             var sdsDateCol = FindColumn(colMap, "Data SDS", "data sds");
@@ -79,7 +84,7 @@ public class ImportService : IImportService
             }
 
             var clients = await _context.Clients.ToDictionaryAsync(c => c.Id);
-            var seenProducts = new HashSet<string>();
+            var seenCards = new HashSet<string>();
 
             for (var row = 2; row <= sheet.RowsUsed().Count(); row++)
             {
@@ -95,52 +100,54 @@ public class ImportService : IImportService
                 }
 
                 var key = $"{clientId}|{name.ToLower()}";
-                if (!seenProducts.Add(key))
+                if (!seenCards.Add(key))
                 {
                     result.Errors++;
-                    result.ErrorDetails.Add($"Riga {row}: prodotto '{name}' già importato per il cliente {clientId}");
+                    result.ErrorDetails.Add($"Riga {row}: scheda '{name}' già presente nel file per il cliente {clientId}");
                     continue;
                 }
 
-                var sdsDate = sheet.Cell(row, sdsDateCol).GetValue<DateTime?>();
-                var hasDiiso = DetectDiisocyanates(
-                    GetCell(sheet, row, compositionCol),
-                    GetCell(sheet, row, casAboveCol));
-
-                var product = new ChemicalProduct
+                // Ogni riga del file è la scheda di sicurezza (SDS) di un prodotto chimico
+                var card = new SafetyCard
                 {
                     ClientId = clientId,
-                    ProductName = name,
-                    Producer = Clean(GetCell(sheet, row, producerCol)),
-                    HPhrases = Clean(GetCell(sheet, row, hPhrasesCol)),
-                    Pictogram = Clean(GetCell(sheet, row, pictogramCol)),
-                    CompositionCasAbove = Clean(GetCell(sheet, row, casAboveCol)),
-                    Composition = Clean(GetCell(sheet, row, compositionCol)),
-                    HasDiisocyanates = hasDiiso,
-                    PhysicalState = Clean(GetCell(sheet, row, physicalStateCol)),
-                    BoilingPoint = Clean(GetCell(sheet, row, boilingPointCol)),
-                    VocPercent = Clean(GetCell(sheet, row, vocCol)),
-                    Density = Clean(GetCell(sheet, row, densityCol)),
+                    Tipologia = "SDS",
+                    Titolo = name,
+                    EnteEmittitore = Clean(GetCell(sheet, row, producerCol)),
+                    DataRilascio = GetDateCell(sheet, row, sdsDateCol),
+                    FrasiH = Clean(GetCell(sheet, row, hPhrasesCol)),
+                    Pittogrammi = Clean(GetCell(sheet, row, pictogramCol)),
+                    ComposizioneCasSopra = Clean(GetCell(sheet, row, casAboveCol)),
+                    ComposizioneCasSotto = Clean(GetCell(sheet, row, casBelowCol)),
+                    Composizione = Clean(GetCell(sheet, row, compositionCol)),
+                    ContieneDiisocianati = ParseYesNo(GetCell(sheet, row, diisoCol))
+                        ?? DetectDiisocyanates(
+                            GetCell(sheet, row, compositionCol),
+                            GetCell(sheet, row, casAboveCol),
+                            GetCell(sheet, row, casBelowCol)),
+                    StatoFisico = Clean(GetCell(sheet, row, physicalStateCol)),
+                    TemperaturaEbollizione = Clean(GetCell(sheet, row, boilingPointCol)),
+                    CovPercent = NormalizeCov(Clean(GetCell(sheet, row, vocCol)), Clean(GetCell(sheet, row, densityCol))),
+                    Densita = Clean(GetCell(sheet, row, densityCol)),
                     SdsUrl = Clean(GetCell(sheet, row, sdsCol)),
-                    SdsDate = sdsDate,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
                 };
 
-                _context.ChemicalProducts.Add(product);
-                result.ProductsImported++;
+                _context.SafetyCards.Add(card);
+                result.CardsImported++;
             }
 
             await _context.SaveChangesAsync();
 
             history.ClientId = null;
-            history.RecordsImported = result.ProductsImported;
-            history.Status = result.Errors > 0 && result.ProductsImported == 0 ? "Error" : "Success";
+            history.RecordsImported = result.CardsImported;
+            history.Status = result.Errors > 0 && result.CardsImported == 0 ? "Error" : "Success";
             history.ErrorMessage = result.Errors > 0 ? string.Join("; ", result.ErrorDetails.Take(10)) : null;
             await _context.SaveChangesAsync();
 
             result.HistoryId = history.Id;
-            _logger.LogInformation("Import Excel completato: {Products} prodotti, {Errors} errori", result.ProductsImported, result.Errors);
+            _logger.LogInformation("Import Excel completato: {Cards} schede, {Errors} errori", result.CardsImported, result.Errors);
         }
         catch (Exception ex)
         {
@@ -164,16 +171,22 @@ public class ImportService : IImportService
     {
         var result = new AnalyzePdfResultDto { Success = false };
 
-        if (!await _context.Clients.AnyAsync(c => c.Id == clientId))
+        var clientName = await _context.Clients.Where(c => c.Id == clientId).Select(c => c.RagioneSociale).FirstOrDefaultAsync();
+        if (clientName == null)
         {
             result.Message = "Cliente non trovato";
             return result;
         }
 
+        // Il PDF serve due volte: per estrarre il testo e per allegarlo alla scheda
+        using var pdfBuffer = new MemoryStream();
+        await pdfStream.CopyToAsync(pdfBuffer);
+
         string text;
         try
         {
-            text = ExtractPdfText(pdfStream);
+            pdfBuffer.Position = 0;
+            text = ExtractPdfText(pdfBuffer);
         }
         catch (Exception ex)
         {
@@ -196,10 +209,13 @@ public class ImportService : IImportService
             return result;
         }
 
-        var product = new ChemicalProduct
+        // L'analisi di un PDF SDS crea una scheda di sicurezza (non un prodotto chimico)
+        var card = new SafetyCard
         {
             ClientId = clientId,
-            ProductName = string.Empty,
+            Tipologia = "SDS",
+            LlmAnalyzed = true,
+            LlmRawResponse = json,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
@@ -209,23 +225,25 @@ public class ImportService : IImportService
             using var doc = System.Text.Json.JsonDocument.Parse(json);
             var root = doc.RootElement;
 
-            product.ProductName = GetJsonString(root, "titolo", "nome_prodotto", "product_name") ?? "Prodotto sconosciuto";
-            product.Producer = GetJsonString(root, "produttore", "ente_emittitore", "producer");
-            product.HPhrases = GetJsonString(root, "frasi_h", "h_phrases");
-            product.Pictogram = GetJsonString(root, "pittogramma", "pictogram");
-            product.CompositionCasAbove = GetJsonString(root, "composizione_cas_sopra_01", "composition_cas_above");
-            product.CompositionCasBelow = GetJsonString(root, "composizione_cas_sotto_01", "composition_cas_below");
-            product.Composition = GetJsonString(root, "composizione", "composition");
-            product.PhysicalState = GetJsonString(root, "stato_fisico", "physical_state");
-            product.BoilingPoint = GetJsonString(root, "teb", "punto_di_ebollizione", "boiling_point");
-            product.VocPercent = GetJsonString(root, "cov_percent", "voc_percent", "vocs");
-            product.Density = GetJsonString(root, "densita", "density");
-            product.SdsUrl = GetJsonString(root, "sds_url");
-            product.HasDiisocyanates = DetectDiisocyanates(product.Composition, product.CompositionCasAbove);
-
-            var sdsDateStr = GetJsonString(root, "data_sds", "sds_date");
-            if (!string.IsNullOrEmpty(sdsDateStr) && DateTime.TryParse(sdsDateStr, out var sdsDate))
-                product.SdsDate = sdsDate;
+            card.Titolo = GetJsonString(root, "titolo", "nome_prodotto", "product_name")
+                ?? Path.GetFileNameWithoutExtension(fileName)
+                ?? "Scheda di sicurezza";
+            card.EnteEmittitore = GetJsonString(root, "produttore", "ente_emittitore", "producer");
+            card.NumeroProtocollo = GetJsonString(root, "versione", "revisione", "version");
+            card.DataRilascio = ParseDate(GetJsonString(root, "data_sds", "data_revisione", "sds_date"));
+            card.DataScadenza = ParseDate(GetJsonString(root, "data_scadenza", "expiry_date"));
+            card.FrasiH = GetJsonString(root, "frasi_h", "h_phrases");
+            card.Pittogrammi = GetJsonString(root, "pittogramma", "pittogrammi", "pictogram");
+            card.ComposizioneCasSopra = GetJsonString(root, "composizione_cas_sopra_01", "composition_cas_above");
+            card.ComposizioneCasSotto = GetJsonString(root, "composizione_cas_sotto_01", "composition_cas_below");
+            card.Composizione = GetJsonString(root, "composizione", "composition");
+            card.StatoFisico = GetJsonString(root, "stato_fisico", "physical_state");
+            card.TemperaturaEbollizione = GetJsonString(root, "teb", "punto_di_ebollizione", "boiling_point");
+            card.Densita = GetJsonString(root, "densita", "density");
+            card.CovPercent = NormalizeCov(GetJsonString(root, "cov_percent", "voc_percent", "vocs"), card.Densita);
+            card.SdsUrl = GetJsonString(root, "sds_url");
+            card.ContieneDiisocianati = ParseYesNo(GetJsonString(root, "diisocianati"))
+                ?? DetectDiisocyanates(card.Composizione, card.ComposizioneCasSopra, card.ComposizioneCasSotto);
         }
         catch (Exception ex)
         {
@@ -234,12 +252,33 @@ public class ImportService : IImportService
             return result;
         }
 
-        _context.ChemicalProducts.Add(product);
+        if (card.DataScadenza != null)
+        {
+            var days = (card.DataScadenza.Value.Date - DateTime.Today).Days;
+            card.Stato = days < 0 ? "Expired" : days <= 90 ? "Expiring" : "Valid";
+            card.DaysRemaining = days;
+        }
+
+        _context.SafetyCards.Add(card);
         await _context.SaveChangesAsync();
 
+        // Allega il PDF originale alla scheda (serve l'id della scheda per il percorso)
+        try
+        {
+            pdfBuffer.Position = 0;
+            card.PdfUrl = await _fileStorage.SavePdfAsync(clientId, card.Id, pdfBuffer, fileName ?? "sds.pdf");
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Scheda {CardId} creata ma salvataggio PDF fallito", card.Id);
+        }
+
         result.Success = true;
-        result.Message = "Scheda analizzata e prodotto creato con successo";
-        result.Product = MapProduct(product);
+        result.Message = card.PdfUrl != null
+            ? $"Scheda \"{card.Titolo}\" creata con PDF allegato"
+            : $"Scheda \"{card.Titolo}\" creata (PDF non allegato)";
+        result.Card = SafetyCardDto.From(card, clientName);
 
         var history = new ImportHistory
         {
@@ -284,16 +323,19 @@ public class ImportService : IImportService
             "\"titolo\": \"nome del prodotto chimico (punto 1.1)\", " +
             "\"produttore\": \"produttore/distributore (punto 1.3)\", " +
             "\"frasi_h\": \"codici delle frasi H (es. H225, H315) separate da virgola (punto 2.1)\", " +
-            "\"pittogramma\": \"codici dei pittogrammi (es. GHS02) separati da virgola (punto 2.2)\", " +
+            "\"pittogramma\": \"codici dei pittogrammi (es. GHS02) separati da virgola (punto 2.2): serve il codice GHS, non la descrizione del simbolo\", " +
             "\"composizione_cas_sopra_01\": \"componenti con n. CAS e % > 0,1% (punto 3)\", " +
             "\"composizione_cas_sotto_01\": \"componenti con n. CAS e % < 0,1% (punto 3)\", " +
             "\"composizione\": \"composizione completa del prodotto (punto 3)\", " +
+            "\"diisocianati\": \"si se nella composizione ci sono diisocianati (riconoscibili da 'diiso' o 'di-iso' nel nome), altrimenti no\", " +
             "\"stato_fisico\": \"stato fisico (punto 9)\", " +
             "\"teb\": \"temperatura di ebollizione (punto 9)\", " +
-            "\"cov_percent\": \"percentuale di COV/VOC (es. 5%)\", " +
+            "\"cov_percent\": \"COV/VOC in percentuale (es. 5%). Se la SDS lo riporta in g/l restituisci il valore con l'unità (es. '650 g/l'), verrà convertito. Se non è indicato calcolalo come somma delle % dei componenti organici volatili (solventi) della sezione 3, scrivendo il valore seguito da '(stimato)'\", " +
             "\"densita\": \"densita (punto 9)\", " +
             "\"sds_url\": \"URL o riferimento della SDS se presente, altrimenti null\", " +
-            "\"data_sds\": \"data della SDS in formato YYYY-MM-DD, se presente, altrimenti null\" " +
+            "\"data_sds\": \"data di compilazione/revisione della SDS in formato YYYY-MM-DD, se presente, altrimenti null\", " +
+            "\"versione\": \"numero di versione o revisione della SDS, se presente, altrimenti null\", " +
+            "\"data_scadenza\": \"data di scadenza/validità della SDS in formato YYYY-MM-DD solo se indicata esplicitamente, altrimenti null\" " +
             "} " +
             "Usa null per i campi non presenti. Non aggiungere testo fuori dal JSON.";
 
@@ -380,17 +422,72 @@ public class ImportService : IImportService
         return null;
     }
 
+    // Cerca prima l'intestazione esatta (a meno di spazi/a capo), poi una che la contiene:
+    // così "Composizione" non viene confusa con "Composizione n. CAS > 0,1%"
     private static int FindColumn(Dictionary<string, int> colMap, params string[] candidates)
     {
+        static string Normalize(string s) => System.Text.RegularExpressions.Regex.Replace(s, @"\s+", " ").Trim();
+
         foreach (var candidate in candidates)
         {
             foreach (var (header, col) in colMap)
             {
-                if (header.Contains(candidate, StringComparison.OrdinalIgnoreCase))
+                if (Normalize(header).Equals(Normalize(candidate), StringComparison.OrdinalIgnoreCase))
+                    return col;
+            }
+        }
+        foreach (var candidate in candidates)
+        {
+            foreach (var (header, col) in colMap)
+            {
+                if (Normalize(header).Contains(Normalize(candidate), StringComparison.OrdinalIgnoreCase))
                     return col;
             }
         }
         return 0;
+    }
+
+    // Il COV va riportato in %: se la SDS lo indica in g/l si converte con COV(g/l) / densità(g/l) * 100
+    private static string? NormalizeCov(string? cov, string? densita)
+    {
+        if (string.IsNullOrWhiteSpace(cov) || !cov.Contains("g/l", StringComparison.OrdinalIgnoreCase))
+            return cov;
+
+        var covGl = ParseNumber(cov);
+        var density = ParseNumber(densita);
+        if (covGl == null || density == null || density <= 0)
+            return cov;
+
+        // Densità tipicamente in g/cm³ o kg/l (es. 0,84); se è già in g/l o kg/m³ (es. 840) si usa così
+        var densityGl = density < 10 ? density.Value * 1000 : density.Value;
+        var percent = covGl.Value / densityGl * 100;
+        return $"{percent.ToString("0.##", System.Globalization.CultureInfo.GetCultureInfo("it-IT"))} % (da {cov.Trim()})";
+    }
+
+    private static double? ParseNumber(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return null;
+        var match = System.Text.RegularExpressions.Regex.Match(value, @"\d+(?:[.,]\d+)?");
+        if (!match.Success) return null;
+        return double.TryParse(match.Value.Replace(',', '.'), System.Globalization.NumberStyles.Float,
+            System.Globalization.CultureInfo.InvariantCulture, out var n) ? n : null;
+    }
+
+    private static bool? ParseYesNo(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return null;
+        var v = value.Trim().ToLowerInvariant();
+        if (v is "si" or "sì" or "s" or "x" or "yes" or "y" or "true" or "1") return true;
+        if (v is "no" or "n" or "false" or "0") return false;
+        return null;
+    }
+
+    private static DateTime? GetDateCell(IXLWorksheet sheet, int row, int col)
+    {
+        if (col == 0) return null;
+        var cell = sheet.Cell(row, col);
+        if (cell.TryGetValue<DateTime>(out var date)) return date;
+        return ParseDate(cell.GetString());
     }
 
     private static string GetCell(IXLWorksheet sheet, int row, int col)
@@ -406,34 +503,23 @@ public class ImportService : IImportService
         return cleaned.Length > 0 ? cleaned : null;
     }
 
+    private static DateTime? ParseDate(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return null;
+        var formats = new[] { "yyyy-MM-dd", "dd/MM/yyyy", "d/M/yyyy", "dd-MM-yyyy", "dd.MM.yyyy" };
+        if (DateTime.TryParseExact(value.Trim(), formats, System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.None, out var exact))
+            return exact;
+        return DateTime.TryParse(value, System.Globalization.CultureInfo.GetCultureInfo("it-IT"),
+            System.Globalization.DateTimeStyles.None, out var parsed) ? parsed : null;
+    }
+
     private static bool? DetectDiisocyanates(params string?[] fields)
     {
         var combined = string.Join(" ", fields.Where(f => !string.IsNullOrWhiteSpace(f)).Select(f => f!.ToLower()));
-        if (combined.Contains("diisocianat") || combined.Contains("diiso"))
+        // I diisocianati si riconoscono dalla desinenza "diiso" o "di-iso" nella composizione
+        if (combined.Contains("diiso") || combined.Contains("di-iso") || combined.Contains("diisocyan"))
             return true;
         return null;
     }
-
-    private ChemicalProductDto MapProduct(ChemicalProduct p) => new()
-    {
-        Id = p.Id,
-        ClientId = p.ClientId,
-        ClientName = p.Client?.RagioneSociale ?? string.Empty,
-        ProductName = p.ProductName,
-        Producer = p.Producer,
-        HPhrases = p.HPhrases,
-        Pictogram = p.Pictogram,
-        CompositionCasAbove = p.CompositionCasAbove,
-        CompositionCasBelow = p.CompositionCasBelow,
-        Composition = p.Composition,
-        HasDiisocyanates = p.HasDiisocyanates,
-        PhysicalState = p.PhysicalState,
-        BoilingPoint = p.BoilingPoint,
-        VocPercent = p.VocPercent,
-        Density = p.Density,
-        SdsUrl = p.SdsUrl,
-        SdsDate = p.SdsDate,
-        CreatedAt = p.CreatedAt,
-        UpdatedAt = p.UpdatedAt
-    };
 }

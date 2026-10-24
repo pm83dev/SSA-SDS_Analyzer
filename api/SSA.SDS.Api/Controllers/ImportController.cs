@@ -37,7 +37,7 @@ public class ImportController : ControllerBase
         using var stream = file.OpenReadStream();
         var result = await _importService.ImportExcelAsync(stream, file.FileName);
 
-        return result.Status == "Success" || result.ProductsImported > 0
+        return result.Status == "Success" || result.CardsImported > 0
             ? Ok(result)
             : BadRequest(result);
     }

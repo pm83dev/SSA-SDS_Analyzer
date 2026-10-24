@@ -182,7 +182,6 @@ public class DashboardController : ControllerBase
         var expiringCards = await _context.SafetyCards.CountAsync(sc => sc.Stato == "Expiring");
         var expiredCards = await _context.SafetyCards.CountAsync(sc => sc.Stato == "Expired");
         var validCards = await _context.SafetyCards.CountAsync(sc => sc.Stato == "Valid");
-        var totalProducts = await _context.ChemicalProducts.CountAsync();
         var unreadNotifications = await _context.Notifications.CountAsync(n => !n.IsRead);
 
         return Ok(new DashboardStatsDto
@@ -192,7 +191,6 @@ public class DashboardController : ControllerBase
             ExpiringCards = expiringCards,
             ExpiredCards = expiredCards,
             ValidCards = validCards,
-            TotalProducts = totalProducts,
             UnreadNotifications = unreadNotifications
         });
     }

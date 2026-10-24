@@ -18,7 +18,7 @@ public class ImportExcelResultDto
     public int HistoryId { get; set; }
     public string Status { get; set; } = string.Empty;
     public int ClientsImported { get; set; }
-    public int ProductsImported { get; set; }
+    public int CardsImported { get; set; }
     public int Errors { get; set; }
     public List<string> ErrorDetails { get; set; } = new();
 }
@@ -27,5 +27,5 @@ public class AnalyzePdfResultDto
 {
     public bool Success { get; set; }
     public string? Message { get; set; }
-    public ChemicalProductDto? Product { get; set; }
+    public SafetyCardDto? Card { get; set; }
 }

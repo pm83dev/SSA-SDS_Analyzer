@@ -41,7 +41,7 @@
       "command": "npm",
       "args": [
         "run",
-        "start"
+        "start:proxy"
       ],
       "options": {
         "cwd": "${workspaceFolder}/frontend/sds-frontend"
@@ -72,6 +72,39 @@
         "reveal": "silent",
         "panel": "dedicated"
       }
+    },
+    {
+      "label": "build-spa-frontend",
+      "detail": "Compila Angular (development) direttamente in api/SSA.SDS.Api/wwwroot",
+      "type": "process",
+      "command": "npx",
+      "args": [
+        "ng",
+        "build",
+        "--configuration",
+        "spa"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/frontend/sds-frontend"
+      },
+      "windows": {
+        "command": "npx.cmd"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "build-spa",
+      "detail": "Frontend in wwwroot + build API",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "build-spa-frontend",
+        "build-api"
+      ],
+      "problemMatcher": []
     }
   ]
 }

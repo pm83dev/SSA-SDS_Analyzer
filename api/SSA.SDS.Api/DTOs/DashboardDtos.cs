@@ -7,7 +7,6 @@ public class DashboardStatsDto
     public int ExpiringCards { get; set; }
     public int ExpiredCards { get; set; }
     public int ValidCards { get; set; }
-    public int TotalProducts { get; set; }
     public int UnreadNotifications { get; set; }
 }
 

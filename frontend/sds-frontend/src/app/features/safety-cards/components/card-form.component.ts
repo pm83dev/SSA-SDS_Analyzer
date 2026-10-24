@@ -36,6 +36,7 @@ import { CreateSafetyCard } from '../../../core/models/safety-card.model';
               <label for="tipologia">Tipologia *</label>
               <select id="tipologia" formControlName="tipologia" class="form-control">
                 <option value="">Seleziona tipologia</option>
+                <option value="SDS">Scheda di Sicurezza (SDS)</option>
                 <option value="DPI">DPI</option>
                 <option value="Antincendio">Antincendio</option>
                 <option value="Rischi">Valutazione Rischi</option>
@@ -53,15 +54,15 @@ import { CreateSafetyCard } from '../../../core/models/safety-card.model';
               </div>
             </div>
             <div class="form-group">
-              <label for="numeroProtocollo">Numero Protocollo</label>
+              <label for="numeroProtocollo">{{ isSds ? 'Versione / Revisione SDS' : 'Numero Protocollo' }}</label>
               <input type="text" id="numeroProtocollo" formControlName="numeroProtocollo" class="form-control" />
             </div>
             <div class="form-group">
-              <label for="enteEmittitore">Ente Emittitore</label>
+              <label for="enteEmittitore">{{ isSds ? 'Produttore' : 'Ente Emittitore' }}</label>
               <input type="text" id="enteEmittitore" formControlName="enteEmittitore" class="form-control" />
             </div>
             <div class="form-group">
-              <label for="dataRilascio">Data Rilascio</label>
+              <label for="dataRilascio">{{ isSds ? 'Data SDS' : 'Data Rilascio' }}</label>
               <input type="date" id="dataRilascio" formControlName="dataRilascio" class="form-control" />
             </div>
             <div class="form-group">
@@ -85,6 +86,58 @@ import { CreateSafetyCard } from '../../../core/models/safety-card.model';
             <div class="form-group full-width">
               <label for="osservazioni">Osservazioni</label>
               <textarea id="osservazioni" formControlName="osservazioni" class="form-control" rows="4"></textarea>
+            </div>
+          </div>
+
+          <div class="sds-section" *ngIf="isSds">
+            <h2>Dati della Scheda di Sicurezza</h2>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="frasiH">Frasi H (sez. 2.1)</label>
+                <input type="text" id="frasiH" formControlName="frasiH" class="form-control" placeholder="es. H225, H319" />
+              </div>
+              <div class="form-group">
+                <label for="pittogrammi">Pittogrammi (sez. 2.2)</label>
+                <input type="text" id="pittogrammi" formControlName="pittogrammi" class="form-control" placeholder="es. GHS02, GHS07" />
+              </div>
+              <div class="form-group full-width">
+                <label for="composizioneCasSopra">Composizione n. CAS &gt; 0,1% (sez. 3)</label>
+                <textarea id="composizioneCasSopra" formControlName="composizioneCasSopra" class="form-control" rows="2"></textarea>
+              </div>
+              <div class="form-group full-width">
+                <label for="composizioneCasSotto">Composizione n. CAS &lt; 0,1% (sez. 3)</label>
+                <textarea id="composizioneCasSotto" formControlName="composizioneCasSotto" class="form-control" rows="2"></textarea>
+              </div>
+              <div class="form-group full-width">
+                <label for="composizione">Composizione (sez. 3)</label>
+                <textarea id="composizione" formControlName="composizione" class="form-control" rows="3"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="statoFisico">Stato fisico (sez. 9)</label>
+                <input type="text" id="statoFisico" formControlName="statoFisico" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="temperaturaEbollizione">Temperatura di ebollizione (sez. 9)</label>
+                <input type="text" id="temperaturaEbollizione" formControlName="temperaturaEbollizione" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="covPercent">COV %</label>
+                <input type="text" id="covPercent" formControlName="covPercent" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="densita">Densità (sez. 9)</label>
+                <input type="text" id="densita" formControlName="densita" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="sdsUrl">URL SDS</label>
+                <input type="text" id="sdsUrl" formControlName="sdsUrl" class="form-control" />
+              </div>
+              <div class="form-group checkbox-group">
+                <label>
+                  <input type="checkbox" id="contieneDiisocianati" formControlName="contieneDiisocianati" />
+                  Contiene diisocianati
+                </label>
+              </div>
             </div>
           </div>
 
@@ -156,6 +209,24 @@ import { CreateSafetyCard } from '../../../core/models/safety-card.model';
       color: #e74c3c;
       font-size: 12px;
       margin-top: 4px;
+    }
+    .sds-section {
+      margin-bottom: 24px;
+      padding: 20px;
+      border: 1px solid #e1e8ed;
+      border-radius: 8px;
+    }
+    .sds-section h2 {
+      margin: 0 0 16px 0;
+      color: #2c3e50;
+      font-size: 16px;
+    }
+    .checkbox-group label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 30px;
+      font-weight: 600;
     }
     .pdf-section {
       margin-bottom: 24px;
@@ -231,6 +302,16 @@ export class CardFormComponent implements OnInit {
   pdfFileName = '';
   cardId?: number;
 
+  // Campi specifici delle schede di sicurezza (SDS), con lo stesso nome nel form e nell'API
+  private readonly sdsTextFields = [
+    'frasiH', 'pittogrammi', 'composizioneCasSopra', 'composizioneCasSotto', 'composizione',
+    'statoFisico', 'temperaturaEbollizione', 'covPercent', 'densita', 'sdsUrl'
+  ] as const;
+
+  get isSds(): boolean {
+    return this.cardForm?.get('tipologia')?.value === 'SDS';
+  }
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -246,6 +327,12 @@ export class CardFormComponent implements OnInit {
     this.loadClients();
     if (this.isEdit) {
       this.loadCard();
+    } else {
+      // Preselezione del cliente quando si arriva dal dettaglio cliente (?clientId=)
+      const clientId = this.route.snapshot.queryParamMap.get('clientId');
+      if (clientId) {
+        this.cardForm.patchValue({ clientId });
+      }
     }
   }
 
@@ -260,7 +347,9 @@ export class CardFormComponent implements OnInit {
       dataScadenza: [''],
       validitaMesi: [null],
       frequenzaControllo: [''],
-      osservazioni: ['']
+      osservazioni: [''],
+      ...Object.fromEntries(this.sdsTextFields.map(f => [f, ['']])),
+      contieneDiisocianati: [false]
     });
   }
 
@@ -285,11 +374,14 @@ export class CardFormComponent implements OnInit {
           titolo: card.titolo,
           numeroProtocollo: card.numeroProtocollo,
           enteEmittitore: card.enteEmittitore,
-          dataRilascio: card.dataRilascio ? card.dataRilascio.toISOString().split('T')[0] : '',
-          dataScadenza: card.dataScadenza ? card.dataScadenza.toISOString().split('T')[0] : '',
+          // Le date arrivano dall'API come stringhe ISO, non come Date
+          dataRilascio: card.dataRilascio ? String(card.dataRilascio).substring(0, 10) : '',
+          dataScadenza: card.dataScadenza ? String(card.dataScadenza).substring(0, 10) : '',
           validitaMesi: card.validitaMesi,
           frequenzaControllo: card.frequenzaControllo,
-          osservazioni: card.osservazioni
+          osservazioni: card.osservazioni,
+          ...Object.fromEntries(this.sdsTextFields.map(f => [f, card[f] ?? ''])),
+          contieneDiisocianati: !!card.contieneDiisocianati
         });
         this.pdfFileName = card.pdfUrl ? card.pdfUrl.split('/').pop() || 'PDF allegato' : '';
       },
@@ -309,17 +401,25 @@ export class CardFormComponent implements OnInit {
     this.isSubmitting = true;
     const formData = this.cardForm.value;
     const request: CreateSafetyCard = {
-      clientId: formData.clientId,
+      // Il select restituisce una stringa, l'API si aspetta un int
+      clientId: Number(formData.clientId),
       tipologia: formData.tipologia,
       titolo: formData.titolo,
       numeroProtocollo: formData.numeroProtocollo,
       enteEmittitore: formData.enteEmittitore,
       dataRilascio: formData.dataRilascio ? new Date(formData.dataRilascio) : undefined,
       dataScadenza: formData.dataScadenza ? new Date(formData.dataScadenza) : undefined,
-      validitaMesi: formData.validitaMesi,
+      validitaMesi: formData.validitaMesi === '' || formData.validitaMesi === null ? undefined : Number(formData.validitaMesi),
       frequenzaControllo: formData.frequenzaControllo,
       osservazioni: formData.osservazioni
     };
+    // I dati SDS si salvano solo per le schede di tipo SDS
+    if (formData.tipologia === 'SDS') {
+      for (const f of this.sdsTextFields) {
+        request[f] = formData[f] || undefined;
+      }
+      request.contieneDiisocianati = formData.contieneDiisocianati || undefined;
+    }
 
     if (this.isEdit && this.cardId) {
       this.cardService.updateCard(this.cardId, request).subscribe({
