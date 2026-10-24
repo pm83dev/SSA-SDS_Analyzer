@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using SSA.SDS.Api.Data;
 using SSA.SDS.Api.Services;
 using System.Text.Json;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -82,11 +83,9 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngular", policy =>
+    options.AddPolicy("AllowAll", policy =>
     {
-        policy.WithOrigins("http://localhost:4200", "http://127.0.0.1:4200")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
     });
 });
 
@@ -98,6 +97,17 @@ builder.Services.AddScoped<IExpirationService, ExpirationService>();
 builder.Services.AddSingleton<IFileStorageService, FileStorageService>();
 builder.Services.AddHostedService<ExpirationWorker>();
 
+// Use Serilog as the application logging provider (console + rolling file logs).
+builder.Host.UseSerilog((context, services, configuration) => configuration
+    .ReadFrom.Configuration(context.Configuration)
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.File(
+        path: "logs/api-.log",
+        rollingInterval: RollingInterval.Day,
+        retainedFileCountLimit: 14,
+        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}"));
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -105,15 +115,30 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "SSA-SDS API V1");
+        c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "SSA-SDS API V1");
     });
 }
 
-app.UseHttpsRedirection();
-app.UseCors("AllowAngular");
+app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Map API controllers (they already have /api prefix in their Route attribute)
 app.MapControllers();
+
+// Serve Angular frontend as static files
+var angularPath = Path.Combine(app.Environment.ContentRootPath, "wwwroot");
+if (Directory.Exists(angularPath))
+{
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(angularPath),
+        RequestPath = ""
+    });
+
+    // Fallback to index.html for Angular routing (SPA)
+    app.MapFallbackToFile("index.html");
+}
 
 using (var scope = app.Services.CreateScope())
 {

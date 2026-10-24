@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../../core/services/api.service';
+import { ImportStateService, AnalysisResult } from '../../../core/services/import-state.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-import',
@@ -49,6 +51,7 @@ import { ApiService } from '../../../core/services/api.service';
               </select>
             </div>
             <button class="btn btn-success" (click)="analyzePdfs()" [disabled]="isAnalyzing || !selectedClientId">
+              <span *ngIf="isAnalyzing" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
               {{ isAnalyzing ? 'Analisi in corso... (' + analyzedCount + '/' + pdfFiles.length + ')' : 'Analizza ' + pdfFiles.length + ' file' }}
             </button>
             <button class="btn btn-secondary" (click)="cancelPdf()">Annulla</button>
@@ -196,24 +199,38 @@ import { ApiService } from '../../../core/services/api.service';
     }
   `]
 })
-export class ImportComponent implements OnInit {
+export class ImportComponent implements OnInit, OnDestroy {
   excelFile: File | null = null;
   pdfFiles: File[] = [];
   isImporting = false;
   isAnalyzing = false;
   analyzedCount = 0;
-  analysisResults: { fileName: string; success: boolean; message: string }[] = [];
+  analysisResults: AnalysisResult[] = [];
   message = '';
   messageType = '';
   clients: any[] = [];
   selectedClientId = 0;
 
+  private stateSub?: Subscription;
+
   constructor(
-    private apiService: ApiService
+    private apiService: ApiService,
+    private importState: ImportStateService
   ) {}
 
   ngOnInit() {
     this.loadClients();
+    // Ripristina lo stato salvato
+    this.stateSub = this.importState.state$.subscribe(state => {
+      this.selectedClientId = state.selectedClientId;
+      this.analysisResults = state.analysisResults;
+      this.message = state.message;
+      this.messageType = state.messageType;
+    });
+  }
+
+  ngOnDestroy() {
+    this.stateSub?.unsubscribe();
   }
 
   private loadClients() {
@@ -282,6 +299,7 @@ export class ImportComponent implements OnInit {
   onClientChange(event: Event) {
     const target = event.target as HTMLSelectElement;
     this.selectedClientId = parseInt(target.value);
+    this.importState.setSelectedClientId(this.selectedClientId);
   }
 
   cancelExcel() {
@@ -295,6 +313,7 @@ export class ImportComponent implements OnInit {
     this.selectedClientId = 0;
     this.analysisResults = [];
     this.analyzedCount = 0;
+    this.importState.clear();
     const input = document.querySelector('#pdfFileInput') as HTMLInputElement;
     if (input) input.value = '';
   }
@@ -351,20 +370,24 @@ export class ImportComponent implements OnInit {
       this.apiService.uploadFile<any>('/safety-cards/analyze-pdf', formData).subscribe({
         next: (response) => {
           this.analyzedCount = index + 1;
-          this.analysisResults.push({
+          const result: AnalysisResult = {
             fileName: file.name,
             success: true,
             message: response.message || 'Prodotto creato con successo'
-          });
+          };
+          this.analysisResults.push(result);
+          this.importState.addAnalysisResult(result);
           analyzeNext(index + 1);
         },
         error: (error) => {
           this.analyzedCount = index + 1;
-          this.analysisResults.push({
+          const result: AnalysisResult = {
             fileName: file.name,
             success: false,
             message: error.error?.message || error.message || 'Errore durante l\'analisi'
-          });
+          };
+          this.analysisResults.push(result);
+          this.importState.addAnalysisResult(result);
           analyzeNext(index + 1);
         }
       });

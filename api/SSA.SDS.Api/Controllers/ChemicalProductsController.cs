@@ -8,7 +8,7 @@ using SSA.SDS.Api.Entities;
 namespace SSA.SDS.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/chemical-products")]
 [Authorize]
 public class ChemicalProductsController : ControllerBase
 {
@@ -33,7 +33,7 @@ public class ChemicalProductsController : ControllerBase
         return Ok(products.Select(MapProduct));
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
         var product = await _context.ChemicalProducts

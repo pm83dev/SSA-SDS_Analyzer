@@ -1,6 +1,8 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using SSA.LlmService.Models;
 
 namespace SSA.LlmService;
 
@@ -9,12 +11,14 @@ public class LlmController : ControllerBase
     private readonly LlmOptions _options;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly ILogger<LlmController> _logger;
+    private readonly ApplicationDbContext _context;
 
-    public LlmController(IConfiguration configuration, IHttpClientFactory httpClientFactory, ILogger<LlmController> logger)
+    public LlmController(IConfiguration configuration, IHttpClientFactory httpClientFactory, ILogger<LlmController> logger, ApplicationDbContext context)
     {
         _options = configuration.Get<LlmOptions>() ?? new LlmOptions();
         _httpClientFactory = httpClientFactory;
         _logger = logger;
+        _context = context;
     }
 
     [HttpPost("analyze")]
@@ -27,6 +31,29 @@ public class LlmController : ControllerBase
         if (content == null)
             return StatusCode(502, new { error = "Il server LLM non ha restituito una risposta valida" });
 
+        // Parse JSON and save to database
+        try
+        {
+            var extractedData = JsonSerializer.Deserialize<SafetyDataSheet>(content, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+            
+            if (extractedData != null)
+            {
+                // Set additional fields
+                extractedData.CreatedAt = DateTime.UtcNow;
+                
+                _context.SafetyDataSheets.Add(extractedData);
+                await _context.SaveChangesAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Errore nel salvataggio dei dati estratti");
+            // Don't fail the API call if database saving fails
+        }
+
         return Ok(new AnalyzeResponse { Content = content });
     }
 
@@ -35,31 +62,13 @@ public class LlmController : ControllerBase
         var client = _httpClientFactory.CreateClient();
         client.Timeout = TimeSpan.FromSeconds(_options.TimeoutSeconds);
 
-        var prompt = "Sei un analista di schede di sicurezza (SDS) chimiche. Dal testo della SDS estrai i dati e restituisci SOLO un JSON valido con questa struttura: " +
-            "{ " +
-            "\"titolo\": \"nome del prodotto chimico (punto 1.1)\", " +
-            "\"produttore\": \"produttore/distributore (punto 1.3)\", " +
-            "\"frasi_h\": \"codici delle frasi H (es. H225, H315) separate da virgola (punto 2.1)\", " +
-            "\"pittogramma\": \"codici dei pittogrammi (es. GHS02) separati da virgola (punto 2.2)\", " +
-            "\"composizione_cas_sopra_01\": \"componenti con n. CAS e % > 0,1% (punto 3)\", " +
-            "\"composizione_cas_sotto_01\": \"componenti con n. CAS e % < 0,1% (punto 3)\", " +
-            "\"composizione\": \"composizione completa del prodotto (punto 3)\", " +
-            "\"stato_fisico\": \"stato fisico (punto 9)\", " +
-            "\"teb\": \"temperatura di ebollizione (punto 9)\", " +
-            "\"cov_percent\": \"percentuale di COV/VOC (es. 5%)\", " +
-            "\"densita\": \"densita (punto 9)\", " +
-            "\"sds_url\": \"URL o riferimento della SDS se presente, altrimenti null\", " +
-            "\"data_sds\": \"data della SDS in formato YYYY-MM-DD, se presente, altrimenti null\" " +
-            "} " +
-            "Usa null per i campi non presenti. Non aggiungere testo fuori dal JSON.";
-
         var payload = new
         {
             model = _options.Model,
             messages = new[]
             {
                 new { role = "system", content = "Sei un assistente che estrae dati strutturati da schede di sicurezza chimiche. Rispondi sempre con un solo oggetto JSON valido." },
-                new { role = "user", content = "Estrai i dati dalla seguente SDS:\n\n" + Truncate(text) }
+                new { role = "user", content = $"Estrai i dati dalla seguente SDS e restituisci SOLO un JSON valido con questa struttura:\n{{ \"titolo\": \"nome del prodotto chimico (punto 1.1)\", \"produttore\": \"produttore/distributore (punto 1.3)\", \"frasi_h\": \"codici delle frasi H (es. H225, H315) separate da virgola (punto 2.1)\", \"pittogramma\": \"codici dei pittogrammi (es. GHS02) separati da virgola (punto 2.2)\", \"composizione_cas_sopra_01\": \"componenti con n. CAS e % > 0,1% (punto 3)\", \"composizione_cas_sotto_01\": \"componenti con n. CAS e % < 0,1% (punto 3)\", \"composizione\": \"composizione completa del prodotto (punto 3)\", \"stato_fisico\": \"stato fisico (punto 9)\", \"teb\": \"temperatura di ebollizione (punto 9)\", \"cov_percent\": \"percentuale di COV/VOC (es. 5%)\", \"densita\": \"densita (punto 9)\", \"sds_url\": \"URL o riferimento della SDS se presente, altrimenti null\", \"data_sds\": \"data della SDS in formato YYYY-MM-DD, se presente, altrimenti null\" }}\nUsa null per i campi non presenti. Non aggiungere testo fuori dal JSON.\n\n{Truncate(text)}" }
             },
             temperature = 0.1,
             max_tokens = 2000

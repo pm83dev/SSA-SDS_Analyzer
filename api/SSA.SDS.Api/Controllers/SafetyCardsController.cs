@@ -9,7 +9,7 @@ using SSA.SDS.Api.Services;
 namespace SSA.SDS.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/safety-cards")]
 [Authorize]
 public class SafetyCardsController : ControllerBase
 {
@@ -45,7 +45,7 @@ public class SafetyCardsController : ControllerBase
         return Ok(cards.Select(MapCard));
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
         var card = await _context.SafetyCards
@@ -91,7 +91,7 @@ public class SafetyCardsController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = card.Id }, MapCard(card));
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, [FromBody] CreateSafetyCardDto dto)
     {
         var card = await _context.SafetyCards.FindAsync(id);
@@ -128,7 +128,7 @@ public class SafetyCardsController : ControllerBase
         return Ok(MapCard(card));
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
         var card = await _context.SafetyCards.FindAsync(id);
@@ -142,7 +142,7 @@ public class SafetyCardsController : ControllerBase
         return NoContent();
     }
 
-    [HttpPost("{id}/upload-pdf")]
+    [HttpPost("{id:int}/upload-pdf")]
     [RequestSizeLimit(30 * 1024 * 1024)]
     public async Task<IActionResult> UploadPdf(int id, IFormFile file)
     {
@@ -165,7 +165,7 @@ public class SafetyCardsController : ControllerBase
         });
     }
 
-    [HttpGet("{id}/pdf-url")]
+    [HttpGet("{id:int}/pdf-url")]
     public async Task<IActionResult> GetPdfUrl(int id)
     {
         var card = await _context.SafetyCards.FindAsync(id);
@@ -175,7 +175,7 @@ public class SafetyCardsController : ControllerBase
         return Ok($"/api/files/{card.PdfUrl.Replace('\\', '/')}");
     }
 
-    [HttpDelete("{id}/pdf")]
+    [HttpDelete("{id:int}/pdf")]
     public async Task<IActionResult> DeletePdf(int id)
     {
         var card = await _context.SafetyCards.FindAsync(id);

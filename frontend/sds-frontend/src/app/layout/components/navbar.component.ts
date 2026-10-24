@@ -27,6 +27,9 @@ import { ScenarioService, AppNotification } from '../../core/services/scenario.s
               <a class="nav-link" routerLink="/safety-cards" routerLinkActive="active">Schede</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" routerLink="/products" routerLinkActive="active">Prodotti</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" routerLink="/import" routerLinkActive="active">Import</a>
             </li>
             <li class="nav-item">

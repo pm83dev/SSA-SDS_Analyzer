@@ -1,0 +1,55 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "API (Backend :5007)",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/api/SSA.SDS.Api/bin/Debug/net8.0/SSA.SDS.Api.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/api/SSA.SDS.Api",
+      "stopAtEntry": false,
+      "console": "internalConsole",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://localhost:5007"
+      },
+      "preLaunchTask": "build-api"
+    },
+    {
+      "name": "LLM Service (Backend :9010)",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/llm-service/bin/Debug/net8.0/SSA.LlmService.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/llm-service",
+      "stopAtEntry": false,
+      "console": "internalConsole",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://localhost:9010"
+      },
+      "preLaunchTask": "build-llm"
+    },
+    {
+      "name": "Frontend (Angular :4200)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:4200",
+      "webRoot": "${workspaceFolder}/frontend/sds-frontend/src",
+      "preLaunchTask": "start-frontend"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Full Stack (F5) - API + LLM + Frontend",
+      "configurations": ["API (Backend :5007)", "LLM Service (Backend :9010)", "Frontend (Angular :4200)"],
+      "stopAll": true
+    },
+    {
+      "name": "API + Frontend",
+      "configurations": ["API (Backend :5007)", "Frontend (Angular :4200)"],
+      "stopAll": true
+    }
+  ]
+}

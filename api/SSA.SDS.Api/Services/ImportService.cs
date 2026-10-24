@@ -302,8 +302,8 @@ public class ImportService : IImportService
             model = model,
             messages = new[]
             {
-                new { role = "system", content = "Sei un assistente che estrae dati strutturati da schede di sicurezza chimiche. Rispondi sempre con un solo oggetto JSON valido." },
-                new { role = "user", content = "Estrai i dati dalla seguente SDS:\n\n" + pdfText }
+                new { role = "system", content = "Sei un analista di schede di sicurezza (SDS) chimiche. Estrai i dati dal testo fornito e rispondi SEMPRE con un solo oggetto JSON valido, senza testo aggiuntivo." },
+                new { role = "user", content = prompt + "\n\nTESTO DELLA SDS:\n" + pdfText }
             },
             temperature = 0.1,
             max_tokens = 2000
