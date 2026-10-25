@@ -95,6 +95,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IImportService, ImportService>();
 builder.Services.AddScoped<IExpirationService, ExpirationService>();
 builder.Services.AddSingleton<IFileStorageService, FileStorageService>();
+builder.Services.AddSingleton<IOcrService, OcrService>();
 builder.Services.AddHostedService<ExpirationWorker>();
 
 // Use Serilog as the application logging provider (console + rolling file logs).

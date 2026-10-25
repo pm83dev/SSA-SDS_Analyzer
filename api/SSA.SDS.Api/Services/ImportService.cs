@@ -20,19 +20,30 @@ public class ImportService : IImportService
     private readonly IConfiguration _configuration;
     private readonly ILogger<ImportService> _logger;
     private readonly IFileStorageService _fileStorage;
+    private readonly IOcrService _ocr;
+    private readonly Lazy<GhsPictogramMatcher> _ghsMatcher;
 
     public ImportService(
         SdsDbContext context,
         IHttpClientFactory httpClientFactory,
         IConfiguration configuration,
         ILogger<ImportService> logger,
-        IFileStorageService fileStorage)
+        IFileStorageService fileStorage,
+        IOcrService ocr)
     {
         _context = context;
         _httpClientFactory = httpClientFactory;
         _configuration = configuration;
         _logger = logger;
         _fileStorage = fileStorage;
+        _ocr = ocr;
+        // Le 9 immagini di riferimento sono quelle ritagliate dal foglio "Pittogrammi"
+        // dell'Excel, le stesse servite dal frontend (wwwroot/ghs)
+        _ghsMatcher = new Lazy<GhsPictogramMatcher>(() =>
+        {
+            var ghsFolder = Path.Combine(AppContext.BaseDirectory, "wwwroot", "ghs");
+            return GhsPictogramMatcher.FromDirectory(ghsFolder);
+        });
     }
 
     public async Task<ImportExcelResultDto> ImportExcelAsync(Stream fileStream, string fileName)
@@ -232,6 +243,7 @@ public class ImportService : IImportService
         }
 
         string text;
+        var ocrUsed = false;
         try
         {
             pdfBuffer.Position = 0;
@@ -246,8 +258,32 @@ public class ImportService : IImportService
 
         if (string.IsNullOrWhiteSpace(text))
         {
-            result.Message = "Il PDF non contiene testo estraibile (probabilmente è una scansione)";
-            return result;
+            // PDF scansionato: nessun testo estraibile. Si prova a leggerlo con OCR,
+            // sapendo che i caratteri riconosciuti possono avere errori e vanno controllati
+            if (_ocr.IsAvailable)
+            {
+                try
+                {
+                    pdfBuffer.Position = 0;
+                    text = OcrPdfPages(pdfBuffer.ToArray(), fileName);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Errore OCR sul PDF {FileName}", fileName);
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                result.Message = _ocr.IsAvailable
+                    ? "Il PDF non contiene testo estraibile e l'OCR non ha letto nulla di leggibile"
+                    : "Il PDF non contiene testo estraibile (probabilmente è una scansione) e l'OCR non è disponibile: " +
+                      (_ocr.UnavailableReason ?? "verifica i file lingua in tessdata");
+                return result;
+            }
+
+            ocrUsed = true;
+            _logger.LogInformation("PDF {FileName} senza testo: testo letto con OCR ({Chars} caratteri)", fileName, text.Length);
         }
 
         // Quanto testo inviare all'LLM: i dati oltre il limite non vengono letti (e quindi non verificabili)
@@ -304,14 +340,36 @@ public class ImportService : IImportService
         }
 
         // Nessun dato inventato: ogni valore deve essere scritto nel testo della SDS,
-        // altrimenti non viene salvato e il campo resta "da verificare" sulla scheda PDF
-        var verifier = new SdsVerifier(truncated);
+        // altrimenti non viene salvato e il campo resta "da verificare" sulla scheda PDF.
+        // Con l'OCR i controlli "non trovato" diventano avvisi: i caratteri riconosciuti
+        // possono avere errori e i dati vanno controllati a mano sulla scheda.
+        var verifier = new SdsVerifier(truncated, ocrUsed);
         verifier.Verify(card, fileName);
+
+        // Pittogrammi: controllo deterministico per immagini. I simboli GHS nelle SDS sono
+        // quasi sempre solo immagini, quindi i codici scritti dal modello non si ritrovano
+        // nel testo. Si confrontano le immagini del PDF con i 9 simboli di riferimento
+        // (ritagliati dal foglio "Pittogrammi" dell'Excel): è un confronto, non una deduzione.
+        if (ocrUsed)
+        {
+            verifier.Issues.Add(("pittogrammi", "testo letto con OCR: i pittogrammi non sono riconoscibili con il confronto immagini"));
+        }
+        else
+        {
+            var detected = DetectPictogramsFromImages(pdfBuffer.ToArray(), fileName);
+            if (detected.Count > 0)
+            {
+                card.Pittogrammi = string.Join(", ", detected.Select(d => d.Code).Distinct().OrderBy(c => c));
+                verifier.Issues.RemoveAll(i => i.Campo == "pittogrammi");
+                _logger.LogInformation("Scheda {File}: pittogrammi riconosciuti dalle immagini: {Picto}",
+                    fileName, card.Pittogrammi);
+            }
+        }
 
         // Calcoli fatti solo su dati verificati: COV da g/l a % con la densità, diisocianati dalla composizione
         card.CovPercent = NormalizeCov(card.CovPercent, card.Densita);
-        var detected = DetectDiisocyanates(card.Composizione, card.ComposizioneCasSopra, card.ComposizioneCasSotto);
-        if (detected == true)
+        var diisocianati = DetectDiisocyanates(card.Composizione, card.ComposizioneCasSopra, card.ComposizioneCasSotto);
+        if (diisocianati == true)
             card.ContieneDiisocianati = true;
         else if (llmDiisocianati == true)
             verifier.Issues.Add(("contieneDiisocianati", "indicati dal modello ma non riconoscibili nella composizione verificata"));
@@ -401,6 +459,42 @@ public class ImportService : IImportService
         using var doc = UglyToad.PdfPig.PdfDocument.Open(ms);
         var pages = doc.GetPages();
         return string.Join("\n", pages.Select(p => p.Text));
+    }
+
+    // PDF scansionato: rasterizza ogni pagina e la legge con OCR (italiano + inglese).
+    // I caratteri riconosciuti possono avere errori: chi usa il testo deve controllarlo.
+    private string OcrPdfPages(byte[] pdfBytes, string fileName)
+    {
+        var renderer = new PdfPageRenderer();
+        using var doc = UglyToad.PdfPig.PdfDocument.Open(new MemoryStream(pdfBytes));
+        var pageCount = doc.NumberOfPages;
+
+        var parts = new List<string>();
+        for (var i = 0; i < pageCount; i++)
+        {
+            using var pagePng = new MemoryStream(renderer.RenderPage(pdfBytes, i));
+            var pageText = _ocr.RecognizeText(pagePng);
+            if (!string.IsNullOrWhiteSpace(pageText))
+                parts.Add($"[Pagina {i + 1}]\n{pageText}");
+            _logger.LogInformation("OCR PDF {File}: pagina {Page}/{Total} -> {Chars} caratteri",
+                fileName, i + 1, pageCount, pageText?.Length ?? 0);
+        }
+        return string.Join("\n", parts);
+    }
+
+    // Confronto deterministico: estrae le immagini dal PDF e le confronta con i 9 simboli
+    // GHS di riferimento. Restituisce i pittogrammi riconosciuti (nessun modello, nessun'invenzione)
+    private List<GhsMatch> DetectPictogramsFromImages(byte[] pdfBytes, string fileName)
+    {
+        var images = new PdfImageExtractor().ExtractImages(pdfBytes);
+        _logger.LogInformation("PDF {File}: estratte {Count} immagini incorporate", fileName, images.Count);
+
+        var matches = new List<GhsMatch>();
+        foreach (var img in images)
+        {
+            matches.AddRange(_ghsMatcher.Value.FindMatches(img.PngBytes));
+        }
+        return matches;
     }
 
     private async Task<string?> CallLlmAsync(string pdfText)

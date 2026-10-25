@@ -14,11 +14,15 @@ public class SdsVerifier
     private readonly string _flat;
     // Testo con spazi singoli: per i numeri, che non vanno fusi con le cifre vicine
     private readonly string _spaced;
+    // true se il testo è stato letto con OCR da una scansione: i caratteri riconosciuti
+    // possono avere errori, quindi i controlli "non trovato" diventano avvisi da controllare
+    private readonly bool _isOcr;
 
     public List<(string Campo, string Motivo)> Issues { get; } = new();
 
-    public SdsVerifier(string sourceText)
+    public SdsVerifier(string sourceText, bool isOcr = false)
     {
+        _isOcr = isOcr;
         _spaced = Regex.Replace(Normalize(sourceText), @"\s+", " ");
         _flat = Regex.Replace(_spaced, @"\s+", "");
     }
@@ -28,7 +32,14 @@ public class SdsVerifier
 
     private static string Flat(string s) => Regex.Replace(Normalize(s), @"\s+", "");
 
-    private void Flag(string campo, string motivo) => Issues.Add((campo, motivo));
+    private void Flag(string campo, string motivo)
+    {
+        // Testo letto con OCR: i caratteri riconosciuti possono avere errori,
+        // quindi un dato "non trovato" non viene scartato, solo segnalato da controllare
+        if (_isOcr)
+            motivo += " [testo letto con OCR: i caratteri possono contenere errori, verificare sulla scheda PDF]";
+        Issues.Add((campo, motivo));
+    }
 
     public bool ContainsText(string value) => _flat.Contains(Flat(value));
 
@@ -240,6 +251,7 @@ public class SdsVerifier
             var byDescription = FrasiH.All.TryGetValue(code, out var d) &&
                 ((d.It != null && ContainsText(d.It.TrimEnd('.'))) || (d.En != null && ContainsText(d.En.TrimEnd('.'))));
             if (inText || byDescription) kept.Add(code);
+            else if (_isOcr) kept.Add(code); // testo OCR: non si può escludere, va controllato a mano
             else Flag("frasiH", $"{code} non trovata nella SDS (né il codice né la descrizione)");
         }
         return kept.Count > 0 ? string.Join(", ", kept) : null;
@@ -261,6 +273,7 @@ public class SdsVerifier
             }
             var code = "GHS0" + m.Groups[1].Value;
             if (Regex.IsMatch(_flat, $@"ghs0?{m.Groups[1].Value}(?![0-9])")) kept.Add(code);
+            else if (_isOcr) kept.Add(code); // testo OCR: non si può escludere, va controllato a mano
             else Flag("pittogrammi", $"{code} non è scritto nel testo della SDS (forse presente solo come simbolo grafico)");
         }
         return kept.Count > 0 ? string.Join(", ", kept.Distinct()) : null;
