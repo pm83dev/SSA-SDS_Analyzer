@@ -346,24 +346,50 @@ public class ImportService : IImportService
         var verifier = new SdsVerifier(truncated, ocrUsed);
         verifier.Verify(card, fileName);
 
-        // Pittogrammi: controllo deterministico per immagini. I simboli GHS nelle SDS sono
-        // quasi sempre solo immagini, quindi i codici scritti dal modello non si ritrovano
-        // nel testo. Si confrontano le immagini del PDF con i 9 simboli di riferimento
-        // (ritagliati dal foglio "Pittogrammi" dell'Excel): è un confronto, non una deduzione.
-        if (ocrUsed)
+        // Pittogrammi: tre fonti di verifica indipendenti.
+        // 1. Testo: i codici GHS scritti nella SDS (già verificati da SdsVerifier.CheckGhs)
+        // 2. Immagini: confronto deterministico con i 9 simboli di riferimento
+        // 3. Frasi H: mappatura standard CLP/GHS quando i codici non sono nel testo
+        //    e le immagini non sono estraibili (pittogrammi vettoriali)
+        // L'unione delle fonti disponibili è il risultato: un pittogramma confermato da
+        // almeno una delle fonti è affidabile. Il matcher funziona anche con OCR perché le
+        // immagini nel PDF sono comunque raster.
+        var detected = DetectPictogramsFromImages(pdfBuffer.ToArray(), fileName);
+        var detectedCodes = detected.Select(d => d.Code).ToList();
+
+        var textCodes = (card.Pittogrammi ?? "")
+            .Split(',', ';')
+            .Select(c => c.Trim())
+            .Where(c => c.Length > 0)
+            .ToList();
+
+        // Terza fonte: se non ci sono pittogrammi da testo o immagini,
+        // si deducono dalle frasi H usando la mappatura standard CLP/GHS
+        var hPhraseCodes = new List<string>();
+        if (detectedCodes.Count == 0 && textCodes.Count == 0 && !string.IsNullOrWhiteSpace(card.FrasiH))
         {
-            verifier.Issues.Add(("pittogrammi", "testo letto con OCR: i pittogrammi non sono riconoscibili con il confronto immagini"));
+            hPhraseCodes = GhsPictogramMatcher.PictogramsFromHPhrases(card.FrasiH).OrderBy(c => c).ToList();
         }
-        else
+
+        var allCodes = detectedCodes.Concat(textCodes).Concat(hPhraseCodes).Distinct().OrderBy(c => c).ToList();
+
+        if (allCodes.Count > 0)
         {
-            var detected = DetectPictogramsFromImages(pdfBuffer.ToArray(), fileName);
-            if (detected.Count > 0)
-            {
-                card.Pittogrammi = string.Join(", ", detected.Select(d => d.Code).Distinct().OrderBy(c => c));
-                verifier.Issues.RemoveAll(i => i.Campo == "pittogrammi");
-                _logger.LogInformation("Scheda {File}: pittogrammi riconosciuti dalle immagini: {Picto}",
-                    fileName, card.Pittogrammi);
-            }
+            card.Pittogrammi = string.Join(", ", allCodes);
+            verifier.Issues.RemoveAll(i => i.Campo == "pittogrammi");
+
+            var fromText = textCodes.Where(c => !detectedCodes.Contains(c) && !hPhraseCodes.Contains(c)).ToList();
+            var fromImage = detectedCodes.Where(c => !textCodes.Contains(c) && !hPhraseCodes.Contains(c)).ToList();
+            var fromHPhrases = hPhraseCodes.Where(c => !textCodes.Contains(c) && !detectedCodes.Contains(c)).ToList();
+            _logger.LogInformation("Scheda {File}: pittogrammi {Picto} (testo: {Text}, immagini: {Image}, frasi H: {HPhrases})",
+                fileName, card.Pittogrammi,
+                string.Join(",", fromText) ?? "nessuno",
+                string.Join(",", fromImage) ?? "nessuno",
+                string.Join(",", fromHPhrases) ?? "nessuno");
+        }
+        else if (ocrUsed)
+        {
+            verifier.Issues.Add(("pittogrammi", "testo letto con OCR e nessuna immagine GHS riconosciuta: verificare sulla scheda PDF"));
         }
 
         // Calcoli fatti solo su dati verificati: COV da g/l a % con la densità, diisocianati dalla composizione
@@ -724,3 +750,4 @@ public class ImportService : IImportService
         return null;
     }
 }
+

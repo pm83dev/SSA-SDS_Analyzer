@@ -104,7 +104,7 @@ var routes = [
   },
   {
     path: "safety-cards",
-    loadComponent: () => import("./chunk-QCYX4ABD.js").then((m) => m.CardListComponent),
+    loadComponent: () => import("./chunk-Z3LGOW7G.js").then((m) => m.CardListComponent),
     canActivate: [authGuard]
   },
   {

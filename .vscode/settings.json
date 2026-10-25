@@ -1,5 +1,4 @@
 {
-  "dotnet.defaultSolution": "llm-service/SSA.LlmService.csproj",
   "angular-cli.autoUpdate": "prompt",
   "files.exclude": {
     "**/node_modules": true,

@@ -1,7 +1,12 @@
 <div class="card-list-page">
   <div class="page-header">
     <h1>Schede di Sicurezza</h1>
-    <a routerLink="/safety-cards/new" class="btn btn-primary">+ Nuova Scheda</a>
+    <div class="header-actions">
+      <button class="btn btn-success" (click)="exportToExcel()" [disabled]="isExporting">
+        {{ isExporting ? 'Esportazione...' : 'Esporta Excel' }}
+      </button>
+      <a routerLink="/safety-cards/new" class="btn btn-primary">+ Nuova Scheda</a>
+    </div>
   </div>
   <div class="filters">
     <input type="text" class="filter-select search-input" placeholder="Cerca prodotto, produttore, frasi H, CAS..." (input)="onSearch($event)" />
