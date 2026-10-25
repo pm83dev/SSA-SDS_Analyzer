@@ -1,0 +1,52 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/dashboard" routerLinkActive="active">SSA-SDS</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/clients" routerLinkActive="active">Clienti</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/safety-cards" routerLinkActive="active">Schede</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/import" routerLinkActive="active">Import</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/scenarios" routerLinkActive="active">Scadenze</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown me-2" *ngIf="unreadCount > 0">
+          <a class="nav-link position-relative" href="#" role="button" data-bs-toggle="dropdown" (click)="$event.preventDefault()">
+            Notifiche
+            <span class="badge-notif">{{ unreadCount }}</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li *ngFor="let n of notifications">
+              <a class="dropdown-item" href="#" (click)="$event.preventDefault(); markRead(n.id)">
+                <span [ngClass]="n.type === 'Expired' ? 'notif-expired' : 'notif-warning'">{{ n.message }}</span>
+              </a>
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item text-center" href="#" (click)="$event.preventDefault(); markAllRead()">Segna tutte come lette</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" (click)="$event.preventDefault()">
+            {{ username }}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#" (click)="$event.preventDefault(); logout()">Esci</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -69,7 +69,7 @@ function redirectIfAuthenticated() {
 var routes = [
   {
     path: "login",
-    loadComponent: () => import("./chunk-POCJ4ZUX.js").then((m) => m.LoginComponent),
+    loadComponent: () => import("./chunk-XDMJT4RC.js").then((m) => m.LoginComponent),
     canActivate: [redirectIfAuthenticated]
   },
   {
@@ -79,52 +79,52 @@ var routes = [
   },
   {
     path: "dashboard",
-    loadComponent: () => import("./chunk-DZIXBOJD.js").then((m) => m.DashboardComponent),
+    loadComponent: () => import("./chunk-2BAAPW7H.js").then((m) => m.DashboardComponent),
     canActivate: [authGuard]
   },
   {
     path: "clients",
-    loadComponent: () => import("./chunk-FXS5DFMI.js").then((m) => m.ClientListComponent),
+    loadComponent: () => import("./chunk-6YUHEO6D.js").then((m) => m.ClientListComponent),
     canActivate: [authGuard]
   },
   {
     path: "clients/new",
-    loadComponent: () => import("./chunk-2C3OO23U.js").then((m) => m.ClientFormComponent),
+    loadComponent: () => import("./chunk-XD2RWONH.js").then((m) => m.ClientFormComponent),
     canActivate: [authGuard]
   },
   {
     path: "clients/:id",
-    loadComponent: () => import("./chunk-QZTUJB4B.js").then((m) => m.ClientDetailComponent),
+    loadComponent: () => import("./chunk-6FPLKQM6.js").then((m) => m.ClientDetailComponent),
     canActivate: [authGuard]
   },
   {
     path: "clients/:id/edit",
-    loadComponent: () => import("./chunk-2C3OO23U.js").then((m) => m.ClientFormComponent),
+    loadComponent: () => import("./chunk-XD2RWONH.js").then((m) => m.ClientFormComponent),
     canActivate: [authGuard]
   },
   {
     path: "safety-cards",
-    loadComponent: () => import("./chunk-FW2GNGOG.js").then((m) => m.CardListComponent),
+    loadComponent: () => import("./chunk-QCYX4ABD.js").then((m) => m.CardListComponent),
     canActivate: [authGuard]
   },
   {
     path: "safety-cards/new",
-    loadComponent: () => import("./chunk-KQ6CF4B6.js").then((m) => m.CardFormComponent),
+    loadComponent: () => import("./chunk-567WJ4M7.js").then((m) => m.CardFormComponent),
     canActivate: [authGuard]
   },
   {
     path: "safety-cards/:id/edit",
-    loadComponent: () => import("./chunk-KQ6CF4B6.js").then((m) => m.CardFormComponent),
+    loadComponent: () => import("./chunk-567WJ4M7.js").then((m) => m.CardFormComponent),
     canActivate: [authGuard]
   },
   {
     path: "import",
-    loadComponent: () => import("./chunk-6PE43KCC.js").then((m) => m.ImportComponent),
+    loadComponent: () => import("./chunk-A5XYEU3O.js").then((m) => m.ImportComponent),
     canActivate: [authGuard]
   },
   {
     path: "scenarios",
-    loadComponent: () => import("./chunk-UFQZVOAM.js").then((m) => m.ScenariosComponent),
+    loadComponent: () => import("./chunk-7EBACIWP.js").then((m) => m.ScenariosComponent),
     canActivate: [authGuard]
   },
   {
@@ -329,7 +329,7 @@ var NavbarComponent = class _NavbarComponent {
   }, dependencies: [CommonModule, NgClass, NgForOf, NgIf, RouterLink, RouterLinkActive], styles: ["\n\n.badge-notif[_ngcontent-%COMP%] {\n  position: absolute;\n  top: -2px;\n  right: -8px;\n  background: #e74c3c;\n  color: white;\n  border-radius: 10px;\n  font-size: 11px;\n  padding: 2px 6px;\n  font-weight: 700;\n}\n.notif-expired[_ngcontent-%COMP%] {\n  color: #e74c3c;\n}\n.notif-warning[_ngcontent-%COMP%] {\n  color: #f39c12;\n}\n/*# sourceMappingURL=navbar.component.css.map */"] });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(NavbarComponent, { className: "NavbarComponent", filePath: "src\\app\\layout\\components\\navbar.component.ts", lineNumber: 81 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(NavbarComponent, { className: "NavbarComponent", filePath: "src\\app\\layout\\components\\navbar.component.ts", lineNumber: 14 });
 })();
 
 // src/app/app.ts

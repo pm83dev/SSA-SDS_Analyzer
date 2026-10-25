@@ -1,0 +1,59 @@
+<div class="dashboard">
+  <div class="page-header">
+    <h1>Dashboard</h1>
+    <div class="header-actions">
+      <a routerLink="/clients/new" class="btn btn-primary">+ Nuovo Cliente</a>
+      <a routerLink="/safety-cards/new" class="btn btn-success">+ Nuova Scheda</a>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card" routerLink="/clients">
+      <h3>Clienti Totali</h3>
+      <p class="stat-number">{{ totalClients }}</p>
+    </div>
+    <div class="stat-card" routerLink="/safety-cards">
+      <h3>Schede Totali</h3>
+      <p class="stat-number">{{ totalCards }}</p>
+    </div>
+    <div class="stat-card stat-warning" routerLink="/scenarios">
+      <h3>In Scadenza</h3>
+      <p class="stat-number">{{ expiringCards }}</p>
+    </div>
+    <div class="stat-card stat-danger" routerLink="/scenarios">
+      <h3>Scadute</h3>
+      <p class="stat-number">{{ expiredCards }}</p>
+    </div>
+  </div>
+
+  <div class="recent-section">
+    <h2>Ultime Schede Aggiunte</h2>
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Titolo</th>
+            <th>Tipologia</th>
+            <th>Data Scadenza</th>
+            <th>Stato</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="recentCards.length === 0">
+            <td colspan="5" class="text-center">Nessuna scheda presente</td>
+          </tr>
+          <tr *ngFor="let card of recentCards">
+            <td>{{ clientNames(card) || '—' }}</td>
+            <td>{{ card.titolo }}</td>
+            <td>{{ card.tipologia }}</td>
+            <td>{{ card.dataScadenza | date:'dd/MM/yyyy' }}</td>
+            <td>
+              <span class="badge" [ngClass]="getStatusClass(card.stato)">{{ card.stato }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<div class="import-page">
+  <h1>Import Dati</h1>
+  <div class="import-options">
+    <div class="import-card">
+      <h2>Import da Excel</h2>
+      <p>Carica un file Excel (.xlsx): ogni riga diventa una scheda di sicurezza (SDS) del cliente indicato</p>
+      <div class="drop-zone" (click)="triggerExcelUpload()" (dragover)="onDragOver($event)" (drop)="onDropExcel($event)">
+        <p *ngIf="!excelFile">Trascina qui il file Excel oppure</p>
+        <p *ngIf="excelFile" class="file-name">{{ excelFile.name }}</p>
+        <button class="btn btn-primary" (click)="triggerExcelUpload($event)">Scegli File</button>
+        <input type="file" hidden id="excelFileInput" accept=".xlsx,.xls" (change)="onExcelFileSelected($event)" />
+      </div>
+      <div class="import-actions" *ngIf="excelFile">
+        <button class="btn btn-success" (click)="importExcel()" [disabled]="isImporting">
+          {{ isImporting ? 'Importazione in corso...' : 'Importa' }}
+        </button>
+        <button class="btn btn-secondary" (click)="cancelExcel()">Annulla</button>
+      </div>
+    </div>
+    <div class="import-card">
+      <h2>Analisi PDF con LLM</h2>
+      <p>Carica una o più schede di sicurezza (SDS) in PDF: per ognuna viene creata una scheda con il PDF allegato</p>
+      <div class="drop-zone" (click)="triggerPdfUpload()" (dragover)="onDragOver($event)" (drop)="onDropPdf($event)">
+        <p *ngIf="!pdfFiles.length">Trascina qui i file PDF oppure</p>
+        <div *ngIf="pdfFiles.length" class="file-list">
+          <div class="file-item" *ngFor="let f of pdfFiles; let i = index">
+            <span class="file-name">{{ f.name }}</span>
+            <button class="btn-remove" (click)="removePdf(i, $event)" title="Rimuovi">&times;</button>
+          </div>
+        </div>
+        <button class="btn btn-secondary" (click)="triggerPdfUpload($event)">Scegli File</button>
+        <input type="file" hidden id="pdfFileInput" accept=".pdf" multiple (change)="onPdfFileSelected($event)" />
+      </div>
+      <div class="import-actions" *ngIf="pdfFiles.length">
+        <div class="form-group">
+          <label for="clientId">Cliente (facoltativo)</label>
+          <select id="clientId" class="form-control" (change)="onClientChange($event)">
+            <option value="">Nessun cliente (solo archivio)</option>
+            <option *ngFor="let client of clients" [value]="client.id" [selected]="client.id === selectedClientId">{{ client.ragioneSociale }}</option>
+          </select>
+        </div>
+        <button class="btn btn-success" (click)="analyzePdfs()" [disabled]="isAnalyzing">
+          <span *ngIf="isAnalyzing" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          {{ isAnalyzing ? 'Analisi in corso... (' + analyzedCount + '/' + pdfFiles.length + ')' : 'Analizza ' + pdfFiles.length + ' file' }}
+        </button>
+        <button class="btn btn-secondary" (click)="cancelPdf()">Annulla</button>
+      </div>
+      <div class="analysis-results" *ngIf="analysisResults.length">
+        <div class="result-item" *ngFor="let r of analysisResults" [ngClass]="r.success ? 'result-ok' : 'result-fail'">
+          <strong>{{ r.fileName }}:</strong> {{ r.message }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="message" *ngIf="message" [ngClass]="messageType">{{ message }}</div>
+</div>

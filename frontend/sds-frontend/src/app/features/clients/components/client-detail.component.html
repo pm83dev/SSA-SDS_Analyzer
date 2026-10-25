@@ -1,0 +1,87 @@
+<div class="client-detail-page" *ngIf="client">
+  <div class="page-header">
+    <h1>{{ client.ragioneSociale }}</h1>
+    <div class="header-actions">
+      <a [routerLink]="['/clients', client.id, 'edit']" class="btn btn-secondary">Modifica</a>
+      <a routerLink="/safety-cards/new" [queryParams]="{ clientId: client.id }" class="btn btn-primary">+ Nuova Scheda</a>
+    </div>
+  </div>
+
+  <div class="client-info">
+    <div class="info-grid">
+      <div class="info-item">
+        <label>Codice Fiscale</label>
+        <p>{{ client.codiceFiscale || '-' }}</p>
+      </div>
+      <div class="info-item">
+        <label>Indirizzo</label>
+        <p>{{ client.indirizzo || '-' }}</p>
+      </div>
+      <div class="info-item">
+        <label>Città</label>
+        <p>{{ client.citta || '-' }} {{ client.provincia ? '(' + client.provincia + ')' : '' }}</p>
+      </div>
+      <div class="info-item">
+        <label>CAP</label>
+        <p>{{ client.cap || '-' }}</p>
+      </div>
+      <div class="info-item">
+        <label>Telefono</label>
+        <p>{{ client.telefono || '-' }}</p>
+      </div>
+      <div class="info-item">
+        <label>Email</label>
+        <p>{{ client.email || '-' }}</p>
+      </div>
+      <div class="info-item">
+        <label>Contatto</label>
+        <p>{{ client.contatto || '-' }}</p>
+      </div>
+      <div class="info-item">
+        <label>Note</label>
+        <p>{{ client.note || '-' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards-section">
+    <h2>Schede di Sicurezza ({{ cards.length }})</h2>
+    <!-- La stessa scheda può essere collegata a più clienti: qui si collegano schede già presenti nell'archivio -->
+    <div class="link-card">
+      <select class="form-select form-select-sm" [value]="cardToLink || ''" (change)="cardToLink = +$any($event.target).value || 0">
+        <option value="">Collega una scheda dall'archivio...</option>
+        <option *ngFor="let c of linkableCards" [value]="c.id">{{ c.titolo }}{{ c.enteEmittitore ? ' – ' + c.enteEmittitore : '' }}</option>
+      </select>
+      <button class="btn btn-small btn-primary" [disabled]="!cardToLink" (click)="linkCard(cardToLink)">Collega</button>
+    </div>
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th *ngFor="let f of fields" [title]="f.hint || ''">{{ columnLabel(f) }}</th>
+            <th>Azioni</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="cards.length === 0">
+            <td [attr.colspan]="fields.length + 1" class="text-center">Nessuna scheda presente per questo cliente</td>
+          </tr>
+          <tr *ngFor="let card of cards">
+            <td *ngFor="let f of fields" class="sds-cell">
+              <app-sds-value [card]="card" [field]="f" mode="cell" (openPdf)="cardService.openPdf($event)"></app-sds-value>
+            </td>
+            <td class="actions">
+              <a [routerLink]="['/safety-cards', card.id, 'edit']" class="btn btn-small btn-secondary">Modifica</a>
+              <button class="btn btn-small btn-warning" (click)="unlinkCard(card)" title="Toglie la scheda da questo cliente: la scheda resta nell'archivio">Scollega</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div *ngIf="!client && !isLoading" class="not-found">
+  <h1>Cliente non trovato</h1>
+  <a routerLink="/clients" class="btn btn-primary">Torna alla lista</a>
+</div>
+<div *ngIf="isLoading" class="loading">Caricamento...</div>

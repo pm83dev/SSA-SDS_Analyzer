@@ -1,0 +1,62 @@
+<div class="scenarios-page">
+  <div class="page-header">
+    <h1>Gestione Scadenze</h1>
+  </div>
+  <div class="scenarios-filters">
+    <select class="filter-select" (change)="onFilterChange($event)">
+      <option value="30">Prossimi 30 giorni</option>
+      <option value="60">Prossimi 60 giorni</option>
+      <option value="90">Prossimi 90 giorni</option>
+      <option value="180">Prossimi 180 giorni</option>
+      <option value="365">Prossimo anno</option>
+    </select>
+  </div>
+  <div class="summary-cards">
+    <div class="summary-card summary-expiring">
+      <h3>In Scadenza (≤30gg)</h3>
+      <p class="summary-number">{{ warningCount }}</p>
+    </div>
+    <div class="summary-card summary-expired">
+      <h3>Scadute</h3>
+      <p class="summary-number">{{ expiredCount }}</p>
+    </div>
+    <div class="summary-card summary-total">
+      <h3>Totali nel periodo</h3>
+      <p class="summary-number">{{ expiring.length }}</p>
+    </div>
+  </div>
+  <div class="table-container">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Scheda</th>
+          <th>Tipologia</th>
+          <th>Data Scadenza</th>
+          <th>Giorni Restanti</th>
+          <th>Stato</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="expiring.length === 0">
+          <td colspan="6" class="text-center">
+            {{ isLoading ? 'Caricamento...' : 'Nessuna scheda in scadenza nel periodo selezionato' }}
+          </td>
+        </tr>
+        <tr *ngFor="let card of expiring">
+          <td>{{ card.clientName }}</td>
+          <td>{{ card.titolo }}</td>
+          <td>{{ card.tipologia }}</td>
+          <td>{{ card.dataScadenza | date:'dd/MM/yyyy' }}</td>
+          <td>
+            <span *ngIf="(card.daysRemaining ?? 0) >= 0" class="text-warning">{{ card.daysRemaining }} giorni</span>
+            <span *ngIf="(card.daysRemaining ?? 0) < 0" class="text-danger">{{ (card.daysRemaining ?? 0) * -1 }} giorni fa</span>
+          </td>
+          <td>
+            <span class="badge" [ngClass]="getStatusClass(card.stato)">{{ card.stato }}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

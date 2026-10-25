@@ -1,0 +1,145 @@
+<div class="card-list-page">
+  <div class="page-header">
+    <h1>Schede di Sicurezza</h1>
+    <a routerLink="/safety-cards/new" class="btn btn-primary">+ Nuova Scheda</a>
+  </div>
+  <div class="filters">
+    <input type="text" class="filter-select search-input" placeholder="Cerca prodotto, produttore, frasi H, CAS..." (input)="onSearch($event)" />
+    <select class="filter-select" (change)="onClientChange($event)">
+      <option value="">Tutti i clienti</option>
+      <option value="-1">Solo archivio (senza clienti)</option>
+      <option *ngFor="let c of clients" [value]="c.id">{{ c.id }} – {{ c.ragioneSociale }}</option>
+    </select>
+    <select class="filter-select" (change)="onTipologiaChange($event)">
+      <option value="">Tutte le tipologie</option>
+      <option value="SDS">Scheda di Sicurezza (SDS)</option>
+      <option value="DPI">DPI</option>
+      <option value="Antincendio">Antincendio</option>
+      <option value="Rischi">Valutazione Rischi</option>
+      <option value="Altro">Altro</option>
+    </select>
+    <select class="filter-select" (change)="onStatoChange($event)">
+      <option value="">Tutti gli stati</option>
+      <option value="Valid">Valida</option>
+      <option value="Expiring">In scadenza</option>
+      <option value="Expired">Scaduta</option>
+    </select>
+    <label class="verify-filter">
+      <input type="checkbox" (change)="onOnlyToVerifyChange($event)" />
+      Solo da verificare ({{ toVerifyCount }})
+    </label>
+  </div>
+
+  <!-- Colonne nello stesso ordine e con le stesse intestazioni del file "dati per SDS.xlsx" -->
+  <div class="table-container">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th *ngFor="let f of fields; let i = index" [class]="'col-' + f.kind" [class.sticky-1]="i === 0"
+              [class.sticky-2]="i === 1" [title]="f.hint || ''">{{ columnLabel(f) }}</th>
+          <th class="col-actions">Azioni</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="filteredCards.length === 0">
+          <td [attr.colspan]="fields.length + 1" class="text-center">
+            {{ isLoading ? 'Caricamento...' : 'Nessuna scheda trovata' }}
+          </td>
+        </tr>
+        <tr *ngFor="let card of filteredCards" class="clickable-row" [class.row-verify]="card.campiDaVerificare?.length" (click)="openDetail(card)" title="Clicca per vedere tutti i dati">
+          <td *ngFor="let f of fields; let i = index" [class]="'col-' + f.kind" [class.sticky-1]="i === 0" [class.sticky-2]="i === 1" [class.cell-verify]="isToVerify(card, f.key)">
+            <app-sds-value [card]="card" [field]="f" mode="cell" (openPdf)="openPdf($event)"></app-sds-value>
+          </td>
+          <td class="col-actions" (click)="$event.stopPropagation()">
+            <div class="actions">
+              <a [routerLink]="['/safety-cards', card.id, 'edit']" class="btn btn-small btn-secondary">Modifica</a>
+              <button class="btn btn-small btn-danger" (click)="onDelete(card.id)">Elimina</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Scheda di dettaglio: i campi del file nello stesso ordine, con la descrizione della riga 2 -->
+  <div class="detail-overlay" *ngIf="selectedCard as c" (click)="closeDetail()">
+    <div class="detail-card" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+      <div class="detail-header">
+        <div>
+          <h2>{{ c.titolo }}</h2>
+          <span class="detail-sub">{{ clientNames(c) || 'Solo archivio (nessun cliente)' }} · {{ c.tipologia }}</span>
+          <span class="badge ms-2" [ngClass]="getStatusClass(c.stato)">{{ c.stato }}</span>
+        </div>
+        <button type="button" class="close-btn" (click)="closeDetail()" aria-label="Chiudi">&times;</button>
+      </div>
+
+      <div class="detail-body">
+        <div class="verify-banner" *ngIf="c.campiDaVerificare?.length">
+          <strong>⚠ {{ c.campiDaVerificare!.length }} {{ c.campiDaVerificare!.length === 1 ? 'campo da verificare' : 'campi da verificare' }} sulla scheda PDF</strong>
+          <p>Questi dati non sono stati ritrovati nel testo della SDS e non sono stati inseriti (o sono stati inseriti in parte). Controllali sul PDF e completali da "Modifica".</p>
+          <ul>
+            <li *ngFor="let k of c.campiDaVerificare"><strong>{{ fieldLabel(k) }}</strong>: {{ verifyReasons(c, k).join('; ') }}</li>
+          </ul>
+        </div>
+        <h3>Dati da estrapolare</h3>
+        <div class="detail-grid">
+          <div *ngFor="let f of fields" class="detail-item" [class.full-width]="isWide(f)" [class.item-verify]="isToVerify(c, f.key)">
+            <label>{{ columnLabel(f) }}</label>
+            <small *ngIf="f.hint" class="hint">{{ f.hint }}</small>
+            <div class="detail-value">
+              <app-sds-value [card]="c" [field]="f" mode="detail" (openPdf)="openPdf($event)"></app-sds-value>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h3>Gestione scheda</h3>
+          <div class="detail-grid">
+            <div class="detail-item">
+              <label>Tipologia</label>
+              <div class="detail-value">{{ c.tipologia || '-' }}</div>
+            </div>
+            <div class="detail-item" [class.item-verify]="isToVerify(c, 'numeroProtocollo')">
+              <label>Versione / Revisione SDS</label>
+              <div class="detail-value">{{ c.numeroProtocollo || '-' }}</div>
+            </div>
+            <div class="detail-item" [class.item-verify]="isToVerify(c, 'dataScadenza')">
+              <label>Data Scadenza</label>
+              <div class="detail-value">
+                {{ (c.dataScadenza | date:'dd/MM/yyyy') || '-' }}
+                <span *ngIf="c.daysRemaining !== null && c.daysRemaining !== undefined"
+                      [ngClass]="getDaysClass(c.daysRemaining)"> ({{ c.daysRemaining }} giorni)</span>
+              </div>
+            </div>
+            <div class="detail-item">
+              <label>Stato</label>
+              <div class="detail-value"><span class="badge" [ngClass]="getStatusClass(c.stato)">{{ c.stato }}</span></div>
+            </div>
+            <div class="detail-item">
+              <label>Validità (mesi)</label>
+              <div class="detail-value">{{ c.validitaMesi ?? '-' }}</div>
+            </div>
+            <div class="detail-item">
+              <label>Frequenza Controllo</label>
+              <div class="detail-value">{{ c.frequenzaControllo || '-' }}</div>
+            </div>
+            <div class="detail-item full-width">
+              <label>Osservazioni</label>
+              <div class="detail-value pre-wrap">{{ c.osservazioni || '-' }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-actions">
+        <span class="detail-meta">
+          <span *ngIf="c.llmAnalyzed">Dati estratti automaticamente dal PDF · </span>
+          Aggiornata il {{ c.updatedAt | date:'dd/MM/yyyy HH:mm' }}
+        </span>
+        <button *ngIf="c.hasPdf && c.pdfUrl" type="button" class="btn btn-small btn-outline" (click)="openPdf(c)">Apri PDF</button>
+        <a [routerLink]="['/safety-cards', c.id, 'edit']" class="btn btn-small btn-primary">Modifica</a>
+        <button type="button" class="btn btn-small btn-secondary" (click)="closeDetail()">Chiudi</button>
+      </div>
+    </div>
+  </div>
+</div>

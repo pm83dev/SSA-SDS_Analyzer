@@ -1,0 +1,158 @@
+<div class="card-form-page">
+  <div class="page-header">
+    <h1>{{ isEdit ? 'Modifica Scheda' : 'Nuova Scheda' }}</h1>
+    <a routerLink="/safety-cards" class="btn btn-secondary">Torna alla lista</a>
+  </div>
+  <div class="form-container">
+    <form [formGroup]="cardForm" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>{{ isSds ? 'ID CLIENTE' : 'Clienti' }}</label>
+          <small class="hint">la scheda può essere collegata a più clienti; senza clienti resta solo nell'archivio</small>
+          <div class="client-checks">
+            <label *ngFor="let client of clients" class="client-check">
+              <input type="checkbox" [checked]="selectedClientIds.has(client.id)"
+                     (change)="toggleClient(client.id, $any($event.target).checked)" />
+              {{ client.id }} – {{ client.ragioneSociale }}
+            </label>
+            <span *ngIf="!clients.length" class="hint">Nessun cliente registrato</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="tipologia">Tipologia *</label>
+          <select id="tipologia" formControlName="tipologia" class="form-control">
+            <option value="">Seleziona tipologia</option>
+            <option value="SDS">Scheda di Sicurezza (SDS)</option>
+            <option value="DPI">DPI</option>
+            <option value="Antincendio">Antincendio</option>
+            <option value="Rischi">Valutazione Rischi</option>
+            <option value="Altro">Altro</option>
+          </select>
+          <div class="error-message" *ngIf="cardForm.get('tipologia')?.errors?.['required'] && cardForm.get('tipologia')?.touched">
+            Campo obbligatorio
+          </div>
+        </div>
+      </div>
+
+      <!-- Scheda SDS: colonne del file "dati per SDS.xlsx", stesso ordine, intestazioni e descrizioni -->
+      <div class="verify-banner" *ngIf="campiDaVerificare.length">
+        <strong>⚠ {{ campiDaVerificare.length }} {{ campiDaVerificare.length === 1 ? 'campo da verificare' : 'campi da verificare' }} sulla scheda PDF</strong>
+        <p>L'import non ha ritrovato questi dati nel testo della SDS e non li ha inseriti: controllali sul PDF e completali. Un campo esce dall'elenco quando lo modifichi.</p>
+        <ul>
+          <li *ngFor="let k of campiDaVerificare"><strong>{{ fieldLabel(k) }}</strong>: {{ reasonsFor(k) }}</li>
+        </ul>
+      </div>
+
+      <div class="sds-section" *ngIf="isSds; else genericFields">
+        <h2>Dati da estrapolare</h2>
+        <div class="form-grid">
+          <div *ngFor="let f of sdsFormFields" class="form-group" [class.full-width]="isWide(f)" [class.field-verify]="campiDaVerificare.includes(f.key)">
+            <ng-container [ngSwitch]="f.kind">
+              <label *ngSwitchCase="'bool'" class="checkbox-label">
+                <input type="checkbox" [id]="f.key" [formControlName]="f.key" />
+                {{ f.label }}
+              </label>
+              <label *ngSwitchDefault [for]="f.key">{{ f.label }}{{ f.key === 'titolo' ? ' *' : '' }}</label>
+            </ng-container>
+            <small *ngIf="f.hint" class="hint">{{ f.hint }}</small>
+            <small *ngIf="campiDaVerificare.includes(f.key)" class="verify-hint">⚠ da verificare: {{ reasonsFor(f.key) }}</small>
+            <ng-container [ngSwitch]="f.kind">
+              <textarea *ngSwitchCase="'cas'" [id]="f.key" [formControlName]="f.key" class="form-control" rows="3"
+                        placeholder="nome|n. CAS|%, separati da virgola"></textarea>
+              <textarea *ngSwitchCase="'names'" [id]="f.key" [formControlName]="f.key" class="form-control" rows="3"></textarea>
+              <input *ngSwitchCase="'date'" type="date" [id]="f.key" [formControlName]="f.key" class="form-control" />
+              <ng-container *ngSwitchCase="'bool'"></ng-container>
+              <input *ngSwitchDefault type="text" [id]="f.key" [formControlName]="f.key" class="form-control"
+                     [placeholder]="f.kind === 'hcodes' ? 'es. H225, H319' : f.kind === 'ghs' ? 'es. GHS02, GHS07' : f.kind === 'url' ? 'https://...' : ''" />
+            </ng-container>
+            <div class="error-message" *ngIf="f.key === 'titolo' && cardForm.get('titolo')?.invalid && cardForm.get('titolo')?.touched">
+              Campo obbligatorio
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #genericFields>
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label for="titolo">Titolo *</label>
+            <input type="text" id="titolo" formControlName="titolo" class="form-control" />
+            <div class="error-message" *ngIf="cardForm.get('titolo')?.errors?.['required'] && cardForm.get('titolo')?.touched">
+              Campo obbligatorio
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="enteEmittitore">Ente Emittitore</label>
+            <input type="text" id="enteEmittitore" formControlName="enteEmittitore" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label for="dataRilascio">Data Rilascio</label>
+            <input type="date" id="dataRilascio" formControlName="dataRilascio" class="form-control" />
+          </div>
+        </div>
+      </ng-template>
+
+      <div class="manage-section">
+        <h2 *ngIf="isSds">Gestione scheda</h2>
+        <div class="form-grid">
+          <div class="form-group full-width" *ngIf="nomeFileImportato">
+            <label>Nome file importato</label>
+            <p class="readonly-value">{{ nomeFileImportato }}</p>
+          </div>
+          <div class="form-group" [class.field-verify]="campiDaVerificare.includes('numeroProtocollo')">
+            <small *ngIf="campiDaVerificare.includes('numeroProtocollo')" class="verify-hint">⚠ da verificare: {{ reasonsFor('numeroProtocollo') }}</small>
+            <label for="numeroProtocollo">{{ isSds ? 'Versione / Revisione SDS' : 'Numero Protocollo' }}</label>
+            <input type="text" id="numeroProtocollo" formControlName="numeroProtocollo" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label for="dataScadenza">Data Scadenza</label>
+            <input type="date" id="dataScadenza" formControlName="dataScadenza" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label for="validitaMesi">Validità (mesi)</label>
+            <input type="number" id="validitaMesi" formControlName="validitaMesi" class="form-control" min="1" />
+          </div>
+          <div class="form-group">
+            <label for="frequenzaControllo">Frequenza Controllo</label>
+            <select id="frequenzaControllo" formControlName="frequenzaControllo" class="form-control">
+              <option value="">Seleziona frequenza</option>
+              <option value="mensile">Mensile</option>
+              <option value="trimestrale">Trimestrale</option>
+              <option value="semestrale">Semestrale</option>
+              <option value="annuale">Annuale</option>
+            </select>
+          </div>
+          <div class="form-group full-width">
+            <label for="osservazioni">Osservazioni</label>
+            <textarea id="osservazioni" formControlName="osservazioni" class="form-control" rows="3"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="pdf-section" *ngIf="isEdit && cardId">
+        <h2>File PDF della Scheda</h2>
+        <div class="pdf-current" *ngIf="pdfFileName">
+          <p><strong>File attuale:</strong> {{ pdfFileName }}</p>
+          <button type="button" class="btn btn-danger" (click)="deletePdf()">Rimuovi PDF</button>
+        </div>
+        <div class="pdf-upload">
+          <input type="file" accept=".pdf" (change)="onPdfSelected($event)" />
+          <button type="button" class="btn btn-primary" (click)="uploadPdf()" [disabled]="!selectedPdf || isUploadingPdf">
+            {{ isUploadingPdf ? 'Caricamento...' : 'Carica PDF' }}
+          </button>
+        </div>
+      </div>
+
+      <label class="verified-check" *ngIf="campiDaVerificare.length">
+        <input type="checkbox" [checked]="datiVerificati" (change)="datiVerificati = $any($event.target).checked" />
+        Ho verificato tutti i dati con la scheda PDF (toglie tutti i "da verificare")
+      </label>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">Annulla</button>
+        <button type="submit" class="btn btn-primary" [disabled]="cardForm.invalid || isSubmitting">
+          {{ isSubmitting ? 'Salvataggio...' : (isEdit ? 'Aggiorna' : 'Crea') }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
