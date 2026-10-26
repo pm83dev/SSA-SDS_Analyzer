@@ -1,0 +1,58 @@
+<div class="user-form-page">
+  <div class="page-header">
+    <h1>{{ isEdit ? 'Modifica Utente' : 'Nuovo Utente' }}</h1>
+    <a routerLink="/users" class="btn btn-secondary">Torna alla lista</a>
+  </div>
+  <div class="form-container">
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="username">Username *</label>
+          <input type="text" id="username" formControlName="username" class="form-control" [disabled]="isEdit" />
+          <div class="error-message" *ngIf="userForm.get('username')?.errors?.['required'] && userForm.get('username')?.touched">
+            Campo obbligatorio
+          </div>
+          <div class="error-message" *ngIf="userForm.get('username')?.errors?.['minlength'] && userForm.get('username')?.touched">
+            Minimo 3 caratteri
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password">{{ isEdit ? 'Nuova Password (lascia vuoto per non cambiare)' : 'Password *' }}</label>
+          <input type="password" id="password" formControlName="password" class="form-control" />
+          <div class="error-message" *ngIf="!isEdit && userForm.get('password')?.errors?.['required'] && userForm.get('password')?.touched">
+            Campo obbligatorio
+          </div>
+          <div class="error-message" *ngIf="userForm.get('password')?.errors?.['minlength'] && userForm.get('password')?.touched && userForm.get('password')?.value">
+            Minimo 6 caratteri
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" formControlName="email" class="form-control" />
+          <div class="error-message" *ngIf="userForm.get('email')?.errors?.['email'] && userForm.get('email')?.touched">
+            Email non valida
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="role">Ruolo *</label>
+          <select id="role" formControlName="role" class="form-select">
+            <option *ngFor="let r of roles" [value]="r.value">{{ r.label }}</option>
+          </select>
+        </div>
+        <div class="form-group" *ngIf="isEdit">
+          <label for="isActive">Stato</label>
+          <select id="isActive" formControlName="isActive" class="form-select">
+            <option [ngValue]="true">Attivo</option>
+            <option [ngValue]="false">Disabilitato</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">Annulla</button>
+        <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid || isSubmitting">
+          {{ isSubmitting ? 'Salvataggio...' : (isEdit ? 'Aggiorna' : 'Crea') }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

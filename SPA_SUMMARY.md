@@ -15,7 +15,7 @@ Your two separate applications (API + Frontend) have been successfully converted
 
 ### Modified Files:
 1. **`api/SSA.SDS.Api/Program.cs`** - Now serves Angular frontend
-2. **`frontend/sds-frontend/src/environments/environment.prod.ts`** - API URL set to `/api`
+2. **`frontend/sds-frontend/src/environments/environment.prod.ts`** - API URL set to `''` (relative)
 
 ## 🏗️ Architecture
 

@@ -1,6 +1,6 @@
 # Punti Aperti - Decisioni Prese
 
-> **Stato: aggiornato al 2026-10-18** — riflette l'implementazione reale nel repository.
+> **Stato: aggiornato al 2026-10-26** — riflette l'implementazione reale nel repository.
 > Le decisioni originali sono mantenute dove ancora valide; le divergenze
 > dall'implementazione sono segnalate con ⚠️.
 
@@ -29,7 +29,8 @@
 - Configurato in `angular.json` (styles + scripts)
 
 **Implementato:**
-- Angular 21.2 (standalone components, bootstrapApplication)
+- Angular 18.2 (standalone components, bootstrapApplication)
+- TypeScript 5.5
 - Layout con navbar (username + logout) + lazy loading per feature
 - CSS custom inline nei componenti (in aggiunta a Bootstrap)
 
@@ -38,31 +39,32 @@
 **Decisione:** Modello LLM via URL server (llama.cpp / OpenAI-compatible)
 
 **Implementato:**
-- **`llm-service` convertito in progetto C# .NET 8** (ASP.NET Core, `SSA.LlmService.csproj`)
-  - Endpoint `POST /analyze` che riceve il testo e restituisce JSON
-  - Chiamata al server LLM (llama.cpp) su `/v1/chat/completions`
-  - Dockerfile .NET 8 (prima Python, ora C#)
 - **API** (`ImportService.CallLlmAsync`): estrae il testo PDF con **PdfPig** e chiama
-  direttamente il server LLM (config `LLM:BaseUrl`, default `http://localhost:8080`)
-- In Docker: `LLM__BaseUrl=http://llm-service:8000`
+  direttamente il server LLM (llama.cpp) su `/v1/chat/completions`
+  (config `LLM:BaseUrl`, default `http://localhost:8080`)
+- In Docker: `LLM__BaseUrl=http://host.docker.internal:8080`
+- **OCR:** Tesseract OCR per PDF scansionati (PdfPageRenderer + PdfImageExtractor)
+- **GhsPictogramMatcher:** riconoscimento pittogrammi GHS da immagini nel PDF
+- **SdsVerifier:** verifica dati LLM contro testo SDS, campi non verificati segnati
 - ⚠️ Embedding/Reranking: configurati ma non ancora usati
 
 ## P4. Prompt per Analisi LLM ✅ COMPLETATO
 
-**Campi da estrarre (prodotto chimico):**
+**Campi da estrarre (scheda di sicurezza):**
 - Titolo, Produttore, Frasi H, Pittogrammi
 - Composizione CAS (>0,1% e <0,1%), Composizione completa
 - Stato fisico, Temperatura di ebollizione, COV %, Densità
 - URL SDS, Data SDS
+- Calcolo automatico: COV % (somma componenti), diisocianati, stato fisico
 
-L'analisi crea/aggiorna l'entità `ChemicalProduct` collegata al cliente.
+L'analisi crea/aggiorna l'entità `SafetyCard` collegata ai clienti.
 
 ## P5. Formato Import Excel ✅ COMPLETATO
 
 **Implementato:**
 - Libreria **ClosedXML** per il parsing .xlsx
 - Mappatura colonne basata su `dati per SDS.xlsx` (ID CLIENTE, Nome prodotto chimico, Produttore, Frasi H, Pittogrammi, Composizione, Stato fisico, TEB, COV, Densità, URL SDS, Data SDS)
-- `ImportService.ImportExcel`: crea/aggiorna clienti e prodotti chimici
+- `ImportService.ImportExcel`: crea/aggiorna clienti e schede di sicurezza
 - **Report import**: numero record, errori con dettagli
 - **Storico import**: tabella `import_history` + endpoint `GET /api/import/history`
 - UI: drag & drop, selezione file, esito, storico
@@ -79,6 +81,7 @@ L'analisi crea/aggiorna l'entità `ChemicalProduct` collegata al cliente.
 - Endpoint `DELETE /api/safety-cards/{id}/pdf`
 - Endpoint `GET /api/files/{...}` per il download
 - UI: sezione PDF nel form scheda (carica/rimuovi), link nella lista
+- SHA-256 del PDF (`PdfHash`) per evitare duplicati
 
 ## P7. Notifiche Scadenze ✅ COMPLETATO
 
@@ -88,18 +91,21 @@ L'analisi crea/aggiorna l'entità `ChemicalProduct` collegata al cliente.
 - `ExpirationService`: ricalcola `Stato` e `DaysRemaining` delle schede, genera notifiche
 - `ExpirationWorker`: **BackgroundService** che esegue il check orario
 - Endpoint `GET /api/scenarios/expiring?days=N`
-- Endpoint notifiche: `GET /api/notifications`, `PUT /api/notifications/{id}/read`, `PUT /api/notifications/read-all`
+- Endpoint notifiche: `GET /api/notifications`, `GET /api/notifications/unread-count`,
+  `PUT /api/notifications/{id}/read`, `PUT /api/notifications/read-all`, `DELETE /api/notifications/{id}`
 - Endpoint `GET /api/dashboard/stats` (statistiche complete)
 - UI: dashboard con stats + notifiche, pagina scadenze con filtri
 
 ## P8. Deployment Target ⚠️ COMPLETATO CON DIVERGENZE
 
 **Implementato:**
-- `docker-compose.yml` con servizi: api, frontend, llm-service
+- `docker-compose.yml` con servizi: api, frontend
 - Frontend: nginx con proxy `/api/` → `api:8080`
 - API: .NET 8, porta 5007:8080
 - **Dockerfile API corretto** (progetto singolo, mkdir uploads/logs)
-- **llm-service: Dockerfile C# .NET 8**
+- **SPA:** frontend buildato in `wwwroot`, API serve tutto (raccomandato)
+- Scripts: `build-spa.bat` (Windows), `build-spa.sh` (Linux/Mac)
+- `web.config` per IIS
 
 **⚠️ Divergenze:**
 - **Database:** SQL Server (non PostgreSQL come da decisione originale)
@@ -115,21 +121,28 @@ L'analisi crea/aggiorna l'entità `ChemicalProduct` collegata al cliente.
 
 - SQL Server con `Integrated Security=true`
 - Naming snake_case mantenuto
-- EF Core Migrations: `InitialCreate` + `AddChemicalProductsAndRefreshTokens`
+- EF Core Migrations: 7 migrazioni (InitialCreate → SchedeMoltiClienti)
+- Relazione Client-SafetyCard: Many-to-Many via `client_safety_cards`
+- ChemicalProduct merge in SafetyCard (entità eliminata)
+- ⚠️ `db/init.sql` obsoleto: usare EF Core Migrations
 
 ## P11. Testing ⏳ DA DEFINIRE
 
 Nessun test presente. Da definire framework (xUnit/NUnit) e copertura.
 
-## P12. Documentazione ⏳ DA DEFINIRE
+## P12. Documentazione ✅ AGGIORNATA
 
-- `PROJECT_BLUEPRINT.md` da aggiornare
-- README con istruzioni setup da creare
+- `PROJECT_BLUEPRINT.md` aggiornato (2026-10-26)
+- `DEPLOYMENT.md` presente
+- `QUICKSTART.md` presente
+- `SPA_SUMMARY.md` presente
+- `frontend/sds-frontend/README.md` da aggiornare
 
 ## P13. Prossimi Passi Consigliati
 
-1. **Applicare la migration** `AddChemicalProductsAndRefreshTokens` al database
+1. **Testing**: setup framework + test unitari/integrazione
 2. **Verifica end-to-end**: login → import Excel → upload PDF → analisi LLM → scadenze
-3. **Testing**: setup framework + test unitari/integrazione
-4. **Documentazione**: README setup + documentazione API
-5. **Embedding/Reranking**: valutare se attivarli (configurati ma non usati)
+3. **Documentazione**: README setup + documentazione API
+4. **Embedding/Reranking**: valutare se attivarli (configurati ma non usati)
+5. **Rate limiting**: implementare per API
+6. **Audit log**: implementare per operazioni critiche

@@ -1,3 +1,16 @@
+-- ============================================================================
+-- ⚠️ OBSOLETO - DEPRECATED
+-- ============================================================================
+-- Questo script NON riflette lo schema attuale del database.
+-- Usare EF Core Migrations per creare/aggiornare il database:
+--
+--   cd api/SSA.SDS.Api
+--   dotnet ef database update
+--
+-- Le migrazioni sono in: api/SSA.SDS.Api/Migrations/
+-- Schema corrente: vedere SdsDbContext.cs e le migrazioni EF Core
+-- ============================================================================
+
 -- SSA-SDS Database Initialization Script
 -- SQL Server 2016+
 

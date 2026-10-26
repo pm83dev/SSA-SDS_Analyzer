@@ -1,4 +1,4 @@
-namespace SSA.SDS.Api.DTOs;
+﻿namespace SSA.SDS.Api.DTOs;
 
 public class LoginRequest
 {
@@ -25,6 +25,46 @@ public class RegisterRequest
     public string Password { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string Role { get; set; } = "Operator";
+}
+
+public class UserDto
+{
+    public int Id { get; set; }
+    public string Username { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public string Role { get; set; } = "Operator";
+    public bool IsActive { get; set; } = true;
+    public DateTime? LastLogin { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
+
+    public static UserDto From(SSA.SDS.Api.Entities.User u) => new()
+    {
+        Id = u.Id,
+        Username = u.Username,
+        Email = u.Email ?? string.Empty,
+        Role = u.Role,
+        IsActive = u.IsActive,
+        LastLogin = u.LastLogin,
+        CreatedAt = u.CreatedAt,
+        UpdatedAt = u.UpdatedAt
+    };
+}
+
+public class CreateUserDto
+{
+    public string Username { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public string Role { get; set; } = "Operator";
+}
+
+public class UpdateUserDto
+{
+    public string? Email { get; set; }
+    public string? Role { get; set; }
+    public bool? IsActive { get; set; }
+    public string? Password { get; set; }
 }
 
 public class CreateClientDto
@@ -75,7 +115,6 @@ public class ClientDto
 
 public class CreateSafetyCardDto
 {
-    // Clienti collegati alla scheda: zero, uno o più (la scheda esiste anche senza clienti)
     public List<int> ClientIds { get; set; } = new();
     public string Tipologia { get; set; } = string.Empty;
     public string Titolo { get; set; } = string.Empty;
@@ -97,8 +136,6 @@ public class CreateSafetyCardDto
     public string? CovPercent { get; set; }
     public string? Densita { get; set; }
     public string? SdsUrl { get; set; }
-
-    // true dal form quando l'utente ha controllato i dati sulla scheda PDF: toglie tutti i "da verificare"
     public bool DatiVerificati { get; set; }
 
     public void ApplyTo(SSA.SDS.Api.Entities.SafetyCard card)
@@ -123,6 +160,11 @@ public class CreateSafetyCardDto
         card.CovPercent = CovPercent;
         card.Densita = Densita;
         card.SdsUrl = SdsUrl;
+        if (DatiVerificati)
+        {
+            card.CampiDaVerificare = null;
+            card.NoteVerifica = null;
+        }
     }
 }
 
@@ -161,7 +203,6 @@ public class SafetyCardDto
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 
-    // sc.Clients deve essere caricato (Include) per riportare i clienti collegati
     public static SafetyCardDto From(SSA.SDS.Api.Entities.SafetyCard sc) => new()
     {
         Id = sc.Id,
@@ -202,7 +243,6 @@ public class SafetyCardDto
     };
 }
 
-// Riferimento a un cliente collegato a una scheda
 public class ClientRefDto
 {
     public int Id { get; set; }

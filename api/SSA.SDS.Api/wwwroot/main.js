@@ -1,10 +1,10 @@
 import {
   ScenarioService
-} from "./chunk-HR5Y3KXV.js";
+} from "./chunk-NLIQRZZQ.js";
 import {
   AuthService
-} from "./chunk-TX7OKUSU.js";
-import "./chunk-26ID2PJJ.js";
+} from "./chunk-6J24ZGQS.js";
+import "./chunk-APIYY3YU.js";
 import {
   NavigationEnd,
   Router,
@@ -13,7 +13,7 @@ import {
   RouterOutlet,
   bootstrapApplication,
   provideRouter
-} from "./chunk-NBCZAAC7.js";
+} from "./chunk-HKNCC5DQ.js";
 import {
   CommonModule,
   NgClass,
@@ -45,7 +45,7 @@ import {
   ɵɵtext,
   ɵɵtextInterpolate,
   ɵɵtextInterpolate1
-} from "./chunk-YE2GV6RL.js";
+} from "./chunk-XOMSVR7A.js";
 
 // src/app/app.routes.ts
 function authGuard() {
@@ -69,7 +69,7 @@ function redirectIfAuthenticated() {
 var routes = [
   {
     path: "login",
-    loadComponent: () => import("./chunk-XDMJT4RC.js").then((m) => m.LoginComponent),
+    loadComponent: () => import("./chunk-6GXNBYE2.js").then((m) => m.LoginComponent),
     canActivate: [redirectIfAuthenticated]
   },
   {
@@ -79,52 +79,67 @@ var routes = [
   },
   {
     path: "dashboard",
-    loadComponent: () => import("./chunk-2BAAPW7H.js").then((m) => m.DashboardComponent),
+    loadComponent: () => import("./chunk-AWAFQHSR.js").then((m) => m.DashboardComponent),
     canActivate: [authGuard]
   },
   {
     path: "clients",
-    loadComponent: () => import("./chunk-6YUHEO6D.js").then((m) => m.ClientListComponent),
+    loadComponent: () => import("./chunk-RZLOJUKY.js").then((m) => m.ClientListComponent),
     canActivate: [authGuard]
   },
   {
     path: "clients/new",
-    loadComponent: () => import("./chunk-XD2RWONH.js").then((m) => m.ClientFormComponent),
+    loadComponent: () => import("./chunk-DXWBZJZO.js").then((m) => m.ClientFormComponent),
     canActivate: [authGuard]
   },
   {
     path: "clients/:id",
-    loadComponent: () => import("./chunk-6FPLKQM6.js").then((m) => m.ClientDetailComponent),
+    loadComponent: () => import("./chunk-BL6GLTTD.js").then((m) => m.ClientDetailComponent),
     canActivate: [authGuard]
   },
   {
     path: "clients/:id/edit",
-    loadComponent: () => import("./chunk-XD2RWONH.js").then((m) => m.ClientFormComponent),
+    loadComponent: () => import("./chunk-DXWBZJZO.js").then((m) => m.ClientFormComponent),
     canActivate: [authGuard]
   },
   {
     path: "safety-cards",
-    loadComponent: () => import("./chunk-Z3LGOW7G.js").then((m) => m.CardListComponent),
+    loadComponent: () => import("./chunk-W3O2J6LU.js").then((m) => m.CardListComponent),
     canActivate: [authGuard]
   },
   {
     path: "safety-cards/new",
-    loadComponent: () => import("./chunk-567WJ4M7.js").then((m) => m.CardFormComponent),
+    loadComponent: () => import("./chunk-VV3ENVUA.js").then((m) => m.CardFormComponent),
     canActivate: [authGuard]
   },
   {
     path: "safety-cards/:id/edit",
-    loadComponent: () => import("./chunk-567WJ4M7.js").then((m) => m.CardFormComponent),
+    loadComponent: () => import("./chunk-VV3ENVUA.js").then((m) => m.CardFormComponent),
     canActivate: [authGuard]
   },
   {
     path: "import",
-    loadComponent: () => import("./chunk-A5XYEU3O.js").then((m) => m.ImportComponent),
+    loadComponent: () => import("./chunk-LKR5MSFR.js").then((m) => m.ImportComponent),
     canActivate: [authGuard]
   },
   {
     path: "scenarios",
-    loadComponent: () => import("./chunk-7EBACIWP.js").then((m) => m.ScenariosComponent),
+    loadComponent: () => import("./chunk-BFBG4SLR.js").then((m) => m.ScenariosComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: "users",
+    loadComponent: () => import("./chunk-WLSHQRBA.js").then((m) => m.UserListComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: "users/new",
+    loadComponent: () => import("./chunk-PUIXIVF3.js").then((m) => m.UserFormComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: "users/:id/edit",
+    loadComponent: () => import("./chunk-PUIXIVF3.js").then((m) => m.UserFormComponent),
     canActivate: [authGuard]
   },
   {
@@ -171,17 +186,24 @@ var appConfig = {
 };
 
 // src/app/layout/components/navbar.component.ts
-function NavbarComponent_li_24_li_6_Template(rf, ctx) {
+function NavbarComponent_li_23_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "li", 7)(1, "a", 20);
+    \u0275\u0275text(2, "Utenti");
+    \u0275\u0275elementEnd()();
+  }
+}
+function NavbarComponent_li_25_li_6_Template(rf, ctx) {
   if (rf & 1) {
     const _r2 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "li")(1, "a", 18);
-    \u0275\u0275listener("click", function NavbarComponent_li_24_li_6_Template_a_click_1_listener($event) {
+    \u0275\u0275elementStart(0, "li")(1, "a", 19);
+    \u0275\u0275listener("click", function NavbarComponent_li_25_li_6_Template_a_click_1_listener($event) {
       const n_r3 = \u0275\u0275restoreView(_r2).$implicit;
       const ctx_r3 = \u0275\u0275nextContext(2);
       $event.preventDefault();
       return \u0275\u0275resetView(ctx_r3.markRead(n_r3.id));
     });
-    \u0275\u0275elementStart(2, "span", 25);
+    \u0275\u0275elementStart(2, "span", 27);
     \u0275\u0275text(3);
     \u0275\u0275elementEnd()()();
   }
@@ -193,25 +215,25 @@ function NavbarComponent_li_24_li_6_Template(rf, ctx) {
     \u0275\u0275textInterpolate(n_r3.message);
   }
 }
-function NavbarComponent_li_24_Template(rf, ctx) {
+function NavbarComponent_li_25_Template(rf, ctx) {
   if (rf & 1) {
     const _r1 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "li", 19)(1, "a", 20);
-    \u0275\u0275listener("click", function NavbarComponent_li_24_Template_a_click_1_listener($event) {
+    \u0275\u0275elementStart(0, "li", 21)(1, "a", 22);
+    \u0275\u0275listener("click", function NavbarComponent_li_25_Template_a_click_1_listener($event) {
       \u0275\u0275restoreView(_r1);
       return \u0275\u0275resetView($event.preventDefault());
     });
     \u0275\u0275text(2, " Notifiche ");
-    \u0275\u0275elementStart(3, "span", 21);
+    \u0275\u0275elementStart(3, "span", 23);
     \u0275\u0275text(4);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(5, "ul", 17);
-    \u0275\u0275template(6, NavbarComponent_li_24_li_6_Template, 4, 2, "li", 22);
+    \u0275\u0275elementStart(5, "ul", 18);
+    \u0275\u0275template(6, NavbarComponent_li_25_li_6_Template, 4, 2, "li", 24);
     \u0275\u0275elementStart(7, "li");
-    \u0275\u0275element(8, "hr", 23);
+    \u0275\u0275element(8, "hr", 25);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(9, "li")(10, "a", 24);
-    \u0275\u0275listener("click", function NavbarComponent_li_24_Template_a_click_10_listener($event) {
+    \u0275\u0275elementStart(9, "li")(10, "a", 26);
+    \u0275\u0275listener("click", function NavbarComponent_li_25_Template_a_click_10_listener($event) {
       \u0275\u0275restoreView(_r1);
       const ctx_r3 = \u0275\u0275nextContext();
       $event.preventDefault();
@@ -233,6 +255,7 @@ var NavbarComponent = class _NavbarComponent {
   scenarioService;
   router;
   username = "Utente";
+  role = "";
   unreadCount = 0;
   notifications = [];
   constructor(auth, scenarioService, router) {
@@ -242,6 +265,7 @@ var NavbarComponent = class _NavbarComponent {
   }
   ngOnInit() {
     this.username = localStorage.getItem("username") || "Utente";
+    this.role = localStorage.getItem("userRole") || "";
     this.loadNotifications();
   }
   loadNotifications() {
@@ -281,7 +305,7 @@ var NavbarComponent = class _NavbarComponent {
   static \u0275fac = function NavbarComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _NavbarComponent)(\u0275\u0275directiveInject(AuthService), \u0275\u0275directiveInject(ScenarioService), \u0275\u0275directiveInject(Router));
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _NavbarComponent, selectors: [["app-navbar"]], standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 32, vars: 2, consts: [[1, "navbar", "navbar-expand-lg", "navbar-dark", "bg-primary"], [1, "container-fluid"], ["routerLink", "/dashboard", "routerLinkActive", "active", 1, "navbar-brand"], ["type", "button", "data-bs-toggle", "collapse", "data-bs-target", "#navbarNav", 1, "navbar-toggler"], [1, "navbar-toggler-icon"], ["id", "navbarNav", 1, "collapse", "navbar-collapse"], [1, "navbar-nav", "me-auto"], [1, "nav-item"], ["routerLink", "/dashboard", "routerLinkActive", "active", 1, "nav-link"], ["routerLink", "/clients", "routerLinkActive", "active", 1, "nav-link"], ["routerLink", "/safety-cards", "routerLinkActive", "active", 1, "nav-link"], ["routerLink", "/import", "routerLinkActive", "active", 1, "nav-link"], ["routerLink", "/scenarios", "routerLinkActive", "active", 1, "nav-link"], [1, "navbar-nav"], ["class", "nav-item dropdown me-2", 4, "ngIf"], [1, "nav-item", "dropdown"], ["href", "#", "role", "button", "data-bs-toggle", "dropdown", 1, "nav-link", 3, "click"], [1, "dropdown-menu", "dropdown-menu-end"], ["href", "#", 1, "dropdown-item", 3, "click"], [1, "nav-item", "dropdown", "me-2"], ["href", "#", "role", "button", "data-bs-toggle", "dropdown", 1, "nav-link", "position-relative", 3, "click"], [1, "badge-notif"], [4, "ngFor", "ngForOf"], [1, "dropdown-divider"], ["href", "#", 1, "dropdown-item", "text-center", 3, "click"], [3, "ngClass"]], template: function NavbarComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _NavbarComponent, selectors: [["app-navbar"]], standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 33, vars: 3, consts: [[1, "navbar", "navbar-expand-lg", "navbar-dark", "bg-primary"], [1, "container-fluid"], ["routerLink", "/dashboard", "routerLinkActive", "active", 1, "navbar-brand"], ["type", "button", "data-bs-toggle", "collapse", "data-bs-target", "#navbarNav", 1, "navbar-toggler"], [1, "navbar-toggler-icon"], ["id", "navbarNav", 1, "collapse", "navbar-collapse"], [1, "navbar-nav", "me-auto"], [1, "nav-item"], ["routerLink", "/dashboard", "routerLinkActive", "active", 1, "nav-link"], ["routerLink", "/clients", "routerLinkActive", "active", 1, "nav-link"], ["routerLink", "/safety-cards", "routerLinkActive", "active", 1, "nav-link"], ["routerLink", "/import", "routerLinkActive", "active", 1, "nav-link"], ["routerLink", "/scenarios", "routerLinkActive", "active", 1, "nav-link"], ["class", "nav-item", 4, "ngIf"], [1, "navbar-nav"], ["class", "nav-item dropdown me-2", 4, "ngIf"], [1, "nav-item", "dropdown"], ["href", "#", "role", "button", "data-bs-toggle", "dropdown", 1, "nav-link", 3, "click"], [1, "dropdown-menu", "dropdown-menu-end"], ["href", "#", 1, "dropdown-item", 3, "click"], ["routerLink", "/users", "routerLinkActive", "active", 1, "nav-link"], [1, "nav-item", "dropdown", "me-2"], ["href", "#", "role", "button", "data-bs-toggle", "dropdown", 1, "nav-link", "position-relative", 3, "click"], [1, "badge-notif"], [4, "ngFor", "ngForOf"], [1, "dropdown-divider"], ["href", "#", 1, "dropdown-item", "text-center", 3, "click"], [3, "ngClass"]], template: function NavbarComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "nav", 0)(1, "div", 1)(2, "a", 2);
       \u0275\u0275text(3, "SSA-SDS");
@@ -303,25 +327,29 @@ var NavbarComponent = class _NavbarComponent {
       \u0275\u0275elementEnd()();
       \u0275\u0275elementStart(20, "li", 7)(21, "a", 12);
       \u0275\u0275text(22, "Scadenze");
-      \u0275\u0275elementEnd()()();
-      \u0275\u0275elementStart(23, "ul", 13);
-      \u0275\u0275template(24, NavbarComponent_li_24_Template, 12, 2, "li", 14);
-      \u0275\u0275elementStart(25, "li", 15)(26, "a", 16);
-      \u0275\u0275listener("click", function NavbarComponent_Template_a_click_26_listener($event) {
+      \u0275\u0275elementEnd()();
+      \u0275\u0275template(23, NavbarComponent_li_23_Template, 3, 0, "li", 13);
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(24, "ul", 14);
+      \u0275\u0275template(25, NavbarComponent_li_25_Template, 12, 2, "li", 15);
+      \u0275\u0275elementStart(26, "li", 16)(27, "a", 17);
+      \u0275\u0275listener("click", function NavbarComponent_Template_a_click_27_listener($event) {
         return $event.preventDefault();
       });
-      \u0275\u0275text(27);
+      \u0275\u0275text(28);
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(28, "ul", 17)(29, "li")(30, "a", 18);
-      \u0275\u0275listener("click", function NavbarComponent_Template_a_click_30_listener($event) {
+      \u0275\u0275elementStart(29, "ul", 18)(30, "li")(31, "a", 19);
+      \u0275\u0275listener("click", function NavbarComponent_Template_a_click_31_listener($event) {
         $event.preventDefault();
         return ctx.logout();
       });
-      \u0275\u0275text(31, "Esci");
+      \u0275\u0275text(32, "Esci");
       \u0275\u0275elementEnd()()()()()()()();
     }
     if (rf & 2) {
-      \u0275\u0275advance(24);
+      \u0275\u0275advance(23);
+      \u0275\u0275property("ngIf", ctx.role === "Admin");
+      \u0275\u0275advance(2);
       \u0275\u0275property("ngIf", ctx.unreadCount > 0);
       \u0275\u0275advance(3);
       \u0275\u0275textInterpolate1(" ", ctx.username, " ");

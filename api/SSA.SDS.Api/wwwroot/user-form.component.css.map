@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/features/users/components/user-form.component.css"],
+  "sourcesContent": [".user-form-page {\r\n  padding: 20px;\r\n}\r\n\r\n.page-header {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n  margin-bottom: 20px;\r\n}\r\n\r\n.form-container {\r\n  background: white;\r\n  border-radius: 8px;\r\n  box-shadow: 0 2px 4px rgba(0,0,0,0.1);\r\n  padding: 30px;\r\n  max-width: 600px;\r\n}\r\n\r\n.form-grid {\r\n  display: grid;\r\n  grid-template-columns: 1fr 1fr;\r\n  gap: 20px;\r\n  margin-bottom: 20px;\r\n}\r\n\r\n.form-group {\r\n  display: flex;\r\n  flex-direction: column;\r\n}\r\n\r\n.form-group label {\r\n  margin-bottom: 5px;\r\n  font-weight: 600;\r\n}\r\n\r\n.error-message {\r\n  color: #dc3545;\r\n  font-size: 0.875rem;\r\n  margin-top: 4px;\r\n}\r\n\r\n.form-actions {\r\n  display: flex;\r\n  justify-content: flex-end;\r\n  gap: 10px;\r\n  padding-top: 20px;\r\n  border-top: 1px solid #dee2e6;\r\n}"],
+  "mappings": ";AAAA,CAAC;AACC,WAAS;AACX;AAEA,CAAC;AACC,WAAS;AACT,mBAAiB;AACjB,eAAa;AACb,iBAAe;AACjB;AAEA,CAAC;AACC,cAAY;AACZ,iBAAe;AACf,cAAY,EAAE,IAAI,IAAI,KAAK,CAAC,EAAC,CAAC,EAAC,CAAC,EAAC;AACjC,WAAS;AACT,aAAW;AACb;AAEA,CAAC;AACC,WAAS;AACT,yBAAuB,IAAI;AAC3B,OAAK;AACL,iBAAe;AACjB;AAEA,CAAC;AACC,WAAS;AACT,kBAAgB;AAClB;AAEA,CALC,WAKW;AACV,iBAAe;AACf,eAAa;AACf;AAEA,CAAC;AACC,SAAO;AACP,aAAW;AACX,cAAY;AACd;AAEA,CAAC;AACC,WAAS;AACT,mBAAiB;AACjB,OAAK;AACL,eAAa;AACb,cAAY,IAAI,MAAM;AACxB;",
+  "names": []
+}

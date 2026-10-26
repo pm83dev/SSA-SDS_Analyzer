@@ -17,6 +17,15 @@ Browser → IIS (Port 80) → ASP.NET Core (Port 8080)
                                     └── /* → Angular Frontend (static files)
 ```
 
+**LLM Integration:**
+```
+ASP.NET Core API
+    └── ImportService.CallLlmAsync → Server LLM (llama.cpp)
+                                        └── POST /v1/chat/completions
+```
+
+The API calls the LLM server directly. No separate LLM service is needed.
+
 **Key Features:**
 - ✅ Single port (no CORS issues)
 - ✅ API calls use relative paths (`/api/...`)
@@ -97,16 +106,69 @@ docker run -d \
 - `ASPNETCORE_ENVIRONMENT`: `Production`
 - `ASPNETCORE_URLS`: `http://+:8080`
 - `ConnectionStrings__DefaultConnection`: Your SQL Server connection string
+- `LLM__BaseUrl`: LLM service URL (default: `http://localhost:8080`)
+- `LLM__Model`: LLM model name
+- `LLM__TimeoutSeconds`: LLM request timeout (default: 180)
+
+### appsettings.json sections:
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=.;Database=sds_db;Integrated Security=true;"
+  },
+  "JWT": {
+    "Secret": "your-secret-key",
+    "AccessExpirationHours": 2,
+    "RefreshExpirationDays": 7
+  },
+  "LLM": {
+    "BaseUrl": "http://localhost:8080",
+    "Model": "your-model",
+    "TimeoutSeconds": 180
+  },
+  "FileStorage": {
+    "Path": "uploads",
+    "MaxFileSizeMB": 20
+  },
+  "Ocr": {
+    "Languages": "ita+eng",
+    "DataPath": "tessdata"
+  }
+}
+```
 
 ## 🔧 Troubleshooting
 
 **404 on Angular Routes:** Ensure `web.config` is in IIS root. `MapFallbackToFile("index.html")` handles SPA routing.
 
-**API Calls Fail:** Check `environment.prod.ts` has `apiUrl: '/api'`. Rebuild frontend.
+**API Calls Fail:** Check `environment.prod.ts` has `apiUrl: ''` (relative). Rebuild frontend.
 
 **500 on Startup:** Check database connection string and SQL Server accessibility.
 
 **Static Files Not Loading:** Verify `wwwroot` exists and IIS permissions are correct.
+
+**LLM Service Not Responding:**
+- Check `LLM__BaseUrl` in appsettings.json or environment variables
+- Verify LLM service is running on correct port
+- Check logs for timeout errors (`logs/*.log`)
+
+**OCR Not Working:**
+- Verify `tessdata` folder contains `ita.traineddata` and `eng.traineddata`
+- Check `Ocr__DataPath` in appsettings.json
+- PDF must be scanned (no text layer) for OCR to be triggered
+
+**PDF Upload Fails:**
+- Max file size: 20MB (configurable in `FileStorage__MaxFileSizeMB`)
+- Check `uploads` folder permissions
+
+**Refresh Token Not Working:**
+- Verify `RefreshToken` and `RefreshTokenExpires` columns exist in `users` table
+- Run migrations: `dotnet ef database update`
+
+**Database Migrations:**
+- Apply migrations: `dotnet ef database update`
+- Check `Migrations` folder for latest migration
+- ⚠️ `db/init.sql` is obsolete, use EF Core Migrations
 
 ## ✅ Deployment Checklist
 
@@ -118,7 +180,9 @@ docker run -d \
 - [ ] .NET 8 Runtime is installed
 - [ ] ASP.NET Core Module is installed
 - [ ] SQL Server is accessible
+- [ ] LLM server (llama.cpp) is running and accessible at `LLM__BaseUrl`
+- [ ] `tessdata` folder is present (for OCR)
 - [ ] Test locally before deploying
 
 ---
-**Version:** 1.0 | **Last Updated:** 2026-07-09
+**Version:** 2.0 | **Last Updated:** 2026-10-26

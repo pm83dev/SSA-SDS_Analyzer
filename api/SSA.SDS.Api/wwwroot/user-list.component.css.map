@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/features/users/components/user-list.component.css"],
+  "sourcesContent": [".user-list-page {\r\n  padding: 20px;\r\n}\r\n\r\n.page-header {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n  margin-bottom: 20px;\r\n}\r\n\r\n.loading-container {\r\n  text-align: center;\r\n  padding: 40px;\r\n}\r\n\r\n.users-container {\r\n  background: white;\r\n  border-radius: 8px;\r\n  box-shadow: 0 2px 4px rgba(0,0,0,0.1);\r\n  overflow-x: auto;\r\n}\r\n\r\ntable {\r\n  margin-bottom: 0;\r\n}\r\n\r\n.table td, .table th {\r\n  vertical-align: middle;\r\n}"],
+  "mappings": ";AAAA,CAAC;AACC,WAAS;AACX;AAEA,CAAC;AACC,WAAS;AACT,mBAAiB;AACjB,eAAa;AACb,iBAAe;AACjB;AAEA,CAAC;AACC,cAAY;AACZ,WAAS;AACX;AAEA,CAAC;AACC,cAAY;AACZ,iBAAe;AACf,cAAY,EAAE,IAAI,IAAI,KAAK,CAAC,EAAC,CAAC,EAAC,CAAC,EAAC;AACjC,cAAY;AACd;AAEA;AACE,iBAAe;AACjB;AAEA,CAAC,MAAM;AAAI,CAAV,MAAiB;AAChB,kBAAgB;AAClB;",
+  "names": []
+}

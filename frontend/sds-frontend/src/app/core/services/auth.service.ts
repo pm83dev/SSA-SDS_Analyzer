@@ -19,6 +19,16 @@ export class AuthService {
         localStorage.setItem('refreshToken', res.refreshToken);
         localStorage.setItem('userRole', res.role);
         localStorage.setItem('username', username);
+        // Estrai userId dal JWT
+        const token = res.accessToken;
+        if (token) {
+          try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            localStorage.setItem('userId', payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] || payload['sub'] || '');
+          } catch (e) {
+            console.warn('Non è stato possibile estrarre l\'userId dal token');
+          }
+        }
       })
     );
   }
@@ -28,6 +38,7 @@ export class AuthService {
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('userRole');
     localStorage.removeItem('username');
+    localStorage.removeItem('userId');
   }
 
   getAccessToken(): string | null {

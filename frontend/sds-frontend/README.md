@@ -1,16 +1,28 @@
-# SdsFrontend
+# SSA-SDS Analyzer - Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.7.
+Angular 18.2 frontend for the SSA-SDS Analyzer application.
+
+## Features
+- Client management (CRUD)
+- Safety card management (CRUD) with PDF upload
+- Excel import with history
+- LLM PDF analysis (text extraction + OCR + GHS pictogram recognition)
+- Expiration tracking and notifications
+- JWT authentication with automatic token refresh
+- Dashboard with statistics
 
 ## Development server
 
 To start a local development server, run:
 
 ```bash
+npm install
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+The server proxies `/api/*` requests to `http://localhost:5007` (see `proxy.conf.json`).
+
+Once the server is running, open your browser and navigate to `http://localhost:4200/`.
 
 ## Code scaffolding
 
@@ -18,12 +30,6 @@ Angular CLI includes powerful code scaffolding tools. To generate a new componen
 
 ```bash
 ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
 ```
 
 ## Building
@@ -34,7 +40,15 @@ To build the project run:
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+This will compile your project and store the build artifacts in the `dist/` directory.
+
+For production build (used by SPA deployment):
+
+```bash
+ng build --configuration production
+```
+
+The output is copied to `api/SSA.SDS.Api/wwwroot/` by `build-spa.bat` or `build-spa.sh`.
 
 ## Running unit tests
 
@@ -52,7 +66,24 @@ For end-to-end (e2e) testing, run:
 ng e2e
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Project Structure
+
+```
+src/app/
+├── core/
+│   ├── guards/          # Auth guard
+│   ├── interceptors/    # Auth interceptor (JWT + refresh)
+│   ├── models/          # Client, SafetyCard, SDS fields
+│   └── services/        # API services
+├── features/
+│   ├── auth/            # Login
+│   ├── clients/         # Client list, form, detail
+│   ├── safety-cards/    # Card list, form
+│   ├── import/          # Excel import
+│   └── scenarios/       # Dashboard, expiring cards
+├── layout/              # Navbar
+└── shared/              # Shared components
+```
 
 ## Additional Resources
 

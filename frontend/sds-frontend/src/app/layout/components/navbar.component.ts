@@ -13,6 +13,7 @@ import { ScenarioService, AppNotification } from '../../core/services/scenario.s
 })
 export class NavbarComponent implements OnInit {
   username = 'Utente';
+  role = '';
   unreadCount = 0;
   notifications: AppNotification[] = [];
 
@@ -24,6 +25,7 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
     this.username = localStorage.getItem('username') || 'Utente';
+    this.role = localStorage.getItem('userRole') || '';
     this.loadNotifications();
   }
 
