@@ -7,6 +7,7 @@
 *.cache
 *.log
 user-secrets.json
+appsettings.json
 
 # NuGet
 nuget.config
