@@ -573,7 +573,39 @@ SSA-SDS_Analyzer/
 
 ---
 
-## 14. Prossimi Passi Consigliati
+## 15. Setup Iniziale (Primo Clone)
+
+Il file `appsettings.json` **non è nel repository** (contiene dati sensibili). Dopo aver clonato il repository:
+
+```bash
+# Linux/Mac
+cp api/SSA.SDS.Api/appsettings.example.json api/SSA.SDS.Api/appsettings.json
+
+# Windows
+copy api\SSA.SDS.Api\appsettings.example.json api\SSA.SDS.Api\appsettings.json
+```
+
+Poi modifica `appsettings.json` e sostituisci i placeholder:
+
+| Placeholder | Valore da inserire |
+|-------------|-------------------|
+| `YOUR_SQL_SERVER` | Nome/indirizzo del server SQL |
+| `YOUR_USER` | Username database |
+| `YOUR_PASSWORD` | Password database |
+| `YOUR_JWT_SECRET_KEY...` | Chiave segreta JWT (min 32 caratteri) |
+| `YOUR_LLM_SERVER:8080` | URL del server LLM (llama.cpp) |
+| `YOUR_MODEL_NAME` | Nome del modello LLM |
+
+Poi applica le migration:
+
+```bash
+cd api/SSA.SDS.Api
+dotnet ef database update
+```
+
+---
+
+## 16. Prossimi Passi Consigliati
 
 1. **Testing:**
    - Unit test per servizi (ImportService, OcrService, SdsVerifier)

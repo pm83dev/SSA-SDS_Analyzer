@@ -1,5 +1,25 @@
 # 🚀 Quick Start - Deploy to IIS
 
+## 0. Setup Configuration (Primo Setup)
+
+Il file `appsettings.json` non è nel repository (contiene dati sensibili). Per crearlo:
+
+```batch
+cd api\SSA.SDS.Api
+copy appsettings.example.json appsettings.json
+```
+
+Poi modifica `appsettings.json` e sostituisci i placeholder:
+
+| Placeholder | Valore da inserire |
+|-------------|-------------------|
+| `YOUR_SQL_SERVER` | Nome/indirizzo del server SQL |
+| `YOUR_USER` | Username database |
+| `YOUR_PASSWORD` | Password database |
+| `YOUR_JWT_SECRET_KEY...` | Chiave segreta JWT (min 32 caratteri) |
+| `YOUR_LLM_SERVER:8080` | URL del server LLM (llama.cpp) |
+| `YOUR_MODEL_NAME` | Nome del modello LLM |
+
 ## 1. Build the SPA
 ```batch
 cd C:\DEV\SSA-SDS_Analyzer

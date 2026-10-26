@@ -102,6 +102,29 @@ docker run -d \
 
 ## ⚙️ Configuration
 
+### ⚠️ appsettings.json (Dati Sensibili)
+
+Il file `appsettings.json` **non è nel repository** (contiene dati sensibili). Per crearlo:
+
+```bash
+# Linux/Mac
+cp api/SSA.SDS.Api/appsettings.example.json api/SSA.SDS.Api/appsettings.json
+
+# Windows
+copy api\SSA.SDS.Api\appsettings.example.json api\SSA.SDS.Api\appsettings.json
+```
+
+Poi modifica `appsettings.json` e sostituisci i placeholder:
+
+| Placeholder | Valore da inserire |
+|-------------|-------------------|
+| `YOUR_SQL_SERVER` | Nome/indirizzo del server SQL |
+| `YOUR_USER` | Username database |
+| `YOUR_PASSWORD` | Password database |
+| `YOUR_JWT_SECRET_KEY...` | Chiave segreta JWT (min 32 caratteri) |
+| `YOUR_LLM_SERVER:8080` | URL del server LLM (llama.cpp) |
+| `YOUR_MODEL_NAME` | Nome del modello LLM |
+
 ### Environment Variables:
 - `ASPNETCORE_ENVIRONMENT`: `Production`
 - `ASPNETCORE_URLS`: `http://+:8080`
