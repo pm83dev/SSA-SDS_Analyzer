@@ -1,0 +1,2541 @@
+: SIGMACOVER 456 BASE BASE Z
+
+SCHEDA DATI DI SICUREZZA
+
+Nome prodotto
+
+Non disponibile.
+
+Altri mezzi di identificazione
+
+1.1 Identificatore del prodotto
+
+1.3 Informazioni sul fornitore della scheda di dati di sicurezza
+
+Indirizzo e-mail della
+persona responsabile
+della scheda dati di
+sicurezza
+
+: Product.Stewardship.EMEA@ppg.com
+
+1.2 Usi identificati pertinenti della sostanza o della miscela e usi sconsigliati
+
+SEZIONE 1: identificazione della sostanza/miscela e della società/impresa
+
+1.4 Numero telefonico di emergenza
+
+Organismo ufficiale di consultazione nazionale/Centro antiveleni
+
+Fornitore
+
+Data di edizione/Data di revisione
+
+: 4 Giugno 2025
+
+Codice Prodotto
+
+: 00149924
+
+Uso del Prodotto
+
+: Applicazioni professionali, Usato per nebulizzazione.
+
+Uso della sostanza/della
+miscela
+
+: Rivestimento.
+
+PPG Coatings Belgium BV/SRL
+Tweemontstraat 104
+B-2100 Deurne
+Belgium
+Telephone +32-33606311
+Fax +32-33606435
+
++31 20 4075210
+
+Versione
+
+: 14.05
+
+Italia
+
+Conforme al regolamento (CE) n. 1907/2006 (REACH), Allegato II, e successivi adeguamenti
+introdotti dal regolamento della commissione (UE) n. 2020/878
+
+Usi da evitare
+
+: Prodotto non destinato, etichettato o confezionato per l’utilizzo da parte del
+consumatore.
+
+1. CAV Azienda ospedaliera "Antonio Cardarelli", II Servizio di anestesia e rianimazione, via Antonio Cardarelli 9, Napoli; CAP 80131 Tel. (+39) 081.545.3333
+2. CAV Azienda ospedaliera universitaria Careggi, U.O. Tossicologia medica, via Largo Brambilla 3, Firenze; CAP 50134Tel. (+39) 055.794.7819
+3. CAV Centro nazionale d'informazione tossicologica, IRCCS Fondazione S. Maugeri Clinica del lavoro e della riabilitazione, via S. Maugeri 10, Pavia; CAP 27100 Tel.
+(+39) 0382.24.444
+4. CAV Azienda ospedaliera Niguarda Ca' Grande, piazza Ospedale Maggiore 3, Milano; CAP 20162 Tel. (+39) 02.66.1010.29
+5. CAV Azienda ospedaliera "Papa Giovanni XXIII", tossicologia clinica, Dipartimento di farmacia clinica e farmacologia, piazza OMS 1, Bergamo; CAP 24127 Tel.
+800.88.33.00
+6. CAV Policlinico "Umberto I”, PRGM tossicologia d'urgenza, viale del Policlinico 155, Roma; CAP 00161 Tel. (+39) 06.4997.8000
+7. CAV del Policlinico "Agostino Gemelli", Servizio di tossicologia clinica, largo Agostino Gemelli 8, Roma; CAP 00168 Tel. (+39) 06.305.4343
+8. CAV Azienda ospedaliera universitaria riuniti, viale Luigi Pinto 1, Foggia; CAP 71122 Tel. 800.183.459
+9. CAV Ospedale pediatrico “Bambino Gesù”, Dipartimento emergenza e accettazione DEA, piazza Sant’Onofrio 4, Roma; CAP 00165 Tel. (+39) 06.6859.3726
+10. CAV dell'Azienda ospedaliera universitaria integrata (AOUI) di Verona sede di Borgo Trento, piazzale Aristide Stefani,1 - 37126 Verona» CAP 32126 Tel.
+800.011.858
+
+1/21
+
+Italian (IT)
+
+Italy
+
+Italia
+
+: 00149924
+Codice
+SIGMACOVER 456 BASE BASE Z
+
+Data di edizione/Data di revisione
+
+: 4 Giugno 2025
+
+Conforme al regolamento (CE) n. 1907/2006 (REACH), Allegato II, e successivi adeguamenti introdotti dal
+regolamento della commissione (UE) n. 2020/878
+
+Vedere la sezione 16 per i testi integrali delle indicazioni di pericolo summenzionate.
+Per informazioni più dettagliate sugli effetti per la salute e i sintomi, vedere la Sezione 11.
+
+: Miscela
+Definizione del prodotto
+Classificazione secondo Regolamento CE No.1272/2008 [CLP/GHS]
+Flam. Liq. 3, H226
+Skin Irrit. 2, H315
+Eye Irrit. 2, H319
+Skin Sens. 1, H317
+STOT SE 3, H335
+Aquatic Chronic 3, H412
+Questo prodotto è classificato come pericoloso a norma del Regolamento (CE) 1272/2008 e successive modifiche.
+
+2.1 Classificazione della sostanza o della miscela
+
+2.2 Elementi dell'etichetta
+Pittogrammi di pericolo
+
+:
+
+Avvertenza
+
+: Attenzione
+
+Indicazioni di pericolo
+
+: Liquido e vapori infiammabili.
+Provoca irritazione cutanea.
+Può provocare una reazione allergica cutanea.
+Provoca grave irritazione oculare.
+Può irritare le vie respiratorie.
+Nocivo per gli organismi acquatici con effetti di lunga durata.
+
+Prevenzione
+
+: Indossare guanti protettivi. Fare uso di un dispositivo di protezione degli occhi o del viso.
+Tenere lontano da fonti di calore, superfici calde, scintille, fiamme libere o altre fonti di
+accensione. Non fumare. Non disperdere nell’ambiente.
+: IN CASO DI INALAZIONE: In caso di malessere, contattare un CENTRO ANTIVELENI
+o un medico.
+: Conservare in luogo ben ventilato. Tenere il recipiente ben chiuso.
+: Smaltire il prodotto e il recipiente secondo ogni regolamento locale, regionale, nazionale
+e internazionale.
+P280, P210, P273, P304 + P312, P403 + P233, P501
+: xilene; Resine epossidiche (peso molecolare medio ≤ 700); 2-metilpropan-1-olo; 1,3-bis
+[12-idrossi-ottadecammide-N-metilene]-benzene e acido ottadecanoico, 12-idrossi-,
+prodotti di reazione con etilendiammina
+: Contiene componenti epossidici. Può provocare una reazione allergica.
+
+Consigli di prudenza
+
+Reazione
+
+Conservazione
+Smaltimento
+
+Elementi supplementari
+dell'etichetta
+
+Allegato XVII - Restrizioni
+in materia di fabbricazione,
+immissione sul mercato e
+uso di talune sostanze,
+preparati e articoli
+pericolosi
+Obblighi speciali riguardanti l'imballaggio
+
+SEZIONE 2: identificazione dei pericoli
+
+: Non applicabile.
+
+Ingredienti pericolosi
+
+2/21
+
+Italian (IT)
+
+Italy
+
+Italia
+
+SIGMACOVER 456 BASE BASE Z
+
+Codice
+
+: 00149924
+
+Data di edizione/Data di revisione
+
+: 4 Giugno 2025
+
+Conforme al regolamento (CE) n. 1907/2006 (REACH), Allegato II, e successivi adeguamenti introdotti dal
+regolamento della commissione (UE) n. 2020/878
+
+SEZIONE 2: identificazione dei pericoli
+
+Recipienti che devono
+essere muniti di chiusura
+di sicurezza per bambini
+
+: Non applicabile.
+
+Avvertimento tattile di
+pericolo
+
+: Non applicabile.
+
+2.3 Altri pericoli
+
+: Un contatto prolungato o ripetuto può disidratare la pelle e provocare irritazione.
+
+Altri pericoli non
+menzionati nella
+classificazione
+
+Il prodotto soddisfa i
+criteri per PBT o vPvB
+conformemente alla
+normativa (CE) n.
+1907/2006, allegato XIII
+
+: Questa miscela non contiene sostanze valutate come PBT o vPvB.
+
+SEZIONE 3: composizione/informazioni sugli ingredienti
+
+3.2 Miscele
+
+: Miscela
+
+Nome del prodotto/
+ingrediente
+
+Identificatori
+
+% per
+Peso
+
+Classificazione
+
+Tipo
+
+Conc. specifica
+limiti, fattori M e ATE
+
+xilene
+
+REACH #:
+01-2119488216-32
+CE: 215-535-7
+Numero CAS:
+1330-20-7
+
+≥10 - ≤25
+
+Flam. Liq. 3, H226
+Acute Tox. 4, H312
+Acute Tox. 4, H332
+Skin Irrit. 2, H315
+Eye Irrit. 2, H319
+STOT SE 3, H335
+Asp. Tox. 1, H304
+Aquatic Chronic 3, H412
+
+ATE [Dermico] = 1700 [1] [2]
+mg/kg
+ATE [Inalazione
+(vapori)] = 11 mg/l
+
+Resine epossidiche (peso
+molecolare medio ≤ 700)
+
+REACH #:
+01-2119456619-26
+CE: 500-033-5
+Numero CAS:
+25068-38-6
+
+≥5.0 - ≤10 Skin Irrit. 2, H315
+Eye Irrit. 2, H319
+Skin Sens. 1, H317
+Aquatic Chronic 2, H411
+
+Skin Irrit. 2, H315: C ≥
+5%
+Eye Irrit. 2, H319: C ≥
+5%
+
+[1]
+
+etilbenzene
+
+REACH #:
+01-2119489370-35
+CE: 202-849-4
+Numero CAS:
+100-41-4
+Indice:
+601-023-00-4
+
+≥1.0 - ≤5.0 Flam. Liq. 2, H225
+Acute Tox. 4, H332
+STOT RE 2, H373
+(organi dell’udito)
+Asp. Tox. 1, H304
+Aquatic Chronic 3, H412
+
+ATE [Inalazione
+(vapori)] = 17.8 mg/l
+
+[1] [2]
+
+2-metilpropan-1-olo
+
+REACH #:
+01-2119484609-23
+CE: 201-148-0
+Numero CAS:
+78-83-1
+Indice:
+603-108-00-1
+
+≥1.0 - <3.0 Flam. Liq. 3, H226
+Skin Irrit. 2, H315
+Eye Dam. 1, H318
+STOT SE 3, H335
+STOT SE 3, H336
+
+-
+
+[1] [2]
+
+1,3-bis[12-idrossi-
+
+REACH #:
+
+<1.0
+
+Skin Sens. 1, H317
+
+-
+
+[1] [2]
+
+3/21
+
+Italian (IT)
+
+Italy
+
+Italia
+
+SIGMACOVER 456 BASE BASE Z
+
+Codice
+
+: 00149924
+
+Data di edizione/Data di revisione
+
+: 4 Giugno 2025
+
+Conforme al regolamento (CE) n. 1907/2006 (REACH), Allegato II, e successivi adeguamenti introdotti dal
+regolamento della commissione (UE) n. 2020/878
+
+SEZIONE 3: composizione/informazioni sugli ingredienti
+
+I codici SUB rappresentano sostanze che non hanno numero CAS registrato.
+
+XILENE: diverse registrazioni REACH coprono la sostanza multi costituente con isomeri di xilene, etilbenzene (e toluene).
+Le altre registrazioni REACH sono: Idrocarburi aromatici, C8 (EC-No. 292-694-9; Numero di registrazione REACH
+01-2119486136-34; CAS No. 90989-38-1), Reazione di massa di etilbenzene e m-xilene e p-xilene (EC-No. 905-562-9;
+Numero di registrazione REACH 01-2119555267-33).
+
+Tipo
+[1] Sostanza che presenta un pericolo per la salute o per l'ambiente
+[2] Sostanza per cui sussistono limiti all'esposizione sul luogo di lavoro
+I limiti di esposizione occupazionale, se conosciuti, sono elencati in sezione 8.
+
+ottadecammide-N-metilene] 01-2119962189-26
+Numero CAS:
+911674-82-3
+Indice:
+616-198-00-2
+
+-benzene
+
+Aquatic Chronic 4, H413
+
+acido ottadecanoico,
+12-idrossi-, prodotti di
+reazione con
+etilendiammina
+
+REACH #:
+01-2119979085-27
+CE: 309-629-8
+Numero CAS:
+100545-48-0
+
+≤0.30
+
+Skin Sens. 1B, H317
+Aquatic Chronic 3, H412
+
+-
+
+[1]
+
+Vedere la sezione 16
+per i testi integrali
+delle indicazioni di
+pericolo
+summenzionate.
+
+Non sono presenti ingredienti addizionali che, nelle conoscenze attuali del fornitore e nelle concentrazioni applicabili, siano
+classificati come pericolosi per la salute o per l'ambiente, rispondano ai criteri PBT o vPvB oppure siano considerati come
+sostanze con grado di problematicità equivalente o sostanze alle quali sia stato assegnato un limite di esposizione
+professionale e che debbano quindi essere riportati in questa sezione.
+
+: Rimuovere indumenti e calzature contaminate. Lavare abbondantemente con acqua e
+sapone o usare un efficace detergente cutaneo. NON usare solventi o diluenti.
+: In caso di ingestione, consultare immediatamente un medico e mostrare il contenitore o
+l'etichetta. Tenere la persona al caldo e a riposo. NON provocare il vomito.
+: Non dovrà essere intrapresa alcuna azione che implichi qualsiasi rischio personale o
+senza l'addestramento appropriato. Se si sospetta ancora la presenza di esalazioni,
+indossare una maschera o un respiratore. Eseguire la respirazione bocca a bocca può
+essere pericoloso per la persona che sta prestando aiuto. Rimuovere l'indumento
+contaminato dopo averlo lavato accuratamente con acqua o usando guanti.
+
+Contatto con la pelle
+
+: Togliere le lenti a contatto, sciacquare abbondantemente con acqua pulita e fresca,
+tenendo le palpebre aperte per almeno 10 minuti e consultare immediatamente un
+medico.
+: Portare all'aria aperta. Tenere la persona al caldo e a riposo. In caso di mancanza di
+respirazione, respirazione irregolare o arresto respiratorio, praticare la respirazione
+artificiale o far somministrare ossigeno da personale addestrato.
+
+4.1 Descrizione delle misure di primo soccorso
+
+Ingestione
+
+Per inalazione
+
+Contatto con gli occhi
+
+Protezione dei soccorritori
+
+SEZIONE 4: misure di primo soccorso
+
+4.2 Principali sintomi ed effetti, sia acuti che ritardati
+
+4/21
+
+Italian (IT)
+
+Italy
+
+Italia
+
+: 00149924
+Codice
+SIGMACOVER 456 BASE BASE Z
+
+Data di edizione/Data di revisione
+
+: 4 Giugno 2025
+
+Conforme al regolamento (CE) n. 1907/2006 (REACH), Allegato II, e successivi adeguamenti introdotti dal
+regolamento della commissione (UE) n. 2020/878
+
+SEZIONE 4: misure di primo soccorso
+
+Note per il medico
+
+4.3 Indicazione dell'eventuale necessità di consultare immediatamente un medico e di trattamenti speciali
+: Trattare in modo sintomatico. Nel caso i cui siano ingerite o inalate grandi quantità,
+contattare immediatamente un centro antiveleni.
+: Nessun trattamento specifico.
+
+Trattamenti specifici
+
+Effetti potenziali acuti sulla salute
+Contatto con gli occhi
+Per inalazione
+
+: Provoca grave irritazione oculare.
+: Può irritare le vie respiratorie.
+
+: Provoca irritazione cutanea. Sgrassante cutaneo. Può provocare una reazione
+allergica cutanea.
+: Non sono noti effetti significativi o pericoli critici.
+Ingestione
+Segnali/Sintomi di sovraesposizione
+Contatto con gli occhi
+
+Contatto con la pelle
+
+Contatto con la pelle
+
+Ingestione
+
+Per inalazione
+
+: I sintomi negativi possono comprendere i seguenti:
+dolore o irritazione
+lacrimazione
+rossore
+: I sintomi negativi possono comprendere i seguenti:
+Irritazione delle vie respiratorie
+tosse
+: I sintomi negativi possono comprendere i seguenti:
+irritazione
+rossore
+secchezza
+screpolature
+: Nessun dato specifico.
+
+Prodotti di combustione
+pericolosi
+
+Pericoli derivanti dalla
+sostanza o dalla miscela
+
+5.2 Pericoli speciali derivanti dalla sostanza o dalla miscela
+: Liquido e vapori infiammabili. La fuoriuscita nelle fognature può creare rischio di
+incendio o esplosione. In caso di incendio o surriscaldamento, si verificherà un
+aumento della pressione con possibilità di rottura del contenitore e rischio di una
+conseguente esplosione. Questo materiale è nocivo per la vita acquatica con effetti a
+lungo termine. L'acqua di spegnimento contaminata con questo materiale deve essere
+contenuta e se ne deve impedire l'accesso a corsi d'acqua, fognature o scarichi.
+: I prodotti della decomposizione possono comprendere i materiali seguenti:
+ossidi di carbonio
+ossidi di zolfo
+composti alogenati
+ossido/ossidi metallici
+
+: Usare prodotti chimici secchi, CO₂, acqua nebulizzata o schiuma.
+
+5.1 Mezzi di estinzione
+Mezzi di estinzione idonei
+
+: Non utilizzare acqua a getto pieno.
+
+Mezzi di estinzione non
+idonei
+
+SEZIONE 5: misure di lotta antincendio
+
+5.3 Raccomandazioni per gli addetti all'estinzione degli incendi
+
+5/21
+
+Italian (IT)
+
+Italy
+
+Italia
+
+SIGMACOVER 456 BASE BASE Z
+
+Codice
+
+: 00149924
+
+Data di edizione/Data di revisione
+
+: 4 Giugno 2025
+
+Conforme al regolamento (CE) n. 1907/2006 (REACH), Allegato II, e successivi adeguamenti introdotti dal
+regolamento della commissione (UE) n. 2020/878
+
+SEZIONE 5: misure di lotta antincendio
+
+: Isolare prontamente l'area allontanando tutte le persone dalla zona dell'incidente in caso
+di incendio. Non dovrà essere intrapresa alcuna azione che implichi qualsiasi rischio
+personale o senza l'addestramento appropriato. Spostare i contenitori lontano dall'area
+dell'incendio se non c'è alcun rischio. Usare acqua nebulizzata per raffreddare i
+contenitori esposti al fuoco.
+
+: I pompieri devono indossare equipaggiamento protettivo ed un autorespiratore (SCBA)
+con maschera a pieno facciale sul viso operante a pressione positiva. Gli indumenti per
+addetti all'estinzione degli incendi (compreso caschi, stivali protettivi e guanti) conformi
+alla norma europea EN 469 assicureranno una protezione di livello base per gli incidenti
+chimici.
+
+Speciali mezzi protettivi
+per il personale
+antincendio
+
+Speciali precauzioni per i
+vigili del fuoco
+
+6.2 Precauzioni ambientali
+
+: Fermare la fuga se non c'è rischio. Spostare i contenitori dall'area del versamento.
+Usare attrezzi antiscintilla ed apparecchiature antideflagranti. Avvicinarsi alla fonte di
+emissione sopravento. Prevenire la fuoriuscita in sistemi fognari, corsi d'acqua,
+basamenti o zone circoscritte. Lavare e convogliare le quantità sversate in un impianto
+di trattamento degli scarichi o procedere come segue. Circoscrivere e raccogliere
+eventuali fuoriuscite con materiale assorbente non combustibile, come sabbia, terra,
+vermiculite, diatomite e provvedere allo smaltimento del prodotto in un contenitore in
+conformità alla normativa vigente. Smaltire tramite azienda autorizzata allo smaltimento
+dei rifiuti. Un materiale assorbente contaminato può provocare lo stesso pericolo del
+prodotto versato.
+
+: Evitare la dispersione ed il deflusso di materiale eventualmente sversato ed il contatto
+con terreno, corsi d'acqua, scarichi e fogne. Informare le autorità pertinenti se il
+prodotto ha causato un inquinamento ambientale (fogne, corsi d'acqua, terra o aria).
+Materiale inquinante dell'acqua. Può essere dannoso all'ambiente se rilasciato in grandi
+quantità.
+
+Versamento grande
+
+: Fermare la fuga se non c'è rischio. Spostare i contenitori dall'area del versamento.
+Usare attrezzi antiscintilla ed apparecchiature antideflagranti. Diluire con acqua e
+assorbire se idrosolubile. In alternativa, o se insolubile in acqua, assorbire con
+materiale inerte asciutto e smaltire in contenitore per i rifiuti appropriato. Smaltire
+tramite azienda autorizzata allo smaltimento dei rifiuti.
+
+Piccola fuoriuscita
+
+6.3 Metodi e materiali per il contenimento e per la bonifica
+
+SEZIONE 6: misure in caso di rilascio accidentale
+
+6.1 Precauzioni personali, dispositivi di protezione e procedure in caso di emergenza
+
+Per chi non interviene
+direttamente
+
+: Non dovrà essere intrapresa alcuna azione che implichi qualsiasi rischio personale o
+senza l'addestramento appropriato. Evacuare le aree circostanti. Impedire l'entrata di
+personale estraneo e non protetto. Non toccare o camminare sul materiale versato.
+Bloccare tutte le fonti di accensione. Evitare sigarette, fiamme libere ed ogni fonte di
+accensione nell'area pericolosa. Evitare di respirare i vapori o le nebbie. Prevedere
+una ventilazione adeguata. Indossare un apposito respiratore in caso di ventilazione
+inadeguata. Indossare gli opportuni dispositivi di protezione individuale.
+
+Per chi interviene
+direttamente
+
+: Se la gestione della fuoriuscita richiede l'uso di indumenti speciali, tenere presente ogni
+informazione nella Sezione 8 relativa a materiali idonei e non idonei. Vedere anche le
+informazioni contenute in "Per chi non interviene direttamente".
+
+6.4 Riferimento ad altre
+sezioni
+
+: Per i numeri telefonici di emergenza, vedere la Sezione 1.
+Vedere la Sezione 8 per informazioni sugli opportuni dispositivi di protezione individuale.
+Per ulteriori informazioni sul trattamento dei rifiuti, fare riferimento alla Sezione 13.
+
+6/21
+
+Italian (IT)
+
+Italy
+
+Italia
+
+SIGMACOVER 456 BASE BASE Z
+
+Codice
+
+: 00149924
+
+Data di edizione/Data di revisione
+
+: 4 Giugno 2025
+
+Conforme al regolamento (CE) n. 1907/2006 (REACH), Allegato II, e successivi adeguamenti introdotti dal
+regolamento della commissione (UE) n. 2020/878
+
+: Conservare a temperature comprese tra: 0 a 35°C (32 a 95°F). Conservare secondo la
+normativa locale. Conservare in area separata e approvata. Conservare nel
+contenitore originale protetto dalla luce solare diretta in un'area asciutta, fresca e ben
+ventilata, lontano da altri materiali incompatibili (vedere la Sezione 10) e da cibi e
+bevande. Conservare sotto chiave. Eliminare tutte le fonti di accensione. Separare dai
+materiali ossidanti. Tenere il contenitore serrato e sigillato fino al momento dell'uso. I
+contenitori aperti devono essere accuratamente risigillati e mantenuti dritti per evitare
+fuoriuscite accidentali del prodotto. Non conservare in contenitori senza etichetta.
+Prevedere sistemi di contenimento adeguati per evitare l'inquinamento ambientale.
+Prima della manipolazione o dell’uso, consultare la Sezione 10 per informazioni sui
+materiali incompatibili.
+
+SEZIONE 7: manipolazione e immagazzinamento
+
+Le informazioni contenute in questa sezione contengono indicazioni e avvertenze generali. Consultare l'elenco degli Usi
+identificati nella Sezione 1 per informazioni specifiche disponibili fornite nello scenario o negli scenari di esposizione.
+
+7.1 Precauzioni per la manipolazione sicura
+
+Misure protettive
+
+: Indossare dispositivi di protezione adeguati (vedere Sezione 8). Non impiegare persone
+con un'anamnesi di sensibilizzazione cutanea in alcun procedimento che richieda l'uso
+di questo prodotto. Non mettere in contatto con occhi, pelle o indumenti. Non ingerire.
+Evitare di respirare i vapori o le nebbie. Non disperdere nell’ambiente. Usare solo con
+ventilazione adeguata. Indossare un apposito respiratore in caso di ventilazione
+inadeguata. Non accedere alle aree di stoccaggio e in spazi chiusi se non ventilati
+adeguatamente. Conservare nel contenitore originale o un contenitore alternativo
+approvato e costituito da un materiale compatibile, tenuto saldamente chiuso quando
+non utilizzato. Conservare ed usare lontano da calore, scintille, fiamme libere o altre
+fonti di accensione. Usare attrezzature elettriche antideflagranti (ventilazione,
+illuminazione e movimentazione materiali). Utilizzare solo utensili antiscintillamento.
+Evitare l'accumulazione di cariche elettrostatiche. I contenitori vuoti trattengono dei
+residui di prodotto e possono essere pericolosi. Non riutilizzare il contenitore.
+
+Avvertenze sulle prassi
+generali di igiene del
+lavoro
+
+: E' vietato mangiare, bere e fumare nelle aree in cui il materiale viene manipolato,
+conservato o trattato. Le persone che utilizzano il prodotto devono lavarsi mani e viso
+prima di mangiare, bere e fumare. Togliere gli indumenti contaminati e i dispositivi di
+protezione prima di accedere alle zone adibite a refettorio. Vedere anche la Sezione 8
+per ulteriori informazioni sulle misure di igiene.
+
+7.2 Condizioni per lo
+stoccaggio sicuro,
+comprese eventuali
+incompatibilità
+
+7.3 Usi finali particolari
+
+Per usi identificati, vedere la Sezione 1.2.
+
+Limiti di esposizione occupazionale
+
+SEZIONE 8: controlli dell'esposizione/della protezione individuale
+
+Le informazioni contenute in questa sezione contengono indicazioni e avvertenze generali. Consultare l'elenco degli Usi
+identificati nella Sezione 1 per informazioni specifiche disponibili fornite nello scenario o negli scenari di esposizione.
+
+8.1 Parametri di controllo
+
+Nome del prodotto/ingrediente
+
+Valori limite d'esposizione
+
+xilene
+
+Decreto Legislativo n. 81/2008. Titolo IX. Protezione da agenti
+chimici, cancerogeni e mutageni (Italia, 6/2020) [Xilene, isomeri
+misti, puro] Assorbito attraverso la cute.
+Valore limite 8 ore: 50 ppm.
+Valore limite 8 ore: 221 mg/m³.
+Breve Termine 15 minuti: 100 ppm.
+Breve Termine 15 minuti: 442 mg/m³.
+Decreto Legislativo n. 81/2008. Titolo IX. Protezione da agenti
+
+etilbenzene
+
+7/21
+
+Italian (IT)
+
+Italy
+
+Italia
+
+Conforme al regolamento (CE) n. 1907/2006 (REACH), Allegato II, e successivi adeguamenti introdotti dal
+regolamento della commissione (UE) n. 2020/878
+: 00149924
+Codice
+SIGMACOVER 456 BASE BASE Z
+SEZIONE 8: controlli dell'esposizione/della protezione individuale
+chimici, cancerogeni e mutageni (Italia, 6/2020) Assorbito
+attraverso la cute.
+Valore limite 8 ore: 100 ppm.
+Valore limite 8 ore: 442 mg/m³.
+Breve Termine 15 minuti: 200 ppm.
+Breve Termine 15 minuti: 884 mg/m³.
+ACGIH TLV (Stati Uniti, 1/2024)
+TWA 8 ore: 50 ppm.
+TWA 8 ore: 152 mg/m³.
+ACGIH TLV (Stati Uniti)
+TWA: 3 mg/m³ (Frazione respirabile).
+TWA: 10 mg/m³ (Polvere totale).
+Procedure di monitoraggio : Fare riferimento alle norme di monitoraggio, come ad esempio alle seguenti: Norma
+europea EN 689 (Atmosfera nell'ambiente di lavoro - Guida alla valutazione
+consigliate
+dell'esposizione per inalazione a composti chimici ai fini del confronto con i valori limite
+e strategia di misurazione) Norma europea EN 14042 (Atmosfere nell'ambiente di
+lavoro - Guida all'applicazione e all'utilizzo di procedimenti per la valutazione
+dell'esposizione ad agenti chimici e biologici) Norma europea EN 482 (Atmosfere
+nell'ambiente di lavoro - Requisiti generali per la prestazione di procedure per la
+misurazione di agenti chimici) Si dovrà inoltre fare riferimento ai documenti nazionali di
+orientamento sui metodi per la determinazione delle sostanze pericolose.
+
+Data di edizione/Data di revisione
+
+: 4 Giugno 2025
+
+2-metilpropan-1-olo
+
+1,3-bis[12-idrossi-ottadecammide-N-metilene]-
+benzene
+
+DNEL/DMEL
+Nome del prodotto/
+ingrediente
+xilene
+
+DNEL - Popolazione generica - A lungo termine -
+Per via orale
+DNEL - Popolazione generica - A lungo termine -
+Per inalazione
+DNEL - Popolazione generica - A lungo termine -
+Per inalazione
+DNEL - Popolazione generica - A lungo termine -
+Per via cutanea
+DNEL - Lavoratori - A lungo termine - Per via
+cutanea
+DNEL - Lavoratori - A lungo termine - Per
+inalazione
+DNEL - Lavoratori - A lungo termine - Per
+inalazione
+DNEL - Popolazione generica - A breve termine -
+Per inalazione
+DNEL - Popolazione generica - A breve termine -
+Per inalazione
+DNEL - Lavoratori - A breve termine - Per
+inalazione
+DNEL - Lavoratori - A breve termine - Per
+inalazione
+DNEL - Lavoratori - A lungo termine - Per
+inalazione
+DNEL - Lavoratori - A breve termine - Per
+inalazione
+DNEL - Lavoratori - A lungo termine - Per via
+cutanea
+DNEL - Lavoratori - A breve termine - Per via
+cutanea
+
+Effetti: Sistemico
+Effetti: Locale
+Effetti: Sistemico
+Effetti: Sistemico
+Effetti: Sistemico
+Effetti: Locale
+Effetti: Sistemico
+Effetti: Locale
+Effetti: Sistemico
+Effetti: Locale
+Effetti: Sistemico
+Effetti: Sistemico
+
+5 mg/kg bw/giorno
+65.3 mg/m³
+65.3 mg/m³
+125 mg/kg bw/giorno
+212 mg/kg bw/giorno
+221 mg/m³
+221 mg/m³
+260 mg/m³
+260 mg/m³
+442 mg/m³
+442 mg/m³
+12.25 mg/m³
+
+Resine epossidiche
+(peso molecolare
+medio ≤ 700)
+
+Effetti: Sistemico
+Effetti: Sistemico
+Effetti: Sistemico
+
+12.25 mg/m³
+8.33 mg/kg bw/giorno
+8.33 mg/kg bw/giorno
+
+Valore
+
+Esposizione
+
+8/21
+
+Italian (IT)
+
+Italy
+
+Italia
+
+Conforme al regolamento (CE) n. 1907/2006 (REACH), Allegato II, e successivi adeguamenti introdotti dal
+regolamento della commissione (UE) n. 2020/878
+: 00149924
+Codice
+SIGMACOVER 456 BASE BASE Z
+SEZIONE 8: controlli dell'esposizione/della protezione individuale
+DNEL - Popolazione generica - Consumatori - A
+lungo termine - Per via cutanea
+DNEL - Popolazione generica - Consumatori - A
+breve termine - Per via cutanea
+DNEL - Popolazione generica - Consumatori - A
+lungo termine - Per via orale
+DNEL - Popolazione generica - Consumatori - A
+breve termine - Per via orale
+DMEL - Lavoratori - A lungo termine - Per
+inalazione
+DMEL - Lavoratori - A breve termine - Per
+inalazione
+DNEL - Popolazione generica - A lungo termine -
+Per via orale
+DNEL - Popolazione generica - A lungo termine -
+Per inalazione
+DNEL - Lavoratori - A lungo termine - Per
+inalazione
+DNEL - Lavoratori - A lungo termine - Per via
+cutanea
+DNEL - Lavoratori - A breve termine - Per
+inalazione
+DNEL - Popolazione generica - A lungo termine -
+Per inalazione
+DNEL - Lavoratori - A lungo termine - Per
+inalazione
+DNEL - Popolazione generica - A lungo termine -
+Per inalazione
+
+Data di edizione/Data di revisione
+
+: 4 Giugno 2025
+
+PNEC
+Nome del prodotto/ingrediente
+xilene
+
+Valore
+0.327 mg/l
+0.327 mg/l
+6.58 mg/l
+12.46 mg/kg dwt
+12.46 mg/kg dwt
+2.31 mg/kg
+0.006 mg/l
+0.001 mg/l
+10 mg/l
+0.996 mg/kg dwt
+0.1 mg/kg dwt
+0.1 mg/l
+0.01 mg/l
+9.6 mg/l
+13.7 mg/kg dwt
+1.37 mg/kg dwt
+2.68 mg/kg dwt
+20 mg/kg
+0.4 mg/l
+0.04 mg/l
+10 mg/l
+
+Dettaglio ambiente - Metodo
+Acqua fresca
+Acqua di mare
+Impianto trattamento acque reflue
+Sedimento di acqua corrente
+Sedimento di acqua marina
+Suolo
+Acqua fresca - Fattori di valutazione
+Acqua di mare - Fattori di valutazione
+Impianto trattamento acque reflue - Fattori di valutazione
+Sedimento di acqua corrente - Ripartizione all'equilibrio
+Sedimento di acqua marina - Ripartizione all'equilibrio
+Acqua fresca - Fattori di valutazione
+Acqua di mare - Fattori di valutazione
+Impianto trattamento acque reflue - Fattori di valutazione
+Sedimento di acqua corrente - Ripartizione all'equilibrio
+Sedimento di acqua marina - Ripartizione all'equilibrio
+Suolo - Ripartizione all'equilibrio
+Avvelenamento secondario
+Acqua fresca - Fattori di valutazione
+Acqua di mare - Fattori di valutazione
+Impianto trattamento acque reflue - Fattori di valutazione
+Italy
+
+Effetti: Sistemico
+Effetti: Sistemico
+Effetti: Sistemico
+Effetti: Sistemico
+Effetti: Locale
+Effetti: Sistemico
+Effetti: Sistemico
+Effetti: Sistemico
+Effetti: Sistemico
+Effetti: Sistemico
+Effetti: Locale
+Effetti: Locale
+Effetti: Locale
+Effetti: Locale
+
+3.571 mg/kg bw/giorno
+3.571 mg/kg bw/giorno
+0.75 mg/kg bw/giorno
+0.75 mg/kg bw/giorno
+442 mg/m³
+884 mg/m³
+1.6 mg/kg bw/giorno
+15 mg/m³
+77 mg/m³
+180 mg/kg bw/giorno
+293 mg/m³
+55 mg/m³
+310 mg/m³
+0.055 mg/m³
+
+etilbenzene
+
+2-metilpropan-1-olo
+
+acido ottadecanoico,
+12-idrossi-, prodotti di
+reazione con
+etilendiammina
+
+DNEL - Lavoratori - A lungo termine - Per
+inalazione
+
+Effetti: Locale
+
+0.308 mg/m³
+
+Resine epossidiche (peso
+molecolare medio ≤ 700)
+
+etilbenzene
+
+2-metilpropan-1-olo
+
+9/21
+
+Italian (IT)
+
+Italia
+
+SIGMACOVER 456 BASE BASE Z
+
+Codice
+
+: 00149924
+
+Data di edizione/Data di revisione
+
+: 4 Giugno 2025
+
+Conforme al regolamento (CE) n. 1907/2006 (REACH), Allegato II, e successivi adeguamenti introdotti dal
+regolamento della commissione (UE) n. 2020/878
+
+SEZIONE 8: controlli dell'esposizione/della protezione individuale
+
+Protezione delle mani
+
+Protezione degli occhi/del
+volto
+
+: Guanti resistenti ad agenti chimici ed impermeabili conformi agli standard approvati
+devono essere sempre usati quando vengono manipolati prodotti chimici se la
+valutazione del rischio ne indica la necessità. Considerando i parametri specificati dal
+produttore di guanti, controllare durante l'uso che i guanti mantengano ancora
+inalterate le loro proprietà protettive. Si noti che il tempo di permeazione per un
+qualsiasi materiale costitutivo del guanto può variare a seconda del produttore del
+guanto. Nel caso di miscele, composte da più sostanze, non è possibile stimare in
+modo preciso il tempo di protezione dei guanti. I guanti raccomandati si basano sul
+solvente più comune contenuto nel prodotto. Quando è previsto un contatto frequente
+o prolungato si raccomanda l'uso di guanti protettivi di classe 6 ( tempo di
+permeazione maggiore di 480 minuti secondo EN 374). Nel caso di contatto
+occasionale si raccomanda l 'uso di guanti protettivi di classe 2 o superiore ( tempo di
+permeazione maggiore di 30 minuti secondo EN 374). L’utilizzatore deve controllare
+che la scelta definitiva del tipo di guanto per la manipolazione di questo prodotto sia la
+maggiormente adeguata e tenga conto delle particolari condizioni di uso, come
+specificato nella valutazione dei rischi dell’utilizzatore.
+
+: Occhiali antispruzzo resistenti alle sostanze chimiche. Utilizzare protezioni oculari in
+base alla norma EN166.
+
+Protezione della pelle
+
+: I dispositivi di protezione individuale per il corpo devono essere scelti in funzione dei
+rischi previsti per la mansione svolta ed approvati da personale qualificato prima del
+loro impiego per la manipolazione di questo prodotto. Quando c'è un rischio di
+incendio provocato da elettricità statica, indossare indumenti antistatici di protezione.
+Per la massima protezione da scariche elettrostatiche, utilizzare tuta, stivali e guanti
+antistatici. Fare riferimento alla norma europea EN 1149 per ulteriori informazioni su
+requisiti relativi a materiali e progettazione e su metodi di prova.
+
+Controlli tecnici idonei
+
+: Usare solo con ventilazione adeguata. Eseguire il processo in condizioni di
+contenimento, usare sistemi di aspirazione localizzata o altri dispositivi di controllo per
+mantenere l'esposizione degli operatori a inquinanti nell'aria al di sotto di qualsiasi
+limite consigliato o prescritto dalla legge. I dispositivi di controllo devono anche
+mantenere le concentrazioni di gas, vapore o polvere al di sotto di qualsiasi limite
+inferiore di esplosività. Se gli equipaggiamenti in uso non sono tali da ridurre il rischio
+di esplosione al di sotto dei limiti di legge, utilizzare gli strumenti previsti al riguardo
+dalla normativa ATEX.
+
+: Prima di mangiare, fumare e usare il bagno e alla fine del periodo lavorativo, lavarsi
+accuratamente le mani, le braccia e la faccia dopo aver manipolato prodotti chimici.
+Occorre usare tecniche appropriate per togliere gli indumenti potenzialmente
+contaminati. Gli indumenti da lavoro contaminati non devono essere portati fuori dal
+luogo di lavoro. Lavare gli indumenti contaminati prima di riutilizzarli. Assicurarsi che
+le stazioni lavaocchi e le docce di emergenza siano in vicinanza del luogo d'uso.
+
+8.2 Controlli dell'esposizione
+
+Misure igieniche
+
+Misure di protezione individuale
+
+Dispositivo di protezione
+del corpo
+
+Altri dispositivi di
+protezione della pelle
+
+: Scegliere opportune calzature ed eventuali misure supplementari di protezione della
+pelle in base all'attività che viene svolta e ai rischi insiti. Tali scelte devono essere
+approvate da uno specialista prima della manipolazione di questo prodotto.
+
+Guanti
+
+: gomma butile
+
+Sedimento di acqua corrente - Ripartizione all'equilibrio
+Sedimento di acqua marina
+Suolo - Ripartizione all'equilibrio
+
+1.56 mg/kg dwt
+0.156 mg/kg dwt
+0.076 mg/kg dwt
+
+10/21
+
+Italian (IT)
+
+Italy
+
+Italia
+
+: 00149924
+Codice
+SIGMACOVER 456 BASE BASE Z
+
+Data di edizione/Data di revisione
+
+: 4 Giugno 2025
+
+Conforme al regolamento (CE) n. 1907/2006 (REACH), Allegato II, e successivi adeguamenti introdotti dal
+regolamento della commissione (UE) n. 2020/878
+
+SEZIONE 8: controlli dell'esposizione/della protezione individuale
+
+: La scelta del respiratore deve basarsi sui livelli di esposizione noti o previsti, i rischi del
+prodotto e i limiti di funzionamento sicuro del respiratore prescelto. Se il personale è
+esposto a concentrazioni superiori al limite di esposizione, usare respiratori appropriati
+e omologati. Usare un respiratore su misura ad aria purificata o con presa aria
+esterna conforme agli standard approvati se la valutazione del rischio ne indica la
+necessità. Indossare un respiratore ai sensi di EN140. Tipo di filtro: filtro per vapori
+organici (Tipo A) e particelle P3
+
+Protezione respiratoria
+
+Controlli dell'esposizione
+ambientale
+
+: Le emissioni da apparecchiature di ventilazione o da processi lavorativi dovrebbero
+essere controllate per assicurarsi che siano in conformità con le prescrizioni della
+legislazione sulla protezione ambientale. In alcuni casi, sarà necessario eseguire il
+lavaggio dei fumi, aggiungere filtri o apportare modifiche tecniche alle apparecchiature
+di processo per ridurre l'emissione a livelli accettabili.
+
+: >37.78°C
+
+Stato fisico
+
+Odore
+Punto di fusione/punto di
+congelamento
+
+: Liquido.
+
+: Aromatico.
+
+Temperatura di
+autoaccensione
+Temperatura di
+decomposizione
+pH
+Viscosità
+
+: Vario
+
+Colore
+
+Punto di infiammabilità
+
+: Vaso chiuso: 27.5°C
+
+: Non applicabile.
+
+: Il prodotto è stabile se si rispettano le condizioni di manipolazione e stoccaggio
+raccomandate (vedi sezione 7).
+: Non applicabile.
+: Dinamica (temperatura ambiente): Non disponibile.
+2
+Cinematico (temperatura ambiente): >400 mm /s
+2
+Cinematico (40°C): >21 mm /s
+
+: Non determinato.
+
+:
+
+9.1 Informazioni sulle proprietà fisiche e chimiche fondamentali
+
+Aspetto
+
+SEZIONE 9: proprietà fisiche e chimiche
+
+: Non determinato. Non vi sono dati disponibili sulla miscela stessa.
+: Non disponibile.
+
+:
+
+Tensione di vapore
+
+Viscosità
+
+: 60 - 100 s (ISO 6mm)
+
+Denominazione
+componente
+2-metilpropan-1-olo
+
+Pressione di vapore a 20 ˚C
+
+Pressione di vapore a 50 ˚C
+
+mm Hg kPa
+
+Metodo
+
+<12.00102 <1.6
+
+DIN EN
+13016-2
+
+kPa
+
+mm
+Hg
+
+Metodo
+
+: 430°C (806°F)
+
+Se non diversamente indicato, la misurazione di tutte le proprietà deve avvenire in condizioni di temperatura e pressione
+standard.
+
+Mezzo
+
+Risultato
+
+acqua fredda
+
+Non solubile
+
+Infiammabilità
+Limite inferiore e superiore di
+esplosività
+
+Punto di ebollizione, punto di
+ebollizione iniziale e intervallo
+di ebollizione
+
+Solubilità
+
+Coefficiente di partizione n-
+ottanolo/acqua (Log Pow:)
+
+11/21
+
+Italian (IT)
+
+Italy
+
+Italia
+
+: 00149924
+Codice
+SIGMACOVER 456 BASE BASE Z
+
+Data di edizione/Data di revisione
+
+: 4 Giugno 2025
+
+Conforme al regolamento (CE) n. 1907/2006 (REACH), Allegato II, e successivi adeguamenti introdotti dal
+regolamento della commissione (UE) n. 2020/878
+
+SEZIONE 9: proprietà fisiche e chimiche
+
+Densità relativa
+
+: 1.4
+
+Proprietà esplosive
+
+: Il prodotto in sé non è esplosivo, ma la formazione di una miscela esplosiva di
+vapore o polvere con aria è possibile.
+: Il prodotto non è reattivo (non comburente).
+
+Proprietà ossidanti
+
+9.2 Altre informazioni
+9.2.1 Informazioni relative alle classi di pericoli fisici
+
+Nessuna informazione aggiuntiva.
+
+Caratteristiche delle particelle
+
+: Non applicabile.
+
+Dimensione mediana delle
+particelle
+
+10.6 Prodotti di
+decomposizione pericolosi
+
+10.4 Condizioni da evitare
+
+: Se esposto a temperature elevate può produrre prodotti di decomposizione pericolosi.
+
+: A seconda delle condizioni, prodotti di decomposizione possono comprendere i
+seguenti materiali: ossidi di carbonio ossidi di zolfo composti alogenati ossido/ossidi
+metallici
+
+: Il prodotto è stabile.
+
+10.2 Stabilità chimica
+
+: Per evitare forti reazioni esotermiche, tenere lontano dai seguenti materiali: agenti
+ossidanti, alcali forti, acidi forti.
+
+10.5 Materiali incompatibili
+
+10.3 Possibilità di reazioni
+pericolose
+
+: Nelle normali condizioni di stoccaggio e utilizzo, non si verificano reazioni pericolose.
+
+SEZIONE 10: stabilità e reattività
+
+10.1 Reattività
+
+: Non sono disponibili dati sperimentali specifici relativi alla reattività per questo prodotto
+o i suoi ingredienti.
+
+Consultare le misure di protezione elencate nelle sezioni 7 e 8.
+
+11.1 Informazioni sulle classi di pericolo definite nel regolamento (CE) n. 1272/2008
+La miscela è stata valutata seguendo il metodo convenzionale del regolamento CLP (CE) N. 1272/2008 ed è
+conseguentemente classificata in base alle sue proprietà tossicologiche.
+Provoca grave irritazione oculare.
+Provoca irritazione cutanea.
+Può provocare una reazione allergica cutanea.
+Può irritare le vie respiratorie.
+Tossicità acuta
+
+SEZIONE 11: informazioni tossicologiche
+
+Nome del prodotto/ingrediente
+
+xilene
+
+Ratto - Per via orale - DL50
+Coniglio - Per via cutanea - DL50
+Ratto - Per via orale - DL50
+
+4.3 g/kg
+1.7 g/kg
+>2 g/kg
+
+Resine epossidiche (peso
+molecolare medio ≤ 700)
+
+Coniglio - Per via cutanea - DL50
+Ratto - Per via orale - DL50
+Coniglio - Per via cutanea - DL50
+Ratto - Per inalazione - CL50 Vapori
+Ratto - Per via orale - DL50
+Coniglio - Per via cutanea - DL50
+
+>2 g/kg
+3.5 g/kg
+17.8 g/kg
+17.8 mg/l [4 ore]
+2830 mg/kg
+2460 mg/kg
+
+etilbenzene
+
+2-metilpropan-1-olo
+
+Risultato
+
+Dose / Esposizione
+
+12/21
+
+Italian (IT)
+
+Italy
+
+Italia
+
+: 00149924
+Codice
+SIGMACOVER 456 BASE BASE Z
+
+Data di edizione/Data di revisione
+
+: 4 Giugno 2025
+
+Conforme al regolamento (CE) n. 1907/2006 (REACH), Allegato II, e successivi adeguamenti introdotti dal
+regolamento della commissione (UE) n. 2020/878
+
+SEZIONE 11: informazioni tossicologiche
+
+Conclusione/Riepilogo
+Pelle
+Vie respiratorie
+Mutagenicità
+Sulla base dei dati disponibili, i criteri di classificazione non sono verificati.
+Cancerogenicità
+Sulla base dei dati disponibili, i criteri di classificazione non sono verificati.
+Tossicità per la riproduzione
+Sulla base dei dati disponibili, i criteri di classificazione non sono verificati.
+
+Risultato
+
+Conclusione/Riepilogo
+: Provoca irritazione alla pelle.
+Pelle
+: Provoca grave irritazione oculare.
+Occhi
+: Sulla base dei dati disponibili, i criteri di classificazione non sono verificati.
+Vie respiratorie
+Sensibilizzazione respiratoria o cutanea
+
+Risultato
+
+: Può provocare una reazione allergica cutanea.
+: Sulla base dei dati disponibili, i criteri di classificazione non sono verificati.
+
+Tossicità specifica per organi bersaglio (STOT) — esposizione singola
+
+Stime di tossicità acuta
+
+: Sulla base dei dati disponibili, i criteri di classificazione non sono verificati.
+
+Conclusione/Riepilogo
+Irritazione/Corrosione
+
+Per via cutanea
+Inalazione (vapori)
+
+8904.92 mg/kg
+51.93 mg/l
+
+Via
+
+Valutazione della Tossicità acuta
+
+Ratto - Per inalazione - CL50 Vapori
+Ratto - Per inalazione - CL50 Polveri e nebbie
+
+24.6 mg/l [4 ore]
+>5.08 mg/l [4 ore]
+
+1,3-bis[12-idrossi-ottadecammide-
+N-metilene]-benzene
+acido ottadecanoico, 12-idrossi-,
+prodotti di reazione con
+etilendiammina
+
+Ratto - Per via orale - DL50
+
+>2000 mg/kg
+
+Ratto - Per inalazione - CL50 Polveri e nebbie
+
+5.05 mg/l [4 ore]
+
+xilene
+
+Coniglio - Pelle - Moderatamente irritante
+Quantità/concentrazione applicata: 500 mg
+Durata del trattamento/esposizione: 24 ore
+
+Resine epossidiche (peso
+molecolare medio ≤ 700)
+
+Coniglio - Pelle - Leggermente irritante
+
+-
+
+Coniglio - Occhi - Leggermente irritante
+
+Nome del prodotto/ingrediente
+
+Resine epossidiche (peso
+molecolare medio ≤ 700)
+
+Topo - pelle
+OECD 429
+
+Risultato: Sensibilizzante
+
+acido ottadecanoico, 12-idrossi-,
+prodotti di reazione con
+etilendiammina
+
+Porcellino d'India - pelle
+
+Risultato: Sensibilizzante
+
+Nome del prodotto/ingrediente
+
+Prova
+
+13/21
+
+Italian (IT)
+
+Italy
+
+Italia
+
+: 00149924
+Codice
+SIGMACOVER 456 BASE BASE Z
+
+Data di edizione/Data di revisione
+
+: 4 Giugno 2025
+
+Conforme al regolamento (CE) n. 1907/2006 (REACH), Allegato II, e successivi adeguamenti introdotti dal
+regolamento della commissione (UE) n. 2020/878
+
+SEZIONE 11: informazioni tossicologiche
+
+Effetti potenziali acuti sulla salute
+: Può irritare le vie respiratorie.
+
+Per inalazione
+
+: Non sono noti effetti significativi o pericoli critici.
+
+Ingestione
+
+Contatto con la pelle
+
+: Provoca irritazione cutanea. Sgrassante cutaneo. Può provocare una reazione
+allergica cutanea.
+: Provoca grave irritazione oculare.
+Contatto con gli occhi
+Sintomi connessi alle caratteristiche fisiche, chimiche e tossicologiche
+Per inalazione
+
+Ingestione
+Contatto con la pelle
+
+: I sintomi negativi possono comprendere i seguenti:
+Irritazione delle vie respiratorie
+tosse
+: Nessun dato specifico.
+: I sintomi negativi possono comprendere i seguenti:
+irritazione
+rossore
+secchezza
+screpolature
+: I sintomi negativi possono comprendere i seguenti:
+dolore o irritazione
+lacrimazione
+rossore
+
+Contatto con gli occhi
+
+: Non disponibile.
+
+-
+Conclusione/Riepilogo
+Può irritare le vie respiratorie.
+Tossicità specifica per organi bersaglio (STOT) — esposizione ripetuta
+
+Nome del prodotto/ingrediente
+
+Categoria
+
+Nome del prodotto/ingrediente
+
+Categoria
+
+:
+Conclusione/Riepilogo
+Sulla base dei dati disponibili, i criteri di classificazione non sono verificati.
+Pericolo in caso di aspirazione
+
+Nome del prodotto/ingrediente
+
+Risultato
+
+Via di
+esposizione
+
+Organi Bersaglio
+
+Via di
+esposizione
+
+Organi Bersaglio
+
+:
+Conclusione/Riepilogo
+Sulla base dei dati disponibili, i criteri di classificazione non sono verificati.
+Informazioni sulle vie
+probabili di esposizione
+
+Effetti immediati, ritardati ed effetti cronici derivanti da esposizioni a breve e a lungo termine
+Esposizione a breve termine
+
+xilene
+
+PERICOLO IN CASO DI ASPIRAZIONE -
+Categoria 1
+PERICOLO IN CASO DI ASPIRAZIONE -
+Categoria 1
+
+etilbenzene
+
+xilene
+
+Categoria 3
+
+-
+
+Irritazione delle vie
+respiratorie
+Irritazione delle vie
+respiratorie
+Narcosi
+
+2-metilpropan-1-olo
+
+Categoria 3
+
+-
+
+Categoria 3
+
+-
+
+etilbenzene
+
+Categoria 2
+
+-
+
+organi dell’udito
+
+:
+
+14/21
+
+Italian (IT)
+
+Italy
+
+Italia
+
+: 00149924
+Codice
+SIGMACOVER 456 BASE BASE Z
+
+Data di edizione/Data di revisione
+
+: 4 Giugno 2025
+
+Conforme al regolamento (CE) n. 1907/2006 (REACH), Allegato II, e successivi adeguamenti introdotti dal
+regolamento della commissione (UE) n. 2020/878
+
+SEZIONE 11: informazioni tossicologiche
+
+Effetti Potenziali Cronici sulla Salute
+
+: Un contatto prolungato o ripetuto può danneggiare la pelle e provocare irritazione,
+screpolature e/o dermatiti. Una volta sensibilizzato, può verificarsi una grave reazione
+allergica a seguito di una successiva esposizione a livelli molto bassi.
+: Non sono noti effetti significativi o pericoli critici.
+
+Generali
+
+Cancerogenicità
+
+: Non sono noti effetti significativi o pericoli critici.
+
+Mutagenicità
+
+: Non sono noti effetti significativi o pericoli critici.
+
+Tossicità per la
+riproduzione
+
+Potenziali effetti
+immediati
+Potenziali effetti ritardati : Non sono noti effetti significativi o pericoli critici.
+Esposizione a lungo termine
+
+: Non sono noti effetti significativi o pericoli critici.
+
+Potenziali effetti
+immediati
+Potenziali effetti ritardati : Non sono noti effetti significativi o pericoli critici.
+
+: Non sono noti effetti significativi o pericoli critici.
+
+Altre informazioni
+
+: Un contatto prolungato o ripetuto può disidratare la pelle e provocare irritazione. La
+polvere di levigatura e molatura può essere dannosa se inalata. La ripetuta esposizione
+ad alte concentrazioni di vapori può causare irritazione dell‘apparato respiratorio e
+lesioni permanenti al cervello e al sistema nervoso. L'inalazione di concentrazioni di
+vapore/aerosol a livelli di esposizione superiori a quelli consigliati provoca mal di testa,
+sonnolenza, nausea, nonché condurre a lipotimia o decesso. Evitare il contatto con la
+pelle e con gli indumenti.
+
+Il prodotto non soddisfa i criteri per essere considerato avente proprietà di interferenza endocrina secondo i criteri
+stabiliti nel regolamento (CE) n. 1907/2006 o nel regolamento (CE) n. 1272/2008.
+11.2.2 Altre informazioni
+
+Non disponibile.
+
+11.2 Informazioni su altri pericoli
+
+11.2.1 Proprietà di interferenza con il sistema endocrino
+
+12.1 Tossicità
+
+Nome del prodotto/
+ingrediente
+
+Specie
+
+Risultato
+
+SEZIONE 12: informazioni ecologiche
+
+Non vi sono dati disponibili sulla miscela stessa.
+Non disperdere il prodotto nel sistema fognario e nei corsi d'acqua.
+
+La miscela è stata valutata seguendo il metodo della sommatoria del regolamento CLP (CE) N. 1272/2008 ed è
+conseguentemente classificata in base alle sue proprietà ecotossicologiche. Vedere le Sezioni 2 e 3 per ulteriori dettagli.
+
+Resine epossidiche (peso
+molecolare medio ≤ 700)
+
+Cronico - NOEC
+
+Dafnia
+
+0.3 mg/l [21 giorni]
+
+Acuto - CL50
+Acuto - EC50 - Acqua fresca
+Cronico - NOEC - Acqua
+fresca
+Acuto - EC50
+Acuto - CL50
+
+Dafnia
+Dafnia
+Dafnia - Ceriodaphnia dubia
+
+1.8 mg/l [48 ore]
+1.8 mg/l [48 ore]
+1 mg/l
+
+etilbenzene
+
+2-metilpropan-1-olo
+1,3-bis[12-idrossi-
+ottadecammide-N-metilene]-
+benzene
+acido ottadecanoico,
+12-idrossi-, prodotti di
+
+Dafnia
+Pesce
+
+1100 mg/l [48 ore]
+>100 mg/l [96 ore]
+
+Acuto - CL50
+
+Pesce - Oncorhynchus
+mykiss
+
+>10 mg/l [96 ore]
+
+Dose / Esposizione
+
+15/21
+
+Italian (IT)
+
+Italy
+
+Italia
+
+: 00149924
+Codice
+SIGMACOVER 456 BASE BASE Z
+
+Data di edizione/Data di revisione
+
+: 4 Giugno 2025
+
+Conforme al regolamento (CE) n. 1907/2006 (REACH), Allegato II, e successivi adeguamenti introdotti dal
+regolamento della commissione (UE) n. 2020/878
+
+SEZIONE 12: informazioni ecologiche
+
+LogPow
+
+BCF
+
+Potenziale
+
+12.3 Potenziale di bioaccumulo
+
+Nome del prodotto/ingrediente
+
+xilene
+Resine epossidiche (peso molecolare medio ≤
+700)
+etilbenzene
+2-metilpropan-1-olo
+acido ottadecanoico, 12-idrossi-, prodotti di
+reazione con etilendiammina
+
+3.12
+3
+
+7.4 a 18.5
+31
+
+Bassa
+Bassa
+
+3.6
+1
+>5.86
+
+79.43
+
+Bassa
+Bassa
+Alta
+
+-
+
+-
+
+Nome del prodotto/
+ingrediente
+
+Emivita in acqua
+
+Fotolisi
+
+Biodegradabilità
+
+Conclusione/Riepilogo
+
+Dafnia - Daphnia magna
+Alghe - Pseudokirchneriella
+subcapitata
+: Nocivo per gli organismi acquatici con effetti di lunga durata.
+
+12.2 Persistenza e degradabilità
+
+Nome del prodotto/
+ingrediente
+
+Prova
+
+Dose / Inoculo
+
+Risultato
+
+12.4 Mobilità nel suolo
+Coefficiente di ripartizione suolo/acqua
+
+12.5 Risultati della valutazione PBT e vPvB
+
+Nome del prodotto/ingrediente
+
+Resine epossidiche (peso molecolare medio ≤
+700)
+etilbenzene
+2-metilpropan-1-olo
+
+2.65
+
+445
+
+2.23
+1.08
+
+170.406
+12.0246
+
+Resine epossidiche (peso
+molecolare medio ≤ 700)
+etilbenzene
+acido ottadecanoico,
+12-idrossi-, prodotti di
+reazione con etilendiammina
+
+OECD 301F
+
+5% [28 giorni]
+
+-
+301D Biodegradabilità
+veloce: test della
+bottiglia chiusa
+
+79% [10 giorni] - Facilmente
+22% [28 giorni]
+
+xilene
+Resine epossidiche (peso
+molecolare medio ≤ 700)
+etilbenzene
+acido ottadecanoico,
+12-idrossi-, prodotti di
+reazione con etilendiammina
+
+-
+
+-
+
+Facilmente
+Non facilmente
+
+-
+
+-
+
+-
+
+-
+
+Facilmente
+Per sua natura
+
+-
+
+-
+
+logKoc
+
+Koc
+
+reazione con etilendiammina
+
+Acuto - EC50
+Acuto - EC50
+
+>10 mg/l [48 ore]
+>100 mg/l [72 ore]
+
+Questa miscela non contiene sostanze valutate come PBT o vPvB.
+
+16/21
+
+Italian (IT)
+
+Italy
+
+Italia
+
+: 00149924
+Codice
+SIGMACOVER 456 BASE BASE Z
+
+Data di edizione/Data di revisione
+
+: 4 Giugno 2025
+
+Conforme al regolamento (CE) n. 1907/2006 (REACH), Allegato II, e successivi adeguamenti introdotti dal
+regolamento della commissione (UE) n. 2020/878
+
+SEZIONE 12: informazioni ecologiche
+
+12.6 Proprietà di interferenza con il sistema endocrino
+
+12.7 Altri effetti avversi
+Non sono noti effetti significativi o pericoli critici.
+
+Il prodotto non soddisfa i criteri per essere considerato avente proprietà di interferenza endocrina secondo i criteri stabiliti
+nel regolamento (CE) n. 1907/2006 o nel regolamento (CE) n. 1272/2008.
+
+European Waste Catalogue (Catalogo europeo dei rifiuti)
+
+Rifiuti Pericolosi
+
+:
+
+: La generazione di rifiuti dovrebbe essere evitata o minimizzata qualora possibile.
+Lo smaltimento di questo prodotto, delle soluzioni e di qualsiasi sottoprodotto deve
+essere effettuato attenendosi sempre alle indicazioni di legge sulla protezione
+dell'ambiente e sullo smaltimento dei rifiuti ed ai requisiti di ogni autorità locale
+pertinente. Smaltire i prodotti in eccedenza e non riciclabili tramite azienda
+autorizzata allo smaltimento dei rifiuti. I rifiuti non trattati non vanno smaltiti nella
+rete fognaria a meno che non siano pienamente conformi ai requisiti di ogni ente e
+della normativa.
+
+Metodi di smaltimento
+
+SEZIONE 13: considerazioni sullo smaltimento
+
+Le informazioni contenute in questa sezione contengono indicazioni e avvertenze generali. Consultare l'elenco degli Usi
+identificati nella Sezione 1 per informazioni specifiche disponibili fornite nello scenario o negli scenari di esposizione.
+
+13.1 Metodi di trattamento dei rifiuti
+
+Prodotto
+
+Imballo
+
+Codice rifiuto
+
+Designazione rifiuti
+
+Metodi di smaltimento
+
+: La generazione di rifiuti dovrebbe essere evitata o minimizzata qualora possibile. Gli
+imballaggi di scarto devono essere riciclati. L'incenerimento o la messa in discarica
+deve essere preso in considerazione solo quando il riciclaggio non è praticabile.
+
+Tipo di imballaggio
+
+European Waste Catalogue (Catalogo europeo dei rifiuti)
+
+Precauzioni speciali
+
+: Non disfarsi del prodotto e del recipiente se non con le dovute precauzioni. Occorre
+prestare attenzione quando si maneggiano contenitori svuotati che non sono stati puliti
+o risciacquati. I contenitori vuoti o i rivestimenti possono trattenere dei residui di
+prodotto. I vapori emessi da residui di prodotto possono sviluppare un'atmosfera
+facilmente infiammabile o esplosiva all'interno del contenitore. Non tagliare, saldare o
+rettificare contenitori usati a meno che non siano stati puliti accuratamente al loro
+interno. Evitare la dispersione ed il deflusso di materiale eventualmente sversato ed il
+contatto con terreno, corsi d'acqua, scarichi e fogne.
+
+08 01 11*
+
+pitture e vernici di scarto, contenenti solventi organici o altre sostanze pericolose
+
+Contenitore
+
+15 01 06
+
+imballaggi in materiali misti
+
+SEZIONE 14: informazioni sul trasporto
+
+17/21
+
+Italian (IT)
+
+Italy
+
+Italia
+
+: 00149924
+Codice
+SIGMACOVER 456 BASE BASE Z
+
+Data di edizione/Data di revisione
+
+: 4 Giugno 2025
+
+Conforme al regolamento (CE) n. 1907/2006 (REACH), Allegato II, e successivi adeguamenti introdotti dal
+regolamento della commissione (UE) n. 2020/878
+
+SEZIONE 14: informazioni sul trasporto
+
+: Trasporto all'interno delle proprietà dell'utilizzatore: effettuare sempre il trasporto
+con contenitori chiusi, stoccati verticalmente e assicurati al mezzo di trasporto.
+Accertarsi dell'idoneità delle persone che effettuano il trasporto ad intervenire
+efficacemente in caso di incidente e/o sversamento.
+
+Informazioni supplementari
+ADR/RID
+
+: Ai sensi di 2.2.3.1.5.1, il liquido viscoso di classe 3 non è soggetto a regolamentazione se in
+confezioni fino a 450 litri.
+: (D/E)
+
+: Il prodotto è regolato come sostanza pericolosa per l'ambiente solo se trasportato in navi cisterna. Ai
+sensi di 2.2.3.1.5.1, il liquido viscoso di classe 3 non è soggetto a regolamentazione se in confezioni
+fino a 450 litri.
+: This class 3 viscous liquid is not subject to regulation in packagings up to 450 L according to 2.3.2.5.
+: Nessun elemento identificato.
+
+Codice
+restrizioni su
+trasporto in
+galleria
+ADN
+
+IMDG
+IATA
+
+3
+
+III
+
+UN1263
+
+3
+
+III
+
+UN1263
+
+ADR/RID
+
+IMDG
+
+IATA
+
+No.
+
+No.
+
+ADN
+
+UN1263
+
+PITTURE
+
+3
+
+III
+
+Sì.
+
+Non applicabile.
+
+Not applicable.
+
+UN1263
+
+PITTURE
+
+3
+
+III
+
+No.
+
+Non applicabile.
+
+14.2 Designazione
+ufficiale ONU di
+trasporto
+
+14.3 Classi di
+pericolo
+connesso al
+trasporto
+
+14.4 Gruppo
+d'imballaggio
+
+14.5 Pericoli per
+l'ambiente
+Sostanze
+inquinanti marine
+
+PAINT
+
+Not applicable.
+
+PAINT
+
+14.6 Precauzioni speciali
+per gli utilizzatori
+
+: Non applicabile.
+
+14.7 Trasporto marittimo
+alla rinfusa conformemente
+agli atti dell’IMO
+
+14.1 Numero ONU
+o numero ID
+
+SEZIONE 15: informazioni sulla regolamentazione
+
+15.1 Disposizioni legislative e regolamentari su salute, sicurezza e ambiente specifiche per la sostanza o la
+miscela
+
+Regolamento UE (CE) n. 1907/2006 (REACH)
+
+Allegato XIV - Elenco delle sostanze soggette ad autorizzazione
+
+Allegato XIV
+
+Nessuno dei componenti è elencato.
+Sostanze estremamente preoccupanti
+
+Nessuno dei componenti è elencato.
+
+18/21
+
+Italian (IT)
+
+Italy
+
+Italia
+
+SIGMACOVER 456 BASE BASE Z
+
+Codice
+
+: 00149924
+
+Data di edizione/Data di revisione
+
+: 4 Giugno 2025
+
+Conforme al regolamento (CE) n. 1907/2006 (REACH), Allegato II, e successivi adeguamenti introdotti dal
+regolamento della commissione (UE) n. 2020/878
+
+SEZIONE 15: informazioni sulla regolamentazione
+
+Norme nazionali
+
+Riferimenti
+
+: ;Norme su classificazione ed etichettatura di sostanze e miscele.
+Regolamento (CE) n. 1272/2008 del Parlamento europeo e del Consiglio, del 16
+dicembre 2008, relativo alla classificazione, all'etichettatura e all'imballaggio delle
+sostanze e delle miscele (CLP) e successive modificazioni e integrazioni.
+;Tabella delle classificazioni ed etichettature armonizzate - Allegato VI, Parte 3 del
+Regolamento (CE) n. 1272/2008 (CLP) e successive modificazioni e integrazioni.
+;Nelle formulazioni dei prodotti PPG possono essere presenti le seguenti sostanze : (per
+verificare l'effettiva presenza si veda la Sezione 3)
+- Solvente Nafta Nº CAS 64742-95-6
+- Solvente Nafta Nº CAS 64742-82-1
+- Solvente Nafta Nº CAS 64742-48-9
+- Solvente Nafta Nº CAS 64742-49-0
+Tali sostanze possono essere classificate come cancerogene o mutagene se talune
+impurezze contenute sono pari o superiori allo 0.1%, come da Nota P del regolamento
+medesimo. PPG ha verificato tale possibilita' con i fornitori che hanno inviato schede di
+sicurezza e dichiarazioni scritte, le quali certificano che le sostanze sunnominate non
+sono classificabili come cancerogene o mutagene in quanto le eventuali impurezze
+presenti hanno una concentrazione molto inferiore ai limiti di classificazione.
+;Normativa Seveso
+Decreto Legislativo n.105 del 26 giugno 2015 - Attuazione della direttiva 2012/18/UE
+relativa al controllo del pericolo di incidenti rilevanti connessi con sostanze pericolose
+(Seveso III).
+Per l'applicazione, si faccia riferimento alla classificazione di etichettatura del prodotto
+riportata in questa scheda.
+;Normativa Acqua
+Fare riferimento al DLgs 152/2006 Parte Terza e successive modificazioni ed
+integrazioni.
+;Normativa Rifiuti
+Seguire le prescrizioni del DLgs 152/2006 Parte Quarta e successive modificazioni ed
+integrazioni, facendo riferimento per la classificazione al Catalogo Europeo dei Rifiuti
+(CER).
+;Normativa Aria
+Fare riferimento al DLgs 152/2006 Parte Quinta e successive modificazioni ed
+integrazioni.
+;Altre normative
+Altre norme che regolamentano la sicurezza e la protezione ambientale sono, quando
+applicabili, le seguenti:
+- D.Lgs. N. 81 del 09/04/2008 - Norme in materia di tutela della salute e della sicurezza
+
+Direttiva Seveso
+Questo prodotto è controllato ai sensi della direttiva Seveso.
+Criteri di pericolo
+
+Categoria
+
+P5c
+
+Sostanze dannose per lo strato di ozono (UE 2024/590)
+
+Non nell'elenco.
+
+Precursori di esplosivi
+
+: Non applicabile.
+
+Allegato XVII - Restrizioni in materia di fabbricazione, immissione sul mercato e uso di talune sostanze,
+preparati e articoli pericolosi
+
+SIGMACOVER 456 BASE BASE Z
+
+3
+
+N. voce ( REACH )
+
+Nome del prodotto/ingrediente
+
+Etichettatura
+
+: Non applicabile.
+
+19/21
+
+Italian (IT)
+
+Italy
+
+Italia
+
+SIGMACOVER 456 BASE BASE Z
+
+Codice
+
+: 00149924
+
+Data di edizione/Data di revisione
+
+: 4 Giugno 2025
+
+Conforme al regolamento (CE) n. 1907/2006 (REACH), Allegato II, e successivi adeguamenti introdotti dal
+regolamento della commissione (UE) n. 2020/878
+
+SEZIONE 15: informazioni sulla regolamentazione
+
+nei luoghi di lavoro.
+- D.Lgs. N. 152 del 03/04/2006 - Norme in materia ambientale.
+;Si faccia inoltre riferimento ad ogni altra disposizione applicabile.
+
+15.2 Valutazione della
+sicurezza chimica
+
+: Non è stata effettuata alcuna valutazione della sicurezza chimica.
+
+Indica le informazioni che sono variate rispetto all'edizione precedente.
+
+SEZIONE 16: altre informazioni
+
+Abbreviazioni e acronimi
+
+ATE = Stima della Tossicità Acuta
+CLP = Classificazione, Etichettatura e Imballaggio [Regolamento (CE) N. 1272/2008]
+DNEL = Livello derivato senza effetto
+Indicazione EUH = disposizioni di rischio specifiche al regolamento CLP
+PNEC = Concentrazione Prevedibile Priva di Effetti
+RRN = Numero REACH di Registrazione
+PBT = Persistente, Bioaccumulante, Tossico
+vPvB = Molto Persistente e Molto Bioaccumulabile
+ADR = Accordo Europeo relativo al Trasporto Internazionale di Merci Pericolose su Strada
+ADN = Norme Europee relative al Trasporto Internazionale di Merci Pericolose per Vie Navigabili Interne
+IMDG = Trasporto Marittimo Internazionale di Merci Pericolose
+IATA = Associazione Internazionale per il Trasporto Aereo
+
+Procedura utilizzata per derivare la classificazione a norma del regolamento (CE) N. 1272/2008 [CLP/GHS)]
+
+Classificazione
+
+Giustificazione
+
+Flam. Liq. 3, H226
+Skin Irrit. 2, H315
+Eye Irrit. 2, H319
+Skin Sens. 1, H317
+STOT SE 3, H335
+Aquatic Chronic 3, H412
+
+Sulla base dei dati sperimentali delle prove
+Metodo di calcolo
+Metodo di calcolo
+Metodo di calcolo
+Metodo di calcolo
+Metodo di calcolo
+
+Testi integrali delle indicazioni di pericolo abbreviate
+
+H225
+H226
+H304
+
+Liquido e vapori facilmente infiammabili.
+Liquido e vapori infiammabili.
+Può essere letale in caso di ingestione e di penetrazione nelle vie
+respiratorie.
+Nocivo per contatto con la pelle.
+Provoca irritazione cutanea.
+Può provocare una reazione allergica cutanea.
+Provoca gravi lesioni oculari.
+Provoca grave irritazione oculare.
+Nocivo se inalato.
+Può irritare le vie respiratorie.
+Può provocare sonnolenza o vertigini.
+Può provocare danni agli organi in caso di esposizione prolungata o
+ripetuta.
+Tossico per gli organismi acquatici con effetti di lunga durata.
+Nocivo per gli organismi acquatici con effetti di lunga durata.
+Può essere nocivo per gli organismi acquatici con effetti di lunga
+durata.
+
+H312
+H315
+H317
+H318
+H319
+H332
+H335
+H336
+H373
+
+H411
+H412
+H413
+
+Testi integrali delle classificazioni [CLP/GHS]
+
+20/21
+
+Italian (IT)
+
+Italy
+
+Italia
+
+SIGMACOVER 456 BASE BASE Z
+
+Codice
+
+: 00149924
+
+Data di edizione/Data di revisione
+
+: 4 Giugno 2025
+
+Conforme al regolamento (CE) n. 1907/2006 (REACH), Allegato II, e successivi adeguamenti introdotti dal
+regolamento della commissione (UE) n. 2020/878
+
+SEZIONE 16: altre informazioni
+
+Data di edizione/ Data di
+revisione
+
+Versione
+
+Data dell'edizione
+precedente
+
+: 14.05
+
+: 4 Giugno 2025
+
+: 15 Dicembre 2023
+
+Esonero di responsabilità
+
+Le informazioni contenute in questa scheda di sicurezza sono elaborate in base allo stato attuale delle nostre conoscenze
+scientifiche e tecniche. Lo scopo di questo documento è comunicare la pericolosità per la salute e la sicurezza e fornire
+le precauzioni per l’uso e lo stoccaggio dei prodotti da noi forniti. Questo documento non deve essere considerato come
+garanzia di proprietà specifiche del prodotto. Nessuna responsabilità può essere accettata nel caso di non osservanza
+delle misure di prevenzione e protezione indicate in questa scheda e delle leggi e disposizioni vigenti in materia di igiene e
+sicurezza o per ogni uso improprio del prodotto.
+
+Storia
+
+Preparato da
+
+: EHS
+
+Acute Tox. 4
+Aquatic Chronic 2
+
+TOSSICITÀ ACUTA - Categoria 4
+PERICOLO A LUNGO TERMINE (CRONICO) PER L'AMBIENTE
+ACQUATICO - Categoria 2
+PERICOLO A LUNGO TERMINE (CRONICO) PER L'AMBIENTE
+ACQUATICO - Categoria 3
+PERICOLO A LUNGO TERMINE (CRONICO) PER L'AMBIENTE
+ACQUATICO - Categoria 4
+PERICOLO IN CASO DI ASPIRAZIONE - Categoria 1
+GRAVI LESIONI OCULARI/IRRITAZIONE OCULARE - Categoria 1
+GRAVI LESIONI OCULARI/IRRITAZIONE OCULARE - Categoria 2
+LIQUIDI INFIAMMABILI - Categoria 2
+LIQUIDI INFIAMMABILI - Categoria 3
+CORROSIONE/IRRITAZIONE DELLA PELLE - Categoria 2
+SENSIBILIZZAZIONE DELLA PELLE - Categoria 1
+SENSIBILIZZAZIONE DELLA PELLE - Categoria 1B
+TOSSICITÀ SPECIFICA PER ORGANI BERSAGLIO
+(ESPOSIZIONE RIPETUTA) - Categoria 2
+TOSSICITÀ SPECIFICA PER ORGANI BERSAGLIO
+(ESPOSIZIONE SINGOLA) - Categoria 3
+
+Aquatic Chronic 3
+
+Aquatic Chronic 4
+
+Asp. Tox. 1
+Eye Dam. 1
+Eye Irrit. 2
+Flam. Liq. 2
+Flam. Liq. 3
+Skin Irrit. 2
+Skin Sens. 1
+Skin Sens. 1B
+STOT RE 2
+
+STOT SE 3
+
+21/21
+
+Italian (IT)
+
+Italy
+
+Italia
+

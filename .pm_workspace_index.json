@@ -1,194 +1,747 @@
 {
-  "builtAt": "2026-10-09T12:55:56.792Z",
+  "builtAt": "2026-10-26T20:28:33.001Z",
   "symbols": [
+    {
+      "name": "SdsValueComponent",
+      "kind": "component",
+      "file": "frontend/sds-frontend/src/app/shared/components/sds-value.component.ts",
+      "line": 18,
+      "preview": "export class SdsValueComponent {"
+    },
     {
       "name": "NavbarComponent",
       "kind": "component",
       "file": "frontend/sds-frontend/src/app/layout/components/navbar.component.ts",
-      "line": 55,
-      "preview": "export class NavbarComponent {"
+      "line": 14,
+      "preview": "export class NavbarComponent implements OnInit {"
     },
     {
-      "name": "ScenariosComponent",
-      "kind": "component",
-      "file": "frontend/sds-frontend/src/app/features/scenarios/components/scenarios.component.ts",
-      "line": 70,
-      "preview": "export class ScenariosComponent {"
+      "name": "ngOnInit",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/layout/components/navbar.component.ts",
+      "line": 26,
+      "preview": "ngOnInit() {"
     },
     {
-      "name": "DashboardComponent",
-      "kind": "component",
-      "file": "frontend/sds-frontend/src/app/features/scenarios/components/dashboard.component.ts",
+      "name": "markRead",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/layout/components/navbar.component.ts",
+      "line": 42,
+      "preview": "markRead(id: number) {"
+    },
+    {
+      "name": "markAllRead",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/layout/components/navbar.component.ts",
+      "line": 52,
+      "preview": "markAllRead() {"
+    },
+    {
+      "name": "logout",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/layout/components/navbar.component.ts",
       "line": 62,
-      "preview": "export class DashboardComponent {"
-    },
-    {
-      "name": "CardListComponent",
-      "kind": "component",
-      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-list.component.ts",
-      "line": 101,
-      "preview": "export class CardListComponent {"
+      "preview": "logout() {"
     },
     {
       "name": "App",
       "kind": "component",
       "file": "frontend/sds-frontend/src/app/app.ts",
-      "line": 10,
+      "line": 14,
       "preview": "export class App {"
     },
     {
-      "name": "ImportComponent",
+      "name": "constructor",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/app.ts",
+      "line": 20,
+      "preview": "constructor() {"
+    },
+    {
+      "name": "UserListComponent",
       "kind": "component",
-      "file": "frontend/sds-frontend/src/app/features/import/components/import.component.ts",
+      "file": "frontend/sds-frontend/src/app/features/users/components/user-list.component.ts",
+      "line": 14,
+      "preview": "export class UserListComponent implements OnInit {"
+    },
+    {
+      "name": "ngOnInit",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/users/components/user-list.component.ts",
+      "line": 24,
+      "preview": "ngOnInit() {"
+    },
+    {
+      "name": "loadUsers",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/users/components/user-list.component.ts",
+      "line": 30,
+      "preview": "loadUsers() {"
+    },
+    {
+      "name": "deleteUser",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/users/components/user-list.component.ts",
+      "line": 44,
+      "preview": "deleteUser(id: number, username: string) {"
+    },
+    {
+      "name": "formatDate",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/users/components/user-list.component.ts",
+      "line": 57,
+      "preview": "formatDate(dateStr?: string): string {"
+    },
+    {
+      "name": "getRoleBadgeClass",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/users/components/user-list.component.ts",
+      "line": 62,
+      "preview": "getRoleBadgeClass(role: string): string {"
+    },
+    {
+      "name": "getStatusBadgeClass",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/users/components/user-list.component.ts",
+      "line": 66,
+      "preview": "getStatusBadgeClass(isActive: boolean): string {"
+    },
+    {
+      "name": "getCurrentUserId",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/users/components/user-list.component.ts",
+      "line": 70,
+      "preview": "getCurrentUserId(): number {"
+    },
+    {
+      "name": "UserFormComponent",
+      "kind": "component",
+      "file": "frontend/sds-frontend/src/app/features/users/components/user-form.component.ts",
+      "line": 14,
+      "preview": "export class UserFormComponent implements OnInit {"
+    },
+    {
+      "name": "ngOnInit",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/users/components/user-form.component.ts",
+      "line": 32,
+      "preview": "ngOnInit() {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/users/components/user-form.component.ts",
+      "line": 36,
+      "preview": "if (this.isEdit) {"
+    },
+    {
+      "name": "onSubmit",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/users/components/user-form.component.ts",
+      "line": 71,
+      "preview": "onSubmit() {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/users/components/user-form.component.ts",
       "line": 72,
-      "preview": "export class ImportComponent {"
+      "preview": "if (this.userForm.invalid) {"
     },
     {
-      "name": "ClientListComponent",
-      "kind": "component",
-      "file": "frontend/sds-frontend/src/app/features/clients/components/client-list.component.ts",
-      "line": 91,
-      "preview": "export class ClientListComponent {"
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/users/components/user-form.component.ts",
+      "line": 80,
+      "preview": "if (this.isEdit && this.userId) {"
     },
     {
-      "name": "ClientDetailComponent",
-      "kind": "component",
-      "file": "frontend/sds-frontend/src/app/features/clients/components/client-detail.component.ts",
-      "line": 19,
-      "preview": "export class ClientDetailComponent {"
+      "name": "onCancel",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/users/components/user-form.component.ts",
+      "line": 111,
+      "preview": "onCancel() {"
     },
     {
-      "name": "ApiService",
+      "name": "User",
+      "kind": "interface",
+      "file": "frontend/sds-frontend/src/app/core/services/user.service.ts",
+      "line": 6,
+      "preview": "export interface User {"
+    },
+    {
+      "name": "CreateUser",
+      "kind": "interface",
+      "file": "frontend/sds-frontend/src/app/core/services/user.service.ts",
+      "line": 17,
+      "preview": "export interface CreateUser {"
+    },
+    {
+      "name": "UpdateUser",
+      "kind": "interface",
+      "file": "frontend/sds-frontend/src/app/core/services/user.service.ts",
+      "line": 24,
+      "preview": "export interface UpdateUser {"
+    },
+    {
+      "name": "UserService",
       "kind": "service",
-      "file": "frontend/sds-frontend/src/app/core/services/api.service.ts",
-      "line": 10,
-      "preview": "export class ApiService {"
+      "file": "frontend/sds-frontend/src/app/core/services/user.service.ts",
+      "line": 34,
+      "preview": "export class UserService {"
+    },
+    {
+      "name": "getAll",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/user.service.ts",
+      "line": 45,
+      "preview": "getAll(): Observable<User[]> {"
+    },
+    {
+      "name": "getById",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/user.service.ts",
+      "line": 49,
+      "preview": "getById(id: number): Observable<User> {"
+    },
+    {
+      "name": "create",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/user.service.ts",
+      "line": 53,
+      "preview": "create(user: CreateUser): Observable<{ message: string; userId: number }> {"
+    },
+    {
+      "name": "update",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/user.service.ts",
+      "line": 57,
+      "preview": "update(id: number, user: UpdateUser): Observable<{ message: string }> {"
+    },
+    {
+      "name": "delete",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/user.service.ts",
+      "line": 61,
+      "preview": "delete(id: number): Observable<{ message: string }> {"
+    },
+    {
+      "name": "constructor",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/user.service.ts",
+      "line": 65,
+      "preview": "constructor(private httpClient: HttpClient) {}"
+    },
+    {
+      "name": "ClientService",
+      "kind": "service",
+      "file": "frontend/sds-frontend/src/app/core/services/client.service.ts",
+      "line": 8,
+      "preview": "export class ClientService {"
+    },
+    {
+      "name": "getAll",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/client.service.ts",
+      "line": 20,
+      "preview": "getAll() {"
+    },
+    {
+      "name": "getById",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/client.service.ts",
+      "line": 24,
+      "preview": "getById(id: number) {"
+    },
+    {
+      "name": "create",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/client.service.ts",
+      "line": 28,
+      "preview": "create(client: CreateClient) {"
+    },
+    {
+      "name": "update",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/client.service.ts",
+      "line": 32,
+      "preview": "update(id: number, client: UpdateClient) {"
+    },
+    {
+      "name": "delete",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/client.service.ts",
+      "line": 36,
+      "preview": "delete(id: number) {"
+    },
+    {
+      "name": "ExpiringCard",
+      "kind": "interface",
+      "file": "frontend/sds-frontend/src/app/core/services/scenario.service.ts",
+      "line": 5,
+      "preview": "export interface ExpiringCard {"
+    },
+    {
+      "name": "AppNotification",
+      "kind": "interface",
+      "file": "frontend/sds-frontend/src/app/core/services/scenario.service.ts",
+      "line": 16,
+      "preview": "export interface AppNotification {"
+    },
+    {
+      "name": "DashboardStats",
+      "kind": "interface",
+      "file": "frontend/sds-frontend/src/app/core/services/scenario.service.ts",
+      "line": 29,
+      "preview": "export interface DashboardStats {"
+    },
+    {
+      "name": "ScenarioService",
+      "kind": "service",
+      "file": "frontend/sds-frontend/src/app/core/services/scenario.service.ts",
+      "line": 41,
+      "preview": "export class ScenarioService {"
+    },
+    {
+      "name": "getExpiring",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/scenario.service.ts",
+      "line": 44,
+      "preview": "getExpiring(days: number): Observable<ExpiringCard[]> {"
+    },
+    {
+      "name": "getAllScenarios",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/scenario.service.ts",
+      "line": 48,
+      "preview": "getAllScenarios(): Observable<ExpiringCard[]> {"
+    },
+    {
+      "name": "getStats",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/scenario.service.ts",
+      "line": 52,
+      "preview": "getStats(): Observable<DashboardStats> {"
+    },
+    {
+      "name": "getNotifications",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/scenario.service.ts",
+      "line": 56,
+      "preview": "getNotifications(unreadOnly = false): Observable<AppNotification[]> {"
+    },
+    {
+      "name": "markNotificationRead",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/scenario.service.ts",
+      "line": 60,
+      "preview": "markNotificationRead(id: number): Observable<AppNotification> {"
+    },
+    {
+      "name": "markAllNotificationsRead",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/scenario.service.ts",
+      "line": 64,
+      "preview": "markAllNotificationsRead(): Observable<{ updated: number }> {"
     },
     {
       "name": "SafetyCardService",
       "kind": "service",
       "file": "frontend/sds-frontend/src/app/core/services/safety-card.service.ts",
-      "line": 9,
+      "line": 11,
       "preview": "export class SafetyCardService {"
     },
     {
       "name": "getCards",
       "kind": "method",
       "file": "frontend/sds-frontend/src/app/core/services/safety-card.service.ts",
-      "line": 12,
+      "line": 15,
       "preview": "getCards(): Observable<SafetyCard[]> {"
     },
     {
       "name": "getCard",
       "kind": "method",
       "file": "frontend/sds-frontend/src/app/core/services/safety-card.service.ts",
-      "line": 16,
+      "line": 19,
       "preview": "getCard(id: number): Observable<SafetyCard> {"
     },
     {
       "name": "getCardsByClient",
       "kind": "method",
       "file": "frontend/sds-frontend/src/app/core/services/safety-card.service.ts",
-      "line": 20,
+      "line": 23,
       "preview": "getCardsByClient(clientId: number): Observable<SafetyCard[]> {"
+    },
+    {
+      "name": "linkToClient",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/safety-card.service.ts",
+      "line": 28,
+      "preview": "linkToClient(clientId: number, cardId: number): Observable<SafetyCard> {"
+    },
+    {
+      "name": "unlinkFromClient",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/safety-card.service.ts",
+      "line": 33,
+      "preview": "unlinkFromClient(clientId: number, cardId: number): Observable<void> {"
     },
     {
       "name": "createCard",
       "kind": "method",
       "file": "frontend/sds-frontend/src/app/core/services/safety-card.service.ts",
-      "line": 24,
-      "preview": "createCard(request: CreateSafetyCardRequest): Observable<SafetyCard> {"
+      "line": 37,
+      "preview": "createCard(request: CreateSafetyCard): Observable<SafetyCard> {"
     },
     {
       "name": "updateCard",
       "kind": "method",
       "file": "frontend/sds-frontend/src/app/core/services/safety-card.service.ts",
-      "line": 28,
-      "preview": "updateCard(id: number, request: Partial<CreateSafetyCardRequest>): Observable<SafetyCard> {"
+      "line": 41,
+      "preview": "updateCard(id: number, request: Partial<CreateSafetyCard>): Observable<SafetyCard> {"
     },
     {
       "name": "deleteCard",
       "kind": "method",
       "file": "frontend/sds-frontend/src/app/core/services/safety-card.service.ts",
-      "line": 32,
+      "line": 45,
       "preview": "deleteCard(id: number): Observable<void> {"
     },
     {
       "name": "uploadPdf",
       "kind": "method",
       "file": "frontend/sds-frontend/src/app/core/services/safety-card.service.ts",
-      "line": 36,
-      "preview": "uploadPdf(cardId: number, file: File): Observable<{ url: string }> {"
+      "line": 49,
+      "preview": "uploadPdf(cardId: number, formData: FormData): Observable<{ pdfPath: string }> {"
+    },
+    {
+      "name": "deletePdf",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/safety-card.service.ts",
+      "line": 53,
+      "preview": "deletePdf(cardId: number): Observable<void> {"
+    },
+    {
+      "name": "getPdfUrl",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/safety-card.service.ts",
+      "line": 57,
+      "preview": "getPdfUrl(cardId: number): Observable<string> {"
     },
     {
       "name": "analyzePdf",
       "kind": "method",
       "file": "frontend/sds-frontend/src/app/core/services/safety-card.service.ts",
-      "line": 42,
-      "preview": "analyzePdf(clientId: number, file: File): Observable<LlmAnalysisResponse> {"
+      "line": 62,
+      "preview": "analyzePdf(clientId: number | null, file: File): Observable<any> {"
     },
     {
-      "name": "ClientService",
+      "name": "openPdf",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/safety-card.service.ts",
+      "line": 71,
+      "preview": "openPdf(card: SafetyCard): void {"
+    },
+    {
+      "name": "Notification",
+      "kind": "interface",
+      "file": "frontend/sds-frontend/src/app/core/services/notification.service.ts",
+      "line": 5,
+      "preview": "export interface Notification {"
+    },
+    {
+      "name": "NotificationService",
       "kind": "service",
-      "file": "frontend/sds-frontend/src/app/core/services/client.service.ts",
-      "line": 9,
-      "preview": "export class ClientService {"
+      "file": "frontend/sds-frontend/src/app/core/services/notification.service.ts",
+      "line": 19,
+      "preview": "export class NotificationService {"
     },
     {
-      "name": "getClients",
+      "name": "getAll",
       "kind": "method",
-      "file": "frontend/sds-frontend/src/app/core/services/client.service.ts",
-      "line": 12,
-      "preview": "getClients(): Observable<Client[]> {"
+      "file": "frontend/sds-frontend/src/app/core/services/notification.service.ts",
+      "line": 22,
+      "preview": "getAll(unreadOnly = false): Observable<Notification[]> {"
     },
     {
-      "name": "getClient",
+      "name": "getUnread",
       "kind": "method",
-      "file": "frontend/sds-frontend/src/app/core/services/client.service.ts",
-      "line": 16,
-      "preview": "getClient(id: number): Observable<Client> {"
+      "file": "frontend/sds-frontend/src/app/core/services/notification.service.ts",
+      "line": 26,
+      "preview": "getUnread(): Observable<Notification[]> {"
     },
     {
-      "name": "createClient",
+      "name": "getUnreadCount",
       "kind": "method",
-      "file": "frontend/sds-frontend/src/app/core/services/client.service.ts",
-      "line": 20,
-      "preview": "createClient(request: CreateClientRequest): Observable<Client> {"
+      "file": "frontend/sds-frontend/src/app/core/services/notification.service.ts",
+      "line": 30,
+      "preview": "getUnreadCount(): Observable<{ count: number }> {"
     },
     {
-      "name": "updateClient",
+      "name": "markAsRead",
       "kind": "method",
-      "file": "frontend/sds-frontend/src/app/core/services/client.service.ts",
+      "file": "frontend/sds-frontend/src/app/core/services/notification.service.ts",
+      "line": 34,
+      "preview": "markAsRead(id: number): Observable<Notification> {"
+    },
+    {
+      "name": "markAllAsRead",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/notification.service.ts",
+      "line": 38,
+      "preview": "markAllAsRead(): Observable<{ updated: number }> {"
+    },
+    {
+      "name": "delete",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/notification.service.ts",
+      "line": 42,
+      "preview": "delete(id: number): Observable<void> {"
+    },
+    {
+      "name": "ImportHistory",
+      "kind": "interface",
+      "file": "frontend/sds-frontend/src/app/core/services/import.service.ts",
+      "line": 5,
+      "preview": "export interface ImportHistory {"
+    },
+    {
+      "name": "ImportExcelResult",
+      "kind": "interface",
+      "file": "frontend/sds-frontend/src/app/core/services/import.service.ts",
+      "line": 17,
+      "preview": "export interface ImportExcelResult {"
+    },
+    {
+      "name": "ImportService",
+      "kind": "service",
+      "file": "frontend/sds-frontend/src/app/core/services/import.service.ts",
+      "line": 29,
+      "preview": "export class ImportService {"
+    },
+    {
+      "name": "importExcel",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/import.service.ts",
+      "line": 32,
+      "preview": "importExcel(file: File): Observable<ImportExcelResult> {"
+    },
+    {
+      "name": "getHistory",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/import.service.ts",
+      "line": 38,
+      "preview": "getHistory(): Observable<ImportHistory[]> {"
+    },
+    {
+      "name": "getStatus",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/import.service.ts",
+      "line": 42,
+      "preview": "getStatus(id: number): Observable<ImportHistory> {"
+    },
+    {
+      "name": "AuthService",
+      "kind": "service",
+      "file": "frontend/sds-frontend/src/app/core/services/auth.service.ts",
+      "line": 10,
+      "preview": "export class AuthService {"
+    },
+    {
+      "name": "constructor",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/auth.service.ts",
+      "line": 13,
+      "preview": "constructor(private httpClient: HttpClient) {}"
+    },
+    {
+      "name": "login",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/auth.service.ts",
+      "line": 15,
+      "preview": "login(username: string, password: string): Observable<LoginResponse> {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/auth.service.ts",
       "line": 24,
-      "preview": "updateClient(id: number, request: UpdateClientRequest): Observable<Client> {"
+      "preview": "if (token) {"
     },
     {
-      "name": "deleteClient",
+      "name": "logout",
       "kind": "method",
-      "file": "frontend/sds-frontend/src/app/core/services/client.service.ts",
-      "line": 28,
-      "preview": "deleteClient(id: number): Observable<void> {"
+      "file": "frontend/sds-frontend/src/app/core/services/auth.service.ts",
+      "line": 36,
+      "preview": "logout(): void {"
+    },
+    {
+      "name": "isAuthenticated",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/auth.service.ts",
+      "line": 52,
+      "preview": "isAuthenticated(): boolean {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/auth.service.ts",
+      "line": 58,
+      "preview": "if (!refreshToken) {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/auth.service.ts",
+      "line": 63,
+      "preview": "if (res) {"
+    },
+    {
+      "name": "AnalysisResult",
+      "kind": "interface",
+      "file": "frontend/sds-frontend/src/app/core/services/import-state.service.ts",
+      "line": 4,
+      "preview": "export interface AnalysisResult {"
+    },
+    {
+      "name": "ImportStateService",
+      "kind": "service",
+      "file": "frontend/sds-frontend/src/app/core/services/import-state.service.ts",
+      "line": 23,
+      "preview": "export class ImportStateService {"
+    },
+    {
+      "name": "constructor",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/import-state.service.ts",
+      "line": 36,
+      "preview": "constructor() {"
+    },
+    {
+      "name": "setPdfFileNames",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/import-state.service.ts",
+      "line": 45,
+      "preview": "setPdfFileNames(names: string[]) {"
+    },
+    {
+      "name": "setSelectedClientId",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/import-state.service.ts",
+      "line": 50,
+      "preview": "setSelectedClientId(id: number) {"
+    },
+    {
+      "name": "addAnalysisResult",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/import-state.service.ts",
+      "line": 55,
+      "preview": "addAnalysisResult(result: AnalysisResult) {"
+    },
+    {
+      "name": "clearResults",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/import-state.service.ts",
+      "line": 60,
+      "preview": "clearResults() {"
+    },
+    {
+      "name": "setMessage",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/import-state.service.ts",
+      "line": 67,
+      "preview": "setMessage(message: string, type: 'success' | 'error' | '') {"
+    },
+    {
+      "name": "clear",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/import-state.service.ts",
+      "line": 73,
+      "preview": "clear() {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/services/import-state.service.ts",
+      "line": 96,
+      "preview": "if (stored) {"
+    },
+    {
+      "name": "ApiService",
+      "kind": "service",
+      "file": "frontend/sds-frontend/src/app/core/services/api.service.ts",
+      "line": 9,
+      "preview": "export class ApiService {"
+    },
+    {
+      "name": "SdsFieldKey",
+      "kind": "type",
+      "file": "frontend/sds-frontend/src/app/core/models/sds-fields.ts",
+      "line": 7,
+      "preview": "export type SdsFieldKey ="
+    },
+    {
+      "name": "SdsField",
+      "kind": "interface",
+      "file": "frontend/sds-frontend/src/app/core/models/sds-fields.ts",
+      "line": 17,
+      "preview": "export interface SdsField {"
+    },
+    {
+      "name": "for",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/models/sds-fields.ts",
+      "line": 67,
+      "preview": "for (let i = 0; i < value.length; i++) {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/models/sds-fields.ts",
+      "line": 73,
+      "preview": "if (separator) { parts.push(current + (ch === ',' ? ',' : '')); current = ''; } else { current += ch; }"
+    },
+    {
+      "name": "for",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/models/sds-fields.ts",
+      "line": 84,
+      "preview": "for (const p of pieces) {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/models/sds-fields.ts",
+      "line": 182,
+      "preview": "if (!entry) {"
+    },
+    {
+      "name": "ClientRef",
+      "kind": "interface",
+      "file": "frontend/sds-frontend/src/app/core/models/safety-card.model.ts",
+      "line": 2,
+      "preview": "export interface ClientRef {"
     },
     {
       "name": "SafetyCard",
       "kind": "interface",
       "file": "frontend/sds-frontend/src/app/core/models/safety-card.model.ts",
-      "line": 1,
+      "line": 7,
       "preview": "export interface SafetyCard {"
     },
     {
-      "name": "CreateSafetyCardRequest",
+      "name": "CreateSafetyCard",
       "kind": "interface",
       "file": "frontend/sds-frontend/src/app/core/models/safety-card.model.ts",
-      "line": 21,
-      "preview": "export interface CreateSafetyCardRequest {"
+      "line": 44,
+      "preview": "export interface CreateSafetyCard {"
     },
     {
-      "name": "LlmAnalysisResponse",
+      "name": "LoginResponse",
       "kind": "interface",
       "file": "frontend/sds-frontend/src/app/core/models/safety-card.model.ts",
-      "line": 34,
-      "preview": "export interface LlmAnalysisResponse {"
+      "line": 70,
+      "preview": "export interface LoginResponse {"
     },
     {
       "name": "Client",
@@ -198,333 +751,1607 @@
       "preview": "export interface Client {"
     },
     {
-      "name": "CreateClientRequest",
+      "name": "CreateClient",
       "kind": "interface",
       "file": "frontend/sds-frontend/src/app/core/models/client.model.ts",
       "line": 18,
-      "preview": "export interface CreateClientRequest {"
+      "preview": "export interface CreateClient {"
     },
     {
-      "name": "UpdateClientRequest",
+      "name": "UpdateClient",
       "kind": "interface",
       "file": "frontend/sds-frontend/src/app/core/models/client.model.ts",
       "line": 31,
-      "preview": "export interface UpdateClientRequest {"
+      "preview": "export interface UpdateClient {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/interceptors/auth.interceptor.ts",
+      "line": 12,
+      "preview": "if (token) {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/core/interceptors/auth.interceptor.ts",
+      "line": 23,
+      "preview": "if (res) {"
+    },
+    {
+      "name": "ClientListComponent",
+      "kind": "component",
+      "file": "frontend/sds-frontend/src/app/features/clients/components/client-list.component.ts",
+      "line": 14,
+      "preview": "export class ClientListComponent implements OnInit {"
+    },
+    {
+      "name": "ngOnInit",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/clients/components/client-list.component.ts",
+      "line": 24,
+      "preview": "ngOnInit() {"
+    },
+    {
+      "name": "onSearch",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/clients/components/client-list.component.ts",
+      "line": 43,
+      "preview": "onSearch(event: Event) {"
+    },
+    {
+      "name": "onDelete",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/clients/components/client-list.component.ts",
+      "line": 52,
+      "preview": "onDelete(client: Client) {"
+    },
+    {
+      "name": "ScenariosComponent",
+      "kind": "component",
+      "file": "frontend/sds-frontend/src/app/features/scenarios/components/scenarios.component.ts",
+      "line": 12,
+      "preview": "export class ScenariosComponent implements OnInit {"
+    },
+    {
+      "name": "ngOnInit",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/scenarios/components/scenarios.component.ts",
+      "line": 23,
+      "preview": "ngOnInit() {"
+    },
+    {
+      "name": "onFilterChange",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/scenarios/components/scenarios.component.ts",
+      "line": 43,
+      "preview": "onFilterChange(event: Event) {"
+    },
+    {
+      "name": "getStatusClass",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/scenarios/components/scenarios.component.ts",
+      "line": 49,
+      "preview": "getStatusClass(status: string): string {"
+    },
+    {
+      "name": "switch",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/scenarios/components/scenarios.component.ts",
+      "line": 50,
+      "preview": "switch (status) {"
+    },
+    {
+      "name": "ClientFormComponent",
+      "kind": "component",
+      "file": "frontend/sds-frontend/src/app/features/clients/components/client-form.component.ts",
+      "line": 15,
+      "preview": "export class ClientFormComponent implements OnInit {"
+    },
+    {
+      "name": "ngOnInit",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/clients/components/client-form.component.ts",
+      "line": 28,
+      "preview": "ngOnInit() {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/clients/components/client-form.component.ts",
+      "line": 32,
+      "preview": "if (this.isEdit) {"
+    },
+    {
+      "name": "onSubmit",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/clients/components/client-form.component.ts",
+      "line": 76,
+      "preview": "onSubmit() {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/clients/components/client-form.component.ts",
+      "line": 77,
+      "preview": "if (this.clientForm.invalid) {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/clients/components/client-form.component.ts",
+      "line": 85,
+      "preview": "if (this.isEdit && this.clientId) {"
+    },
+    {
+      "name": "onCancel",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/clients/components/client-form.component.ts",
+      "line": 112,
+      "preview": "onCancel() {"
+    },
+    {
+      "name": "DashboardComponent",
+      "kind": "component",
+      "file": "frontend/sds-frontend/src/app/features/scenarios/components/dashboard.component.ts",
+      "line": 16,
+      "preview": "export class DashboardComponent implements OnInit {"
+    },
+    {
+      "name": "ngOnInit",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/scenarios/components/dashboard.component.ts",
+      "line": 28,
+      "preview": "ngOnInit() {"
+    },
+    {
+      "name": "clientNames",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/scenarios/components/dashboard.component.ts",
+      "line": 53,
+      "preview": "clientNames(card: SafetyCard): string {"
+    },
+    {
+      "name": "getStatusClass",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/scenarios/components/dashboard.component.ts",
+      "line": 57,
+      "preview": "getStatusClass(status: string): string {"
+    },
+    {
+      "name": "switch",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/scenarios/components/dashboard.component.ts",
+      "line": 58,
+      "preview": "switch (status) {"
+    },
+    {
+      "name": "ClientDetailComponent",
+      "kind": "component",
+      "file": "frontend/sds-frontend/src/app/features/clients/components/client-detail.component.ts",
+      "line": 18,
+      "preview": "export class ClientDetailComponent implements OnInit {"
+    },
+    {
+      "name": "ngOnInit",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/clients/components/client-detail.component.ts",
+      "line": 42,
+      "preview": "ngOnInit() {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/clients/components/client-detail.component.ts",
+      "line": 44,
+      "preview": "if (this.clientId) {"
+    },
+    {
+      "name": "linkCard",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/clients/components/client-detail.component.ts",
+      "line": 51,
+      "preview": "linkCard(cardId: number) {"
+    },
+    {
+      "name": "unlinkCard",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/clients/components/client-detail.component.ts",
+      "line": 62,
+      "preview": "unlinkCard(card: SafetyCard) {"
+    },
+    {
+      "name": "getStatusClass",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/clients/components/client-detail.component.ts",
+      "line": 95,
+      "preview": "getStatusClass(status: string): string {"
+    },
+    {
+      "name": "switch",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/clients/components/client-detail.component.ts",
+      "line": 96,
+      "preview": "switch (status) {"
+    },
+    {
+      "name": "CardFormComponent",
+      "kind": "component",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-form.component.ts",
+      "line": 18,
+      "preview": "export class CardFormComponent implements OnInit {"
+    },
+    {
+      "name": "reasonsFor",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-form.component.ts",
+      "line": 33,
+      "preview": "reasonsFor(key: string): string {"
+    },
+    {
+      "name": "toggleClient",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-form.component.ts",
+      "line": 53,
+      "preview": "toggleClient(id: number, checked: boolean) {"
+    },
+    {
+      "name": "isWide",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-form.component.ts",
+      "line": 62,
+      "preview": "isWide(field: SdsField): boolean {"
+    },
+    {
+      "name": "ngOnInit",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-form.component.ts",
+      "line": 74,
+      "preview": "ngOnInit() {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-form.component.ts",
+      "line": 79,
+      "preview": "if (this.isEdit) {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-form.component.ts",
+      "line": 84,
+      "preview": "if (clientId) {"
+    },
+    {
+      "name": "onSubmit",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-form.component.ts",
+      "line": 148,
+      "preview": "onSubmit() {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-form.component.ts",
+      "line": 149,
+      "preview": "if (this.cardForm.invalid) {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-form.component.ts",
+      "line": 170,
+      "preview": "if (formData.tipologia === 'SDS') {"
+    },
+    {
+      "name": "for",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-form.component.ts",
+      "line": 171,
+      "preview": "for (const f of this.sdsTextFields) {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-form.component.ts",
+      "line": 177,
+      "preview": "if (this.isEdit && this.cardId) {"
+    },
+    {
+      "name": "onCancel",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-form.component.ts",
+      "line": 202,
+      "preview": "onCancel() {"
+    },
+    {
+      "name": "onPdfSelected",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-form.component.ts",
+      "line": 206,
+      "preview": "onPdfSelected(event: Event) {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-form.component.ts",
+      "line": 208,
+      "preview": "if (input.files && input.files[0]) {"
+    },
+    {
+      "name": "uploadPdf",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-form.component.ts",
+      "line": 213,
+      "preview": "uploadPdf() {"
+    },
+    {
+      "name": "deletePdf",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-form.component.ts",
+      "line": 232,
+      "preview": "deletePdf() {"
+    },
+    {
+      "name": "CardListComponent",
+      "kind": "component",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-list.component.ts",
+      "line": 19,
+      "preview": "export class CardListComponent implements OnInit {"
+    },
+    {
+      "name": "onOnlyToVerifyChange",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-list.component.ts",
+      "line": 30,
+      "preview": "onOnlyToVerifyChange(event: Event) {"
+    },
+    {
+      "name": "ngOnInit",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-list.component.ts",
+      "line": 51,
+      "preview": "ngOnInit() {"
+    },
+    {
+      "name": "onTipologiaChange",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-list.component.ts",
+      "line": 74,
+      "preview": "onTipologiaChange(event: Event) {"
+    },
+    {
+      "name": "onStatoChange",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-list.component.ts",
+      "line": 79,
+      "preview": "onStatoChange(event: Event) {"
+    },
+    {
+      "name": "onSearch",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-list.component.ts",
+      "line": 84,
+      "preview": "onSearch(event: Event) {"
+    },
+    {
+      "name": "onClientChange",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-list.component.ts",
+      "line": 89,
+      "preview": "onClientChange(event: Event) {"
+    },
+    {
+      "name": "openPdf",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-list.component.ts",
+      "line": 111,
+      "preview": "openPdf(card: SafetyCard) {"
+    },
+    {
+      "name": "clientNames",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-list.component.ts",
+      "line": 115,
+      "preview": "clientNames(card: SafetyCard): string {"
+    },
+    {
+      "name": "openDetail",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-list.component.ts",
+      "line": 119,
+      "preview": "openDetail(card: SafetyCard) {"
+    },
+    {
+      "name": "closeDetail",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-list.component.ts",
+      "line": 123,
+      "preview": "closeDetail() {"
+    },
+    {
+      "name": "onEscape",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-list.component.ts",
+      "line": 128,
+      "preview": "onEscape() {"
+    },
+    {
+      "name": "isWide",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-list.component.ts",
+      "line": 132,
+      "preview": "isWide(field: SdsField): boolean {"
+    },
+    {
+      "name": "getStatusClass",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-list.component.ts",
+      "line": 136,
+      "preview": "getStatusClass(status: string): string {"
+    },
+    {
+      "name": "switch",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-list.component.ts",
+      "line": 137,
+      "preview": "switch (status) {"
+    },
+    {
+      "name": "getDaysClass",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-list.component.ts",
+      "line": 145,
+      "preview": "getDaysClass(days: number | undefined): string {"
+    },
+    {
+      "name": "onDelete",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-list.component.ts",
+      "line": 152,
+      "preview": "onDelete(id: number) {"
+    },
+    {
+      "name": "exportToExcel",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-list.component.ts",
+      "line": 169,
+      "preview": "exportToExcel() {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/safety-cards/components/card-list.component.ts",
+      "line": 174,
+      "preview": "if (this.selectedClientId > 0) {"
+    },
+    {
+      "name": "LoginComponent",
+      "kind": "component",
+      "file": "frontend/sds-frontend/src/app/features/auth/components/login.component.ts",
+      "line": 14,
+      "preview": "export class LoginComponent {"
+    },
+    {
+      "name": "onSubmit",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/auth/components/login.component.ts",
+      "line": 30,
+      "preview": "onSubmit() {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/auth/components/login.component.ts",
+      "line": 31,
+      "preview": "if (this.loginForm.invalid) {"
+    },
+    {
+      "name": "ImportComponent",
+      "kind": "component",
+      "file": "frontend/sds-frontend/src/app/features/import/components/import.component.ts",
+      "line": 14,
+      "preview": "export class ImportComponent implements OnInit, OnDestroy {"
+    },
+    {
+      "name": "ngOnInit",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/import/components/import.component.ts",
+      "line": 33,
+      "preview": "ngOnInit() {"
+    },
+    {
+      "name": "ngOnDestroy",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/import/components/import.component.ts",
+      "line": 44,
+      "preview": "ngOnDestroy() {"
+    },
+    {
+      "name": "triggerExcelUpload",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/import/components/import.component.ts",
+      "line": 57,
+      "preview": "triggerExcelUpload(event?: Event) {"
+    },
+    {
+      "name": "triggerPdfUpload",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/import/components/import.component.ts",
+      "line": 63,
+      "preview": "triggerPdfUpload(event?: Event) {"
+    },
+    {
+      "name": "onExcelFileSelected",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/import/components/import.component.ts",
+      "line": 69,
+      "preview": "onExcelFileSelected(event: Event) {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/import/components/import.component.ts",
+      "line": 71,
+      "preview": "if (input.files && input.files[0]) {"
+    },
+    {
+      "name": "onPdfFileSelected",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/import/components/import.component.ts",
+      "line": 76,
+      "preview": "onPdfFileSelected(event: Event) {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/import/components/import.component.ts",
+      "line": 78,
+      "preview": "if (input.files && input.files.length) {"
+    },
+    {
+      "name": "removePdf",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/import/components/import.component.ts",
+      "line": 85,
+      "preview": "removePdf(index: number, event: Event) {"
+    },
+    {
+      "name": "onDragOver",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/import/components/import.component.ts",
+      "line": 90,
+      "preview": "onDragOver(event: Event) {"
+    },
+    {
+      "name": "onDropExcel",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/import/components/import.component.ts",
+      "line": 94,
+      "preview": "onDropExcel(event: Event) {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/import/components/import.component.ts",
+      "line": 97,
+      "preview": "if (dataTransfer.dataTransfer?.files && dataTransfer.dataTransfer.files[0]) {"
+    },
+    {
+      "name": "onDropPdf",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/import/components/import.component.ts",
+      "line": 102,
+      "preview": "onDropPdf(event: Event) {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/import/components/import.component.ts",
+      "line": 105,
+      "preview": "if (dataTransfer.dataTransfer?.files && dataTransfer.dataTransfer.files.length) {"
+    },
+    {
+      "name": "onClientChange",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/import/components/import.component.ts",
+      "line": 111,
+      "preview": "onClientChange(event: Event) {"
+    },
+    {
+      "name": "cancelExcel",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/import/components/import.component.ts",
+      "line": 118,
+      "preview": "cancelExcel() {"
+    },
+    {
+      "name": "cancelPdf",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/import/components/import.component.ts",
+      "line": 124,
+      "preview": "cancelPdf() {"
+    },
+    {
+      "name": "importExcel",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/import/components/import.component.ts",
+      "line": 134,
+      "preview": "importExcel() {"
+    },
+    {
+      "name": "analyzePdfs",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/import/components/import.component.ts",
+      "line": 159,
+      "preview": "analyzePdfs() {"
+    },
+    {
+      "name": "if",
+      "kind": "method",
+      "file": "frontend/sds-frontend/src/app/features/import/components/import.component.ts",
+      "line": 171,
+      "preview": "if (index >= files.length) {"
+    },
+    {
+      "name": "ImportSafetyCardDto",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/DTOs/ImportSafetyCardDto.cs",
+      "line": 5,
+      "preview": "public class ImportSafetyCardDto"
+    },
+    {
+      "name": "ImportHistoryDto",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/DTOs/ImportDtos.cs",
+      "line": 3,
+      "preview": "public class ImportHistoryDto"
+    },
+    {
+      "name": "ImportExcelResultDto",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/DTOs/ImportDtos.cs",
+      "line": 16,
+      "preview": "public class ImportExcelResultDto"
+    },
+    {
+      "name": "AnalyzePdfResultDto",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/DTOs/ImportDtos.cs",
+      "line": 28,
+      "preview": "public class AnalyzePdfResultDto"
+    },
+    {
+      "name": "DashboardStatsDto",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/DTOs/DashboardDtos.cs",
+      "line": 3,
+      "preview": "public class DashboardStatsDto"
+    },
+    {
+      "name": "ExpiringCardDto",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/DTOs/DashboardDtos.cs",
+      "line": 13,
+      "preview": "public class ExpiringCardDto"
+    },
+    {
+      "name": "NotificationDto",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/DTOs/DashboardDtos.cs",
+      "line": 25,
+      "preview": "public class NotificationDto"
+    },
+    {
+      "name": "LoginRequest",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/DTOs/AuthDtos.cs",
+      "line": 3,
+      "preview": "public class LoginRequest"
+    },
+    {
+      "name": "LoginResponse",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/DTOs/AuthDtos.cs",
+      "line": 9,
+      "preview": "public class LoginResponse"
+    },
+    {
+      "name": "RefreshRequest",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/DTOs/AuthDtos.cs",
+      "line": 17,
+      "preview": "public class RefreshRequest"
+    },
+    {
+      "name": "RegisterRequest",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/DTOs/AuthDtos.cs",
+      "line": 22,
+      "preview": "public class RegisterRequest"
+    },
+    {
+      "name": "UserDto",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/DTOs/AuthDtos.cs",
+      "line": 30,
+      "preview": "public class UserDto"
+    },
+    {
+      "name": "CreateUserDto",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/DTOs/AuthDtos.cs",
+      "line": 54,
+      "preview": "public class CreateUserDto"
+    },
+    {
+      "name": "UpdateUserDto",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/DTOs/AuthDtos.cs",
+      "line": 62,
+      "preview": "public class UpdateUserDto"
+    },
+    {
+      "name": "CreateClientDto",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/DTOs/AuthDtos.cs",
+      "line": 70,
+      "preview": "public class CreateClientDto"
+    },
+    {
+      "name": "UpdateClientDto",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/DTOs/AuthDtos.cs",
+      "line": 84,
+      "preview": "public class UpdateClientDto"
+    },
+    {
+      "name": "ClientDto",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/DTOs/AuthDtos.cs",
+      "line": 98,
+      "preview": "public class ClientDto"
+    },
+    {
+      "name": "CreateSafetyCardDto",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/DTOs/AuthDtos.cs",
+      "line": 116,
+      "preview": "public class CreateSafetyCardDto"
+    },
+    {
+      "name": "ApplyTo",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/DTOs/AuthDtos.cs",
+      "line": 141,
+      "preview": "public void ApplyTo(SSA.SDS.Api.Entities.SafetyCard card)"
+    },
+    {
+      "name": "SafetyCardDto",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/DTOs/AuthDtos.cs",
+      "line": 171,
+      "preview": "public class SafetyCardDto"
+    },
+    {
+      "name": "ClientRefDto",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/DTOs/AuthDtos.cs",
+      "line": 246,
+      "preview": "public class ClientRefDto"
     },
     {
       "name": "SdsDbContext",
       "kind": "class",
-      "file": "api/SSA.SDS.Api/SSA.SDS.Infrastructure/Data/SdsDbContext.cs",
+      "file": "api/SSA.SDS.Api/Data/SdsDbContext.cs",
       "line": 6,
       "preview": "public class SdsDbContext : DbContext"
     },
     {
-      "name": "Class1",
-      "kind": "class",
-      "file": "api/SSA.SDS.Api/SSA.SDS.Infrastructure/Class1.cs",
+      "name": "CardStatus",
+      "kind": "enum",
+      "file": "api/SSA.SDS.Api/Enums/CardStatus.cs",
       "line": 3,
-      "preview": "public class Class1"
+      "preview": "public enum CardStatus { Valid, Expiring, Expired, NotExpired }"
+    },
+    {
+      "name": "ImportFileType",
+      "kind": "enum",
+      "file": "api/SSA.SDS.Api/Enums/CardStatus.cs",
+      "line": 4,
+      "preview": "public enum ImportFileType { Excel, Pdf }"
+    },
+    {
+      "name": "ImportStatus",
+      "kind": "enum",
+      "file": "api/SSA.SDS.Api/Enums/CardStatus.cs",
+      "line": 5,
+      "preview": "public enum ImportStatus { Processing, Success, Error }"
+    },
+    {
+      "name": "NotificationType",
+      "kind": "enum",
+      "file": "api/SSA.SDS.Api/Enums/CardStatus.cs",
+      "line": 6,
+      "preview": "public enum NotificationType { ExpiringSoon, Expired }"
+    },
+    {
+      "name": "UsersController",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/Controllers/UsersController.cs",
+      "line": 13,
+      "preview": "public class UsersController : ControllerBase"
+    },
+    {
+      "name": "Get",
+      "kind": "endpoint",
+      "file": "api/SSA.SDS.Api/Controllers/UsersController.cs",
+      "line": 24,
+      "preview": "[HttpGet]"
+    },
+    {
+      "name": "GetAll",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/UsersController.cs",
+      "line": 25,
+      "preview": "public async Task<IActionResult> GetAll()"
+    },
+    {
+      "name": "GetById",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/UsersController.cs",
+      "line": 35,
+      "preview": "public async Task<IActionResult> GetById(int id)"
+    },
+    {
+      "name": "Post",
+      "kind": "endpoint",
+      "file": "api/SSA.SDS.Api/Controllers/UsersController.cs",
+      "line": 43,
+      "preview": "[HttpPost]"
+    },
+    {
+      "name": "Create",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/UsersController.cs",
+      "line": 44,
+      "preview": "public async Task<IActionResult> Create([FromBody] CreateUserDto request)"
+    },
+    {
+      "name": "Update",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/UsersController.cs",
+      "line": 68,
+      "preview": "public async Task<IActionResult> Update(int id, [FromBody] UpdateUserDto request)"
+    },
+    {
+      "name": "Delete",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/UsersController.cs",
+      "line": 87,
+      "preview": "public async Task<IActionResult> Delete(int id)"
     },
     {
       "name": "ScenariosController",
       "kind": "class",
       "file": "api/SSA.SDS.Api/Controllers/ScenariosController.cs",
-      "line": 7,
+      "line": 13,
       "preview": "public class ScenariosController : ControllerBase"
+    },
+    {
+      "name": "IExpirationService",
+      "kind": "dependency",
+      "file": "api/SSA.SDS.Api/Controllers/ScenariosController.cs",
+      "line": 16,
+      "preview": "private readonly IExpirationService _expirationService;"
     },
     {
       "name": "GetExpiring",
       "kind": "method",
       "file": "api/SSA.SDS.Api/Controllers/ScenariosController.cs",
-      "line": 17,
-      "preview": "public IActionResult GetExpiring()"
+      "line": 27,
+      "preview": "public async Task<IActionResult> GetExpiring([FromQuery] int days = 90)"
     },
     {
-      "name": "GetExpiringWithinDays",
+      "name": "Get",
+      "kind": "endpoint",
+      "file": "api/SSA.SDS.Api/Controllers/ScenariosController.cs",
+      "line": 50,
+      "preview": "[HttpGet]"
+    },
+    {
+      "name": "GetAll",
       "kind": "method",
       "file": "api/SSA.SDS.Api/Controllers/ScenariosController.cs",
-      "line": 23,
-      "preview": "public IActionResult GetExpiringWithinDays(int days)"
+      "line": 51,
+      "preview": "public async Task<IActionResult> GetAll()"
+    },
+    {
+      "name": "NotificationsController",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/Controllers/ScenariosController.cs",
+      "line": 77,
+      "preview": "public class NotificationsController : ControllerBase"
+    },
+    {
+      "name": "Get",
+      "kind": "endpoint",
+      "file": "api/SSA.SDS.Api/Controllers/ScenariosController.cs",
+      "line": 86,
+      "preview": "[HttpGet]"
+    },
+    {
+      "name": "GetAll",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/ScenariosController.cs",
+      "line": 87,
+      "preview": "public async Task<IActionResult> GetAll([FromQuery] bool unreadOnly = false)"
+    },
+    {
+      "name": "GetUnreadCount",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/ScenariosController.cs",
+      "line": 106,
+      "preview": "public async Task<IActionResult> GetUnreadCount()"
+    },
+    {
+      "name": "MarkAsRead",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/ScenariosController.cs",
+      "line": 113,
+      "preview": "public async Task<IActionResult> MarkAsRead(int id)"
+    },
+    {
+      "name": "MarkAllAsRead",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/ScenariosController.cs",
+      "line": 124,
+      "preview": "public async Task<IActionResult> MarkAllAsRead()"
+    },
+    {
+      "name": "Delete",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/ScenariosController.cs",
+      "line": 134,
+      "preview": "public async Task<IActionResult> Delete(int id)"
+    },
+    {
+      "name": "DashboardController",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/Controllers/ScenariosController.cs",
+      "line": 162,
+      "preview": "public class DashboardController : ControllerBase"
+    },
+    {
+      "name": "IExpirationService",
+      "kind": "dependency",
+      "file": "api/SSA.SDS.Api/Controllers/ScenariosController.cs",
+      "line": 165,
+      "preview": "private readonly IExpirationService _expirationService;"
     },
     {
       "name": "GetStats",
       "kind": "method",
       "file": "api/SSA.SDS.Api/Controllers/ScenariosController.cs",
-      "line": 29,
-      "preview": "public IActionResult GetStats()"
+      "line": 174,
+      "preview": "public async Task<IActionResult> GetStats()"
     },
     {
       "name": "SafetyCardsController",
       "kind": "class",
       "file": "api/SSA.SDS.Api/Controllers/SafetyCardsController.cs",
-      "line": 7,
+      "line": 14,
       "preview": "public class SafetyCardsController : ControllerBase"
+    },
+    {
+      "name": "IFileStorageService",
+      "kind": "dependency",
+      "file": "api/SSA.SDS.Api/Controllers/SafetyCardsController.cs",
+      "line": 17,
+      "preview": "private readonly IFileStorageService _fileStorage;"
+    },
+    {
+      "name": "IImportService",
+      "kind": "dependency",
+      "file": "api/SSA.SDS.Api/Controllers/SafetyCardsController.cs",
+      "line": 18,
+      "preview": "private readonly IImportService _importService;"
+    },
+    {
+      "name": "IExpirationService",
+      "kind": "dependency",
+      "file": "api/SSA.SDS.Api/Controllers/SafetyCardsController.cs",
+      "line": 19,
+      "preview": "private readonly IExpirationService _expirationService;"
     },
     {
       "name": "Get",
       "kind": "endpoint",
       "file": "api/SSA.SDS.Api/Controllers/SafetyCardsController.cs",
-      "line": 16,
+      "line": 36,
       "preview": "[HttpGet]"
     },
     {
-      "name": "Get",
+      "name": "GetAll",
       "kind": "method",
       "file": "api/SSA.SDS.Api/Controllers/SafetyCardsController.cs",
-      "line": 17,
-      "preview": "public IActionResult Get()"
+      "line": 37,
+      "preview": "public async Task<IActionResult> GetAll()"
     },
     {
-      "name": "Get",
+      "name": "GetById",
       "kind": "method",
       "file": "api/SSA.SDS.Api/Controllers/SafetyCardsController.cs",
-      "line": 23,
-      "preview": "public IActionResult Get(int id)"
+      "line": 49,
+      "preview": "public async Task<IActionResult> GetById(int id)"
     },
     {
       "name": "Post",
       "kind": "endpoint",
       "file": "api/SSA.SDS.Api/Controllers/SafetyCardsController.cs",
-      "line": 28,
+      "line": 61,
       "preview": "[HttpPost]"
     },
     {
       "name": "Create",
       "kind": "method",
       "file": "api/SSA.SDS.Api/Controllers/SafetyCardsController.cs",
-      "line": 29,
-      "preview": "public IActionResult Create()"
+      "line": 62,
+      "preview": "public async Task<IActionResult> Create([FromBody] CreateSafetyCardDto dto)"
     },
     {
       "name": "Update",
       "kind": "method",
       "file": "api/SSA.SDS.Api/Controllers/SafetyCardsController.cs",
-      "line": 35,
-      "preview": "public IActionResult Update(int id)"
+      "line": 86,
+      "preview": "public async Task<IActionResult> Update(int id, [FromBody] CreateSafetyCardDto dto)"
     },
     {
       "name": "Delete",
       "kind": "method",
       "file": "api/SSA.SDS.Api/Controllers/SafetyCardsController.cs",
-      "line": 41,
-      "preview": "public IActionResult Delete(int id)"
+      "line": 119,
+      "preview": "public async Task<IActionResult> Delete(int id)"
     },
     {
       "name": "UploadPdf",
       "kind": "method",
       "file": "api/SSA.SDS.Api/Controllers/SafetyCardsController.cs",
-      "line": 47,
-      "preview": "public IActionResult UploadPdf(int id)"
+      "line": 134,
+      "preview": "public async Task<IActionResult> UploadPdf(int id, IFormFile file)"
+    },
+    {
+      "name": "GetPdfUrl",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/SafetyCardsController.cs",
+      "line": 156,
+      "preview": "public async Task<IActionResult> GetPdfUrl(int id)"
+    },
+    {
+      "name": "DeletePdf",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/SafetyCardsController.cs",
+      "line": 166,
+      "preview": "public async Task<IActionResult> DeletePdf(int id)"
     },
     {
       "name": "AnalyzePdf",
       "kind": "method",
       "file": "api/SSA.SDS.Api/Controllers/SafetyCardsController.cs",
-      "line": 53,
-      "preview": "public IActionResult AnalyzePdf()"
+      "line": 184,
+      "preview": "public async Task<IActionResult> AnalyzePdf([FromForm] int? clientId, IFormFile pdfFile)"
     },
     {
       "name": "ImportController",
       "kind": "class",
       "file": "api/SSA.SDS.Api/Controllers/ImportController.cs",
-      "line": 7,
+      "line": 13,
       "preview": "public class ImportController : ControllerBase"
+    },
+    {
+      "name": "IImportService",
+      "kind": "dependency",
+      "file": "api/SSA.SDS.Api/Controllers/ImportController.cs",
+      "line": 16,
+      "preview": "private readonly IImportService _importService;"
     },
     {
       "name": "ImportExcel",
       "kind": "method",
       "file": "api/SSA.SDS.Api/Controllers/ImportController.cs",
-      "line": 17,
-      "preview": "public IActionResult ImportExcel()"
+      "line": 28,
+      "preview": "public async Task<IActionResult> ImportExcel(IFormFile file)"
     },
     {
       "name": "GetHistory",
       "kind": "method",
       "file": "api/SSA.SDS.Api/Controllers/ImportController.cs",
-      "line": 23,
-      "preview": "public IActionResult GetHistory()"
+      "line": 46,
+      "preview": "public async Task<IActionResult> GetHistory()"
+    },
+    {
+      "name": "GetStatus",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/ImportController.cs",
+      "line": 69,
+      "preview": "public async Task<IActionResult> GetStatus(int id)"
+    },
+    {
+      "name": "FilesController",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/Controllers/FilesController.cs",
+      "line": 10,
+      "preview": "public class FilesController : ControllerBase"
+    },
+    {
+      "name": "IFileStorageService",
+      "kind": "dependency",
+      "file": "api/SSA.SDS.Api/Controllers/FilesController.cs",
+      "line": 12,
+      "preview": "private readonly IFileStorageService _fileStorage;"
+    },
+    {
+      "name": "Download",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/FilesController.cs",
+      "line": 20,
+      "preview": "public IActionResult Download(string relativePath)"
     },
     {
       "name": "ClientsController",
       "kind": "class",
       "file": "api/SSA.SDS.Api/Controllers/ClientsController.cs",
-      "line": 8,
+      "line": 13,
       "preview": "public class ClientsController : ControllerBase"
     },
     {
       "name": "Get",
       "kind": "endpoint",
       "file": "api/SSA.SDS.Api/Controllers/ClientsController.cs",
-      "line": 17,
+      "line": 22,
       "preview": "[HttpGet]"
     },
     {
-      "name": "Get",
+      "name": "GetAll",
       "kind": "method",
       "file": "api/SSA.SDS.Api/Controllers/ClientsController.cs",
-      "line": 18,
-      "preview": "public IActionResult Get()"
+      "line": 23,
+      "preview": "public async Task<IActionResult> GetAll()"
     },
     {
-      "name": "Get",
+      "name": "GetById",
       "kind": "method",
       "file": "api/SSA.SDS.Api/Controllers/ClientsController.cs",
-      "line": 24,
-      "preview": "public IActionResult Get(int id)"
+      "line": 47,
+      "preview": "public async Task<IActionResult> GetById(int id)"
     },
     {
       "name": "Post",
       "kind": "endpoint",
       "file": "api/SSA.SDS.Api/Controllers/ClientsController.cs",
-      "line": 29,
+      "line": 72,
       "preview": "[HttpPost]"
     },
     {
       "name": "Create",
       "kind": "method",
       "file": "api/SSA.SDS.Api/Controllers/ClientsController.cs",
-      "line": 30,
-      "preview": "public IActionResult Create([FromBody] CreateClientDto dto)"
+      "line": 73,
+      "preview": "public async Task<IActionResult> Create([FromBody] CreateClientDto dto)"
     },
     {
       "name": "Update",
       "kind": "method",
       "file": "api/SSA.SDS.Api/Controllers/ClientsController.cs",
-      "line": 36,
-      "preview": "public IActionResult Update(int id, [FromBody] UpdateClientDto dto)"
+      "line": 94,
+      "preview": "public async Task<IActionResult> Update(int id, [FromBody] UpdateClientDto dto)"
     },
     {
       "name": "Delete",
       "kind": "method",
       "file": "api/SSA.SDS.Api/Controllers/ClientsController.cs",
-      "line": 42,
-      "preview": "public IActionResult Delete(int id)"
+      "line": 116,
+      "preview": "public async Task<IActionResult> Delete(int id)"
     },
     {
-      "name": "CardStatus",
-      "kind": "enum",
-      "file": "api/SSA.SDS.Api/SSA.SDS.Domain/Enums/CardStatus.cs",
-      "line": 3,
-      "preview": "public enum CardStatus"
+      "name": "GetCards",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/ClientsController.cs",
+      "line": 128,
+      "preview": "public async Task<IActionResult> GetCards(int id)"
     },
     {
-      "name": "ImportFileType",
-      "kind": "enum",
-      "file": "api/SSA.SDS.Api/SSA.SDS.Domain/Enums/CardStatus.cs",
-      "line": 11,
-      "preview": "public enum ImportFileType"
+      "name": "LinkCard",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/ClientsController.cs",
+      "line": 141,
+      "preview": "public async Task<IActionResult> LinkCard(int id, int cardId)"
     },
     {
-      "name": "ImportStatus",
-      "kind": "enum",
-      "file": "api/SSA.SDS.Api/SSA.SDS.Domain/Enums/CardStatus.cs",
-      "line": 17,
-      "preview": "public enum ImportStatus"
+      "name": "UnlinkCard",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/ClientsController.cs",
+      "line": 157,
+      "preview": "public async Task<IActionResult> UnlinkCard(int id, int cardId)"
     },
     {
-      "name": "NotificationType",
-      "kind": "enum",
-      "file": "api/SSA.SDS.Api/SSA.SDS.Domain/Enums/CardStatus.cs",
-      "line": 24,
-      "preview": "public enum NotificationType"
-    },
-    {
-      "name": "Class1",
+      "name": "AuthController",
       "kind": "class",
-      "file": "api/SSA.SDS.Api/SSA.SDS.Domain/Class1.cs",
-      "line": 3,
-      "preview": "public class Class1"
+      "file": "api/SSA.SDS.Api/Controllers/AuthController.cs",
+      "line": 10,
+      "preview": "public class AuthController : ControllerBase"
     },
     {
-      "name": "Client",
+      "name": "IAuthService",
+      "kind": "dependency",
+      "file": "api/SSA.SDS.Api/Controllers/AuthController.cs",
+      "line": 12,
+      "preview": "private readonly IAuthService _authService;"
+    },
+    {
+      "name": "Login",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/AuthController.cs",
+      "line": 22,
+      "preview": "public async Task<IActionResult> Login([FromBody] LoginRequest request)"
+    },
+    {
+      "name": "Refresh",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/AuthController.cs",
+      "line": 31,
+      "preview": "public async Task<IActionResult> Refresh([FromBody] RefreshRequest request)"
+    },
+    {
+      "name": "Register",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Controllers/AuthController.cs",
+      "line": 41,
+      "preview": "public async Task<IActionResult> Register([FromBody] RegisterRequest request)"
+    },
+    {
+      "name": "User",
       "kind": "class",
-      "file": "api/SSA.SDS.Api/SSA.SDS.Domain/Entities/Client.cs",
+      "file": "api/SSA.SDS.Api/Entities/User.cs",
       "line": 6,
-      "preview": "public class Client"
-    },
-    {
-      "name": "ImportHistory",
-      "kind": "class",
-      "file": "api/SSA.SDS.Api/SSA.SDS.Domain/Entities/ImportHistory.cs",
-      "line": 6,
-      "preview": "public class ImportHistory"
+      "preview": "public class User"
     },
     {
       "name": "SafetyCard",
       "kind": "class",
-      "file": "api/SSA.SDS.Api/SSA.SDS.Domain/Entities/SafetyCard.cs",
+      "file": "api/SSA.SDS.Api/Entities/SafetyCard.cs",
       "line": 6,
       "preview": "public class SafetyCard"
     },
     {
       "name": "Notification",
       "kind": "class",
-      "file": "api/SSA.SDS.Api/SSA.SDS.Domain/Entities/Notification.cs",
+      "file": "api/SSA.SDS.Api/Entities/Notification.cs",
       "line": 6,
       "preview": "public class Notification"
     },
     {
-      "name": "CreateSafetyCardDto",
+      "name": "ImportHistory",
       "kind": "class",
-      "file": "api/SSA.SDS.Api/SSA.SDS.Application/DTOs/SafetyCardDtos.cs",
-      "line": 3,
-      "preview": "public class CreateSafetyCardDto"
+      "file": "api/SSA.SDS.Api/Entities/ImportHistory.cs",
+      "line": 6,
+      "preview": "public class ImportHistory"
     },
     {
-      "name": "UpdateSafetyCardDto",
+      "name": "Client",
       "kind": "class",
-      "file": "api/SSA.SDS.Api/SSA.SDS.Application/DTOs/SafetyCardDtos.cs",
-      "line": 17,
-      "preview": "public class UpdateSafetyCardDto"
+      "file": "api/SSA.SDS.Api/Entities/Client.cs",
+      "line": 6,
+      "preview": "public class Client"
     },
     {
-      "name": "SafetyCardDto",
+      "name": "SeedService",
       "kind": "class",
-      "file": "api/SSA.SDS.Api/SSA.SDS.Application/DTOs/SafetyCardDtos.cs",
-      "line": 30,
-      "preview": "public class SafetyCardDto"
+      "file": "api/SSA.SDS.Api/Services/SeedService.cs",
+      "line": 7,
+      "preview": "public class SeedService"
     },
     {
-      "name": "LlmAnalysisRequest",
+      "name": "SeedDefaultAdminAsync",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Services/SeedService.cs",
+      "line": 13,
+      "preview": "public async Task SeedDefaultAdminAsync()"
+    },
+    {
+      "name": "SdsVerifier",
       "kind": "class",
-      "file": "api/SSA.SDS.Api/SSA.SDS.Application/DTOs/SafetyCardDtos.cs",
+      "file": "api/SSA.SDS.Api/Services/SdsVerifier.cs",
+      "line": 11,
+      "preview": "public class SdsVerifier"
+    },
+    {
+      "name": "ContainsText",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Services/SdsVerifier.cs",
+      "line": 64,
+      "preview": "public bool ContainsText(string value) => _flat.Contains(Flat(value));"
+    },
+    {
+      "name": "ContainsWords",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Services/SdsVerifier.cs",
+      "line": 73,
+      "preview": "public bool ContainsWords(string value)"
+    },
+    {
+      "name": "ContainsNumber",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Services/SdsVerifier.cs",
+      "line": 104,
+      "preview": "public bool ContainsNumber(string number)"
+    },
+    {
+      "name": "ContainsAllNumbers",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Services/SdsVerifier.cs",
+      "line": 119,
+      "preview": "public bool ContainsAllNumbers(string value)"
+    },
+    {
+      "name": "ContainsNumberNear",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Services/SdsVerifier.cs",
+      "line": 139,
+      "preview": "public bool ContainsNumberNear(string number, string[] anchors, int window = 200)"
+    },
+    {
+      "name": "ContainsNumberAfterName",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Services/SdsVerifier.cs",
+      "line": 162,
+      "preview": "public bool ContainsNumberAfterName(string number, string name, int window = 160)"
+    },
+    {
+      "name": "ContainsDate",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Services/SdsVerifier.cs",
+      "line": 229,
+      "preview": "public bool ContainsDate(DateTime date)"
+    },
+    {
+      "name": "Verify",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Services/SdsVerifier.cs",
+      "line": 268,
+      "preview": "public void Verify(SafetyCard card, string? fileName)"
+    },
+    {
+      "name": "PdfPageRenderer",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/Services/PdfPageRenderer.cs",
+      "line": 16,
+      "preview": "public class PdfPageRenderer"
+    },
+    {
+      "name": "PdfExtractedImage",
+      "kind": "record",
+      "file": "api/SSA.SDS.Api/Services/PdfImageExtractor.cs",
+      "line": 11,
+      "preview": "public record PdfExtractedImage(byte[] PngBytes, int Width, int Height);"
+    },
+    {
+      "name": "PdfImageExtractor",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/Services/PdfImageExtractor.cs",
+      "line": 16,
+      "preview": "public class PdfImageExtractor"
+    },
+    {
+      "name": "IOcrService",
+      "kind": "interface",
+      "file": "api/SSA.SDS.Api/Services/OcrService.cs",
+      "line": 9,
+      "preview": "public interface IOcrService"
+    },
+    {
+      "name": "OcrService",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/Services/OcrService.cs",
+      "line": 23,
+      "preview": "public class OcrService : IOcrService, IDisposable"
+    },
+    {
+      "name": "Dispose",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Services/OcrService.cs",
+      "line": 113,
+      "preview": "public void Dispose()"
+    },
+    {
+      "name": "IImportService",
+      "kind": "interface",
+      "file": "api/SSA.SDS.Api/Services/ImportService.cs",
+      "line": 12,
+      "preview": "public interface IImportService"
+    },
+    {
+      "name": "ImportService",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/Services/ImportService.cs",
+      "line": 18,
+      "preview": "public class ImportService : IImportService"
+    },
+    {
+      "name": "IFileStorageService",
+      "kind": "dependency",
+      "file": "api/SSA.SDS.Api/Services/ImportService.cs",
+      "line": 24,
+      "preview": "private readonly IFileStorageService _fileStorage;"
+    },
+    {
+      "name": "IOcrService",
+      "kind": "dependency",
+      "file": "api/SSA.SDS.Api/Services/ImportService.cs",
+      "line": 25,
+      "preview": "private readonly IOcrService _ocr;"
+    },
+    {
+      "name": "ImportExcelAsync",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Services/ImportService.cs",
       "line": 51,
-      "preview": "public class LlmAnalysisRequest"
+      "preview": "public async Task<ImportExcelResultDto> ImportExcelAsync(Stream fileStream, string fileName)"
     },
     {
-      "name": "LlmAnalysisResponse",
+      "name": "AnalyzePdfAsync",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Services/ImportService.cs",
+      "line": 199,
+      "preview": "public async Task<AnalyzePdfResultDto> AnalyzePdfAsync(Stream pdfStream, int? clientId, string? fileName)"
+    },
+    {
+      "name": "GhsMatch",
+      "kind": "record",
+      "file": "api/SSA.SDS.Api/Services/GhsPictogramMatcher.cs",
+      "line": 8,
+      "preview": "public record GhsMatch(string Code, string? Name, double Similarity);"
+    },
+    {
+      "name": "GhsPictogramMatcher",
       "kind": "class",
-      "file": "api/SSA.SDS.Api/SSA.SDS.Application/DTOs/SafetyCardDtos.cs",
+      "file": "api/SSA.SDS.Api/Services/GhsPictogramMatcher.cs",
+      "line": 20,
+      "preview": "public class GhsPictogramMatcher"
+    },
+    {
+      "name": "FrasiH",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/Services/FrasiH.cs",
+      "line": 5,
+      "preview": "public static class FrasiH"
+    },
+    {
+      "name": "IFileStorageService",
+      "kind": "interface",
+      "file": "api/SSA.SDS.Api/Services/FileStorageService.cs",
+      "line": 3,
+      "preview": "public interface IFileStorageService"
+    },
+    {
+      "name": "FileStorageService",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/Services/FileStorageService.cs",
+      "line": 11,
+      "preview": "public class FileStorageService : IFileStorageService"
+    },
+    {
+      "name": "SavePdfAsync",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Services/FileStorageService.cs",
+      "line": 28,
+      "preview": "public async Task<string> SavePdfAsync(int cardId, Stream content, string fileName)"
+    },
+    {
+      "name": "DeletePdf",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Services/FileStorageService.cs",
+      "line": 49,
+      "preview": "public bool DeletePdf(string relativePath)"
+    },
+    {
+      "name": "GetBaseUrl",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Services/FileStorageService.cs",
+      "line": 72,
+      "preview": "public string GetBaseUrl() => \"/api/files\";"
+    },
+    {
+      "name": "ExpirationWorker",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/Services/ExpirationWorker.cs",
+      "line": 5,
+      "preview": "public class ExpirationWorker : BackgroundService"
+    },
+    {
+      "name": "IServiceScopeFactory",
+      "kind": "dependency",
+      "file": "api/SSA.SDS.Api/Services/ExpirationWorker.cs",
+      "line": 7,
+      "preview": "private readonly IServiceScopeFactory _scopeFactory;"
+    },
+    {
+      "name": "IExpirationService",
+      "kind": "interface",
+      "file": "api/SSA.SDS.Api/Services/ExpirationService.cs",
+      "line": 8,
+      "preview": "public interface IExpirationService"
+    },
+    {
+      "name": "ExpirationService",
+      "kind": "class",
+      "file": "api/SSA.SDS.Api/Services/ExpirationService.cs",
+      "line": 14,
+      "preview": "public class ExpirationService : IExpirationService"
+    },
+    {
+      "name": "RecalculateCardStatusesAsync",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Services/ExpirationService.cs",
+      "line": 25,
+      "preview": "public async Task<int> RecalculateCardStatusesAsync()"
+    },
+    {
+      "name": "GenerateNotificationsAsync",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Services/ExpirationService.cs",
       "line": 57,
-      "preview": "public class LlmAnalysisResponse"
+      "preview": "public async Task<int> GenerateNotificationsAsync()"
     },
     {
-      "name": "CreateClientDto",
-      "kind": "class",
-      "file": "api/SSA.SDS.Api/SSA.SDS.Application/DTOs/ClientDtos.cs",
-      "line": 3,
-      "preview": "public class CreateClientDto"
+      "name": "IAuthService",
+      "kind": "interface",
+      "file": "api/SSA.SDS.Api/Services/AuthService.cs",
+      "line": 10,
+      "preview": "public interface IAuthService"
     },
     {
-      "name": "UpdateClientDto",
+      "name": "AuthService",
       "kind": "class",
-      "file": "api/SSA.SDS.Api/SSA.SDS.Application/DTOs/ClientDtos.cs",
-      "line": 17,
-      "preview": "public class UpdateClientDto"
+      "file": "api/SSA.SDS.Api/Services/AuthService.cs",
+      "line": 19,
+      "preview": "public class AuthService : IAuthService"
     },
     {
-      "name": "ClientDto",
-      "kind": "class",
-      "file": "api/SSA.SDS.Api/SSA.SDS.Application/DTOs/ClientDtos.cs",
-      "line": 31,
-      "preview": "public class ClientDto"
+      "name": "LoginAsync",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Services/AuthService.cs",
+      "line": 32,
+      "preview": "public async Task<LoginResponse?> LoginAsync(string username, string password)"
     },
     {
-      "name": "Class1",
-      "kind": "class",
-      "file": "api/SSA.SDS.Api/SSA.SDS.Application/Class1.cs",
-      "line": 3,
-      "preview": "public class Class1"
+      "name": "RefreshTokenAsync",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Services/AuthService.cs",
+      "line": 47,
+      "preview": "public async Task<LoginResponse?> RefreshTokenAsync(string refreshToken)"
+    },
+    {
+      "name": "RegisterAsync",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Services/AuthService.cs",
+      "line": 76,
+      "preview": "public async Task<User?> RegisterAsync(string username, string password, string email, string role)"
+    },
+    {
+      "name": "GetUserByUsernameAsync",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Services/AuthService.cs",
+      "line": 95,
+      "preview": "public async Task<User?> GetUserByUsernameAsync(string username)"
+    },
+    {
+      "name": "GetUserByIdAsync",
+      "kind": "method",
+      "file": "api/SSA.SDS.Api/Services/AuthService.cs",
+      "line": 98,
+      "preview": "public async Task<User?> GetUserByIdAsync(int id)"
     }
   ]
 }

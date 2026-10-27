@@ -85,19 +85,25 @@ public class GhsPictogramMatcher
             if (w < 16 || h < 16) return null; // troppo piccolo: non e un pittogramma
             if (w > MaxInputSize || h > MaxInputSize) return null; // corrotta/non immagine
 
-            // Binarizza e conta l'inchiostro (pixel non bianchi)
+            // Binarizza e conta l'inchiostro (pixel non bianchi).
+            // Accesso diretto al buffer pixel (senza l'indiretto image[x,y]): su immagini
+            // grandi (scansioni) è diversi ordini di grandezza più veloce.
             var black = new bool[w * h];
             var ink = 0;
-            for (var y = 0; y < h; y++)
+            image.ProcessPixelRows(accessor =>
             {
-                for (var x = 0; x < w; x++)
+                for (var y = 0; y < h; y++)
                 {
-                    var p = image[x, y];
-                    if (p.A < 128) continue; // trasparente: non e inchiostro
-                    var gray = (p.R * 299 + p.G * 587 + p.B * 114) / 1000;
-                    if (gray < BlackThreshold) { black[y * w + x] = true; ink++; }
+                    var row = accessor.GetRowSpan(y);
+                    for (var x = 0; x < w; x++)
+                    {
+                        var p = row[x];
+                        if (p.A < 128) continue; // trasparente: non e inchiostro
+                        var gray = (p.R * 299 + p.G * 587 + p.B * 114) / 1000;
+                        if (gray < BlackThreshold) { black[y * w + x] = true; ink++; }
+                    }
                 }
-            }
+            });
             if (ink < w * h * MinInkRatio) return null; // bianco quasi totale: non c'e un simbolo
 
             // Bounding box del contenuto: il simbolo puo essere in un angolo dell'immagine
@@ -131,19 +137,30 @@ public class GhsPictogramMatcher
 
             // Ritaglia e ridimensiona a RefSize x RefSize (il resize ri-binarizza l'anti-aliasing)
             using var crop = new Image<Rgba32>(cw, ch);
-            for (var y = 0; y < ch; y++)
+            crop.ProcessPixelRows(accessor =>
             {
-                for (var x = 0; x < cw; x++)
-                    crop[x, y] = black[(y + y0) * w + x + x0] ? new Rgba32(0, 0, 0) : new Rgba32(255, 255, 255);
-            }
+                for (var y = 0; y < ch; y++)
+                {
+                    var row = accessor.GetRowSpan(y);
+                    for (var x = 0; x < cw; x++)
+                        row[x] = black[(y + y0) * w + x + x0] ? new Rgba32(0, 0, 0) : new Rgba32(255, 255, 255);
+                }
+            });
             crop.Mutate(x => x.Resize(new ResizeOptions { Size = new SixLabors.ImageSharp.Size(RefSize, RefSize) }));
 
             var result = new byte[RefSize * RefSize];
-            for (var i = 0; i < result.Length; i++)
+            crop.ProcessPixelRows(accessor =>
             {
-                var p = crop[i % RefSize, i / RefSize];
-                result[i] = (byte)((p.R * 299 + p.G * 587 + p.B * 114) / 1000 < BlackThreshold ? 1 : 0);
-            }
+                for (var y = 0; y < RefSize; y++)
+                {
+                    var row = accessor.GetRowSpan(y);
+                    for (var x = 0; x < RefSize; x++)
+                    {
+                        var p = row[x];
+                        result[y * RefSize + x] = (byte)((p.R * 299 + p.G * 587 + p.B * 114) / 1000 < BlackThreshold ? 1 : 0);
+                    }
+                }
+            });
             return result;
         }
         catch
@@ -184,9 +201,9 @@ public class GhsPictogramMatcher
         if (string.IsNullOrWhiteSpace(hPhrases)) return new HashSet<string>();
 
         var pictograms = new HashSet<string>();
-        var codes = Regex.Matches(hPhrases, @"H\s*(\d{3}[a-d]?)(?:\s*,\s*|\s*;|\s+)")
+        var codes = HPhraseCodeRegex.Matches(hPhrases)
             .Select(m => "H" + m.Groups[1].Value.ToUpperInvariant())
-            .Union(Regex.Matches(hPhrases, @"H\s*(\d{3}[a-d]?)\b")
+            .Union(HPhraseCodeAltRegex.Matches(hPhrases)
                 .Select(m => "H" + m.Groups[1].Value.ToUpperInvariant()));
 
         foreach (var code in codes.Distinct())
@@ -198,72 +215,123 @@ public class GhsPictogramMatcher
         return pictograms;
     }
 
+    // Regex precompilate: usate a ogni chiamata di PictogramsFromHPhrases
+    private static readonly Regex HPhraseCodeRegex = new(@"H\s*(\d{3}[a-d]?)(?:\s*,\s*|\s*;|\s+)", RegexOptions.Compiled);
+    private static readonly Regex HPhraseCodeAltRegex = new(@"H\s*(\d{3}[a-d]?)\b", RegexOptions.Compiled);
+    private static readonly Regex HCodeSuffixRegex = new(@"[a-d]$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
     // Tabella CLP/GHS: per ogni frase H i pittogrammi corrispondenti
     private static IEnumerable<string> HPhraseToPictogram(string code)
     {
         // Rimuovi eventuali suffissi (es. H350i -> H350)
-        var baseCode = Regex.Replace(code, @"[a-d]$", "", RegexOptions.IgnoreCase);
+        var baseCode = HCodeSuffixRegex.Replace(code, "");
 
         switch (baseCode)
         {
             // GHS01: Esplosivi
-            case "H200": case "H201": case "H202": case "H203":
-            case "H204": case "H205": case "H206": case "H207": case "H208":
+            case "H200":
+            case "H201":
+            case "H202":
+            case "H203":
+            case "H204":
+            case "H205":
+            case "H206":
+            case "H207":
+            case "H208":
                 yield return "GHS01";
                 break;
 
             // GHS02: Infiammabili
-            case "H220": case "H221": case "H222": case "H223":
-            case "H224": case "H225": case "H226": case "H227":
-            case "H228": case "H229":
-            case "H230": case "H231": case "H232":
-            case "H240": case "H241": case "H242":
-            case "H250": case "H251": case "H252":
-            case "H260": case "H261":
+            case "H220":
+            case "H221":
+            case "H222":
+            case "H223":
+            case "H224":
+            case "H225":
+            case "H226":
+            case "H227":
+            case "H228":
+            case "H229":
+            case "H230":
+            case "H231":
+            case "H232":
+            case "H240":
+            case "H241":
+            case "H242":
+            case "H250":
+            case "H251":
+            case "H252":
+            case "H260":
+            case "H261":
                 yield return "GHS02";
                 break;
 
             // GHS03: Comburenti
-            case "H270": case "H271": case "H272":
+            case "H270":
+            case "H271":
+            case "H272":
                 yield return "GHS03";
                 break;
 
             // GHS04: Gas sotto pressione
-            case "H280": case "H281": case "H282":
+            case "H280":
+            case "H281":
+            case "H282":
                 yield return "GHS04";
                 break;
 
             // GHS05: Corrosivi
-            case "H314": case "H318":
+            case "H314":
+            case "H318":
                 yield return "GHS05";
                 break;
 
             // GHS06: Tossicità acuta (categorie 1, 2, 3)
-            case "H300": case "H310": case "H330":
-            case "H301": case "H311": case "H331":
+            case "H300":
+            case "H310":
+            case "H330":
+            case "H301":
+            case "H311":
+            case "H331":
                 yield return "GHS06";
                 break;
 
             // GHS07: Tossicità acuta (altre categorie), irritante, sensibilizzante
-            case "H302": case "H312": case "H332":
-            case "H305": case "H315": case "H319":
-            case "H335": case "H336":
+            case "H302":
+            case "H312":
+            case "H332":
+            case "H305":
+            case "H315":
+            case "H319":
+            case "H335":
+            case "H336":
             case "H317":
                 yield return "GHS07";
                 break;
 
             // GHS08: Pericoloso per la salute
             case "H334":
-            case "H340": case "H341":
-            case "H350": case "H351":
-            case "H360": case "H361":
-            case "H370": case "H371": case "H372": case "H373":
+            case "H340":
+            case "H341":
+            case "H350":
+            case "H351":
+            case "H360":
+            case "H361":
+            case "H370":
+            case "H371":
+            case "H372":
+            case "H373":
                 yield return "GHS08";
                 break;
 
             // GHS09: Pericoloso per l'ambiente
-            case "H400": case "H401": case "H402":
-            case "H410": case "H411": case "H412": case "H413":
+            case "H400":
+            case "H401":
+            case "H402":
+            case "H410":
+            case "H411":
+            case "H412":
+            case "H413":
                 yield return "GHS09";
                 break;
         }

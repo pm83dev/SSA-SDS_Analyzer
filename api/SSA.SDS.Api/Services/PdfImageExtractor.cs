@@ -1,8 +1,8 @@
 using PdfSharpCore.Pdf;
+using PdfSharpCore.Pdf.Advanced;
 using PdfSharpCore.Pdf.Content;
 using PdfSharpCore.Pdf.Content.Objects;
 using PdfSharpCore.Pdf.IO;
-using PdfSharpCore.Pdf.Advanced;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 
@@ -67,15 +67,22 @@ public class PdfImageExtractor
         return found;
     }
 
-    // Estrae le immagini incorporate in una specifica pagina
+    // Estrae le immagini incorporate in una specifica pagina (apre il documento)
     public List<PdfExtractedImage> ExtractImagesFromPage(byte[] pdfBytes, int pageIndex)
+    {
+        using var document = PdfReader.Open(new MemoryStream(pdfBytes), PdfDocumentOpenMode.Import);
+        return ExtractImagesFromPage(document, pageIndex);
+    }
+
+    // Estrae le immagini incorporate in una specifica pagina da un documento già aperto:
+    // evita la riapertura del PDF quando si processano più pagine (OCR, vision)
+    public static List<PdfExtractedImage> ExtractImagesFromPage(PdfSharpCore.Pdf.PdfDocument document, int pageIndex)
     {
         var found = new List<PdfExtractedImage>();
         var seen = new HashSet<string>();
 
         try
         {
-            using var document = PdfReader.Open(new MemoryStream(pdfBytes), PdfDocumentOpenMode.Import);
             if (pageIndex < 0 || pageIndex >= document.Pages.Count) return found;
             var page = document.Pages[pageIndex];
 

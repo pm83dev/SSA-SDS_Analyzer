@@ -47,15 +47,16 @@ public class OcrService : IOcrService, IDisposable
         var engine = GetEngine();
         if (engine == null) return null;
 
-        var tempFile = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName() + ".png");
         try
         {
-            using (var img = SixLabors.ImageSharp.Image.Load(image))
-            {
-                img.SaveAsPng(tempFile);
-            }
+            // Carica l'immagine in memoria e la passa a Tesseract senza file temporaneo:
+            // prima ogni immagine veniva scritta in %TEMP% come PNG e poi letta da disco
+            using var img = SixLabors.ImageSharp.Image.Load(image);
+            using var pngStream = new MemoryStream();
+            img.SaveAsPng(pngStream);
+            pngStream.Position = 0;
 
-            using var pix = TesseractOCR.Pix.Image.LoadFromFile(tempFile);
+            using var pix = TesseractOCR.Pix.Image.LoadFromMemory(pngStream);
             using var page = engine.Process(pix);
             var text = page.Text;
             return string.IsNullOrWhiteSpace(text) ? null : text.Trim();
@@ -64,10 +65,6 @@ public class OcrService : IOcrService, IDisposable
         {
             _logger.LogWarning(ex, "Errore durante il riconoscimento OCR dell'immagine");
             return null;
-        }
-        finally
-        {
-            if (File.Exists(tempFile)) File.Delete(tempFile);
         }
     }
 
