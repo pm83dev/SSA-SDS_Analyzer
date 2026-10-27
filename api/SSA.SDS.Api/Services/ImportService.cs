@@ -252,27 +252,65 @@ public class ImportService : IImportService
         }
 
         pdfBuffer.Position = 0; // CallLlmAsync legge il PDF per il rendering delle pagine (vision)
-        var json = await CallLlmAsync(text, fileName, pdfBuffer);
-        if (json == null)
+        
+        // Divide il testo nelle sezioni e fa chiamate LLM separate per ogni sezione
+        var sections = SplitSdsSections(text);
+        var sectionResults = new Dictionary<string, string?>();
+        
+        // Chiamate parallele per ogni sezione disponibile
+        var tasks = new List<Task<(string SectionKey, string? Json)>>();
+        
+        if (sections.ContainsKey("section1"))
+            tasks.Add(CallLlmForSectionAsync(Section1Prompt, sections["section1"], fileName, pdfBuffer));
+        if (sections.ContainsKey("section2"))
+            tasks.Add(CallLlmForSectionAsync(Section2Prompt, sections["section2"], fileName, pdfBuffer));
+        if (sections.ContainsKey("section3"))
+            tasks.Add(CallLlmForSectionAsync(Section3Prompt, sections["section3"], fileName, pdfBuffer));
+        if (sections.ContainsKey("section9"))
+            tasks.Add(CallLlmForSectionAsync(Section9Prompt, sections["section9"], fileName, pdfBuffer));
+        
+        // Se nessuna sezione trovata, usa il prompt completo sul testo intero
+        if (tasks.Count == 0)
         {
-            result.Message = "Il servizio LLM non ha restituito una risposta valida. Verifica che il server LLM sia raggiungibile.";
-            return result;
+            var json = await CallLlmAsync(text, fileName, pdfBuffer);
+            if (json == null)
+            {
+                result.Message = "Il servizio LLM non ha restituito una risposta valida. Verifica che il server LLM sia raggiungibile.";
+                return result;
+            }
+            sectionResults["full"] = json;
+        }
+        else
+        {
+            var completedTasks = await Task.WhenAll(tasks);
+            foreach (var (sectionKey, json) in completedTasks)
+                sectionResults[sectionKey] = json;
+            
+            // Verifica che almeno una chiamata abbia avuto successo
+            if (!sectionResults.Values.Any(j => j != null))
+            {
+                result.Message = "Il servizio LLM non ha restituito una risposta valida per nessuna sezione. Verifica che il server LLM sia raggiungibile.";
+                return result;
+            }
         }
 
+        // Unisce i risultati delle chiamate LLM per sezione in un unico JSON
+        var mergedJson = MergeSectionResults(sectionResults);
+        
         var card = new SafetyCard
         {
             Tipologia = "SDS",
             NomeFileImportato = fileName,
             PdfHash = pdfHash,
             LlmAnalyzed = true,
-            LlmRawResponse = json,
+            LlmRawResponse = mergedJson,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
 
         try
         {
-            using var doc = System.Text.Json.JsonDocument.Parse(json);
+            using var doc = System.Text.Json.JsonDocument.Parse(mergedJson);
             var root = doc.RootElement;
 
             card.Titolo = NormalizeMissing(GetJsonString(root, "titolo", "nome_prodotto", "product_name")) ?? string.Empty;
@@ -283,14 +321,35 @@ public class ImportService : IImportService
             card.FrasiH = NormalizeMissing(GetJsonString(root, "frasi_h", "h_phrases"));
             // Il modello restituisce array (come in Open WebUI): uniti con virgola per il campo testo della scheda.
             // Se la SDS non riporta i codici GHS nella sezione 2.2 (array vuoto), li deriva dalle frasi H (CLP).
-            card.Pittogrammi = NormalizeMissing(string.Join(", ", GetJsonArray(root, "pittogrammi", "pittogramma", "pictogram")));
-            if (string.IsNullOrWhiteSpace(card.Pittogrammi))
+            var existingPictograms = GetJsonArray(root, "pittogrammi", "pittogramma", "pictogram");
+            card.Pittogrammi = NormalizeMissing(string.Join(", ", existingPictograms));
+            
+            // Se non ci sono pittogrammi nella sezione 2.2, li deriva dalle frasi H (CLP)
+            if (existingPictograms.Count == 0)
             {
                 var derived = GhsMapping.DeriveGhsCodes(card.FrasiH);
                 if (derived.Count > 0)
                 {
                     card.Pittogrammi = string.Join(", ", derived);
                     _logger.LogInformation("PDF {FileName}: pittogrammi derivati dalle frasi H: {Pictograms}", fileName, card.Pittogrammi);
+                }
+            }
+            // Se ci sono pittogrammi nella sezione 2.2 ma anche frasi H, controlla che non ci siano discrepanze
+            else if (!string.IsNullOrWhiteSpace(card.FrasiH))
+            {
+                var derived = GhsMapping.DeriveGhsCodes(card.FrasiH);
+                if (derived.Count > 0)
+                {
+                    // Verifica se i pittogrammi derivati sono già presenti nei pittogrammi esistenti
+                    var existingSet = new HashSet<string>(existingPictograms.Select(p => p.Trim()), StringComparer.OrdinalIgnoreCase);
+                    var derivedSet = new HashSet<string>(derived, StringComparer.OrdinalIgnoreCase);
+                    
+                    // Se ci sono discrepanze tra i due set, logga un avviso ma usa i pittogrammi esistenti
+                    if (!existingSet.IsSubsetOf(derivedSet) && !derivedSet.IsSubsetOf(existingSet))
+                    {
+                        _logger.LogWarning("PDF {FileName}: discrepanza tra pittogrammi presenti nella SDS ({Existing}) e quelli derivati dalle frasi H ({Derived})", 
+                            fileName, string.Join(", ", existingPictograms), string.Join(", ", derived));
+                    }
                 }
             }
             card.ComposizioneCasSopra = NormalizeMissing(string.Join(", ", GetJsonArray(root, "composizione_cas_sopra_01", "composition_cas_above")));
@@ -313,7 +372,7 @@ public class ImportService : IImportService
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Errore nel parsing della risposta LLM: {Json}", json);
+            _logger.LogWarning(ex, "Errore nel parsing della risposta LLM: {Json}", mergedJson);
             result.Message = "La risposta del servizio LLM non è un JSON valido";
             return result;
         }
@@ -448,6 +507,115 @@ public class ImportService : IImportService
         return cleaned.Trim();
     }
 
+    // Divide il testo della SDS nelle sezioni principali (1, 2, 3, 9) usando i pattern delle intestazioni.
+    // Ritorna una dictionary con le chiavi "section1", "section2", "section3", "section9".
+    private static Dictionary<string, string> SplitSdsSections(string text)
+    {
+        var sections = new Dictionary<string, string>();
+        
+        // Pattern per trovare l'inizio di ogni sezione principale
+        var sectionPatterns = new Dictionary<string, System.Text.RegularExpressions.Regex>
+        {
+            ["section1"] = new System.Text.RegularExpressions.Regex(@"^\s*1\.\s+[A-Z]", System.Text.RegularExpressions.RegexOptions.Multiline),
+            ["section2"] = new System.Text.RegularExpressions.Regex(@"^\s*2\.\s+[A-Z]", System.Text.RegularExpressions.RegexOptions.Multiline),
+            ["section3"] = new System.Text.RegularExpressions.Regex(@"^\s*3\.\s+[A-Z]", System.Text.RegularExpressions.RegexOptions.Multiline),
+            ["section9"] = new System.Text.RegularExpressions.Regex(@"^\s*9\.\s+[A-Z]", System.Text.RegularExpressions.RegexOptions.Multiline)
+        };
+        
+        // Trova la posizione di inizio di ogni sezione
+        var positions = new Dictionary<string, int>();
+        foreach (var kvp in sectionPatterns)
+        {
+            var match = kvp.Value.Match(text);
+            if (match.Success)
+                positions[kvp.Key] = match.Index;
+        }
+        
+        // Estrae il contenuto di ogni sezione (dall'inizio alla sezione successiva)
+        var orderedKeys = new[] { "section1", "section2", "section3", "section9" };
+        for (var i = 0; i < orderedKeys.Length; i++)
+        {
+            var key = orderedKeys[i];
+            if (!positions.ContainsKey(key)) continue;
+            
+            var start = positions[key];
+            int end;
+            
+            // Trova la sezione successiva per determinare la fine di questa
+            var nextKey = orderedKeys.FirstOrDefault(k => k != key && positions.ContainsKey(k) && positions[k] > start);
+            if (nextKey != null)
+                end = positions[nextKey];
+            else
+                end = text.Length;
+            
+            sections[key] = text[start..end].Trim();
+        }
+        
+        return sections;
+    }
+
+    // Prompt specifici per ogni sezione della SDS, per un'analisi più precisa.
+    
+    // Sezione 1: Identificazione del prodotto (punti 1.1 e 1.3)
+    private const string Section1Prompt =
+        "Dal testo della SEZIONE 1 della SDS estrai i dati e restituisci SOLO un JSON valido con questa struttura: " +
+        "{ " +
+        "\"titolo\": \"nome del prodotto chimico (punto 1.1)\", " +
+        "\"produttore\": \"nome della società produttrice/fornitrice (punto 1.3), senza indirizzo\", " +
+        "\"sds_url\": \"URL della SDS se scritto nel testo, altrimenti null\", " +
+        "\"data_sds\": \"data di compilazione/revisione della SDS come scritta (es. '2025-06-04'), se scritta, altrimenti null\", " +
+        "\"versione\": \"numero di versione o revisione della SDS come scritto, altrimenti null\", " +
+        "\"data_scadenza\": \"data di scadenza/validità della SDS solo se scritta esplicitamente, come scritta, altrimenti null\" " +
+        "} " +
+        "REGOLE: " +
+        "1) Riporta i dati che trovi nel testo. " +
+        "2) Se un dato manca usa null (l'oggetto JSON null, non la stringa \"null\"). " +
+        "3) Non aggiungere testo fuori dal JSON.";
+
+    // Sezione 2: Informazioni sulla pericolosità (punti 2.1 e 2.2)
+    private const string Section2Prompt =
+        "Dal testo della SEZIONE 2 della SDS estrai i dati e restituisci SOLO un JSON valido con questa struttura: " +
+        "{ " +
+        "\"frasi_h\": \"codici delle frasi H e EUH della sezione 2.1 (es. H225, H315, EUH066) separati da virgola. Se nella SDS c'è solo la descrizione della frase H, riporta il codice corrispondente. Le frasi R (es. R35) non sono frasi H: non riportarle\", " +
+        "\"pittogrammi\": [\"codici dei pittogrammi GHS scritti nella sezione 2.2, es. 'GHS02', 'GHS07'. Se nel testo non compare il codice GHS usa un array vuoto: non dedurlo dalle frasi H o dai simboli\"] " +
+        "} " +
+        "REGOLE: " +
+        "1) Riporta i dati che trovi nel testo. " +
+        "2) Se un dato manca usa null (l'oggetto JSON null, non la stringa \"null\"); per gli array usa un array vuoto []. " +
+        "3) Non aggiungere testo fuori dal JSON.";
+
+    // Sezione 3: Composizione/informazioni sugli ingredienti
+    private const string Section3Prompt =
+        "Dal testo della SEZIONE 3 della SDS estrai i dati e restituisci SOLO un JSON valido con questa struttura: " +
+        "{ " +
+        "\"composizione_cas_sopra_01\": [\"componenti con CAS sopra lo 0,1% (punto 3), uno per voce, nel formato 'nome numero CAS' (es. 'xilene 1330-20-7'). Il n. CAS ha il formato xxx-xx-x: NON usare il numero CE/EC né il numero indice CLP. Se non ci sono componenti usa un array vuoto\"], " +
+        "\"composizione_cas_sotto_01\": [\"componenti con CAS sotto lo 0,1% (punto 3), uno per voce, nel formato 'nome numero CAS'. Se non ci sono componenti usa un array vuoto\"], " +
+        "\"composizione_cas_da_verificare\": [\"componenti il cui numero CAS non riesci a leggere con certezza o che compaiono senza CAS: riporta la voce come scritta (es. '911674-82-3 <1,0%'). Se non ce ne sono usa un array vuoto\"], " +
+        "\"composizione\": \"elenco dei nomi dei componenti chimici presenti nella SDS, separati da virgola\", " +
+        "\"diisocianati\": \"'sì' se la SDS dichiara la presenza di diisocianati (punto 3 o 14), 'no' se dichiara l'assenza o non contiene diisocianati\" " +
+        "} " +
+        "REGOLE: " +
+        "1) Riporta i dati che trovi nel testo. " +
+        "2) Se un dato manca usa null (l'oggetto JSON null, non la stringa \"null\"); per gli array usa un array vuoto []. " +
+        "3) Per i CAS: riporta il numero CAS esattamente come scritto nel formato xxx-xx-x; se non lo leggi con certezza metti la voce in composizione_cas_da_verificare. " +
+        "4) I diisocianati sono riconoscibili perché la desinenza 'diiso' o 'di-iso' c'è sempre nei nomi chimici. " +
+        "5) Non aggiungere testo fuori dal JSON.";
+
+    // Sezione 9: Proprietà fisiche e chimiche
+    private const string Section9Prompt =
+        "Dal testo della SEZIONE 9 della SDS estrai i dati e restituisci SOLO un JSON valido con questa struttura: " +
+        "{ " +
+        "\"stato_fisico\": \"stato fisico (punto 9) - riporta SOLO lo stato (es. 'liquido', 'solido', 'gas') se presente nel testo, altrimenti null\", " +
+        "\"teb\": \"temperatura di ebollizione (punto 9) come scritta, con l'unità (es. '>37,78 °C'). Se non c'è usa null\", " +
+        "\"cov_percent\": \"COV/VOC esattamente come riportato nella SDS, in % oppure in g/l con l'unità (es. '650 g/l'). Se non è riportato usa null: non stimarlo e non calcolarlo\", " +
+        "\"densita\": \"densità (punto 9) come scritta (es. '1,4', '0,84 g/cm³'). Se non c'è usa null\" " +
+        "} " +
+        "REGOLE: " +
+        "1) Riporta i dati che trovi nel testo. " +
+        "2) Se un dato manca usa null (l'oggetto JSON null, non la stringa \"null\"). " +
+        "3) Per i numeri (temperature, percentuali, densità): riporta il valore ESATTO come scritto, con tutti i decimali. Non arrotondare. " +
+        "4) Non aggiungere testo fuori dal JSON.";
+
     // Prompt completo: un'unica chiamata LLM su tutto il testo della SDS.
     // Lo schema JSON è identico a quello usato con successo in Open WebUI (stesso modello):
     // array per pittogrammi e composizione, campo diisocianati sì/no.
@@ -478,6 +646,149 @@ public class ImportService : IImportService
         "4) Per i CAS: riporta il numero CAS esattamente come scritto nel formato xxx-xx-x; se non lo leggi con certezza metti la voce in composizione_cas_da_verificare. " +
         "5) Non aggiungere testo fuori dal JSON.";
 
+    // Chiamata LLM per una singola sezione della SDS.
+    private async Task<(string SectionKey, string? Json)> CallLlmForSectionAsync(string prompt, string sectionText, string? fileName, Stream? pdfStream)
+    {
+        var sectionKey = prompt switch
+        {
+            Section1Prompt => "section1",
+            Section2Prompt => "section2",
+            Section3Prompt => "section3",
+            Section9Prompt => "section9",
+            _ => "unknown"
+        };
+        
+        try
+        {
+            var json = await CallLlmWithPromptAsync(prompt, sectionText, fileName, pdfStream);
+            return (sectionKey, json);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Errore nella chiamata LLM per la sezione {Section}", sectionKey);
+            return (sectionKey, null);
+        }
+    }
+
+    // Chiamata LLM generica con un prompt specifico e il testo della sezione.
+    private async Task<string?> CallLlmWithPromptAsync(string prompt, string sectionText, string? fileName, Stream? pdfStream)
+    {
+        var baseUrl = (_configuration["LLM:BaseUrl"] ?? "http://localhost:8000").TrimEnd('/');
+        var model = _configuration["LLM:Model"] ?? "hexagon";
+        var apiKey = _configuration["LLM:ApiKey"];
+        var timeout = int.TryParse(_configuration["LLM:TimeoutSeconds"], out var t) ? t : 300;
+        var client = _httpClientFactory.CreateClient();
+        client.Timeout = TimeSpan.FromSeconds(timeout);
+        if (!string.IsNullOrWhiteSpace(apiKey))
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiKey);
+
+        // Vision: le prime N pagine come PNG base64 (config LLM:VisionEnabled / LLM:VisionMaxPages).
+        var visionEnabled = bool.TryParse(_configuration["LLM:VisionEnabled"], out var ve) && ve;
+        var maxPages = int.TryParse(_configuration["LLM:VisionMaxPages"], out var mp) ? mp : 4;
+        List<object>? imageParts = null;
+        if (visionEnabled && pdfStream != null)
+        {
+            try
+            {
+                // Resetta la posizione dello stream prima del rendering per evitare errori di lettura
+                pdfStream.Position = 0;
+                imageParts = RenderPdfPagesAsBase64Png(pdfStream, maxPages);
+                if (imageParts.Count == 0) imageParts = null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Render pagine PDF per vision fallito: si prosegue con solo testo");
+                imageParts = null;
+            }
+        }
+
+        var systemContent = "Sei un analista esperto di schede di sicurezza (SDS/GHS) chimiche. Estrai i dati dal testo della SDS fornita seguendo la struttura JSON richiesta. Se un dato non è presente nel testo usa null (l'oggetto JSON null, mai la stringa \"null\"); per gli array usa un array vuoto []. Non calcolare né stimare valori non scritti nella SDS. Rispondi SEMPRE con un solo oggetto JSON valido, senza testo aggiuntivo, senza markdown, senza backticks.";
+        var userJson = new System.Text.StringBuilder();
+        userJson.Append('[');
+        userJson.Append(System.Text.Json.JsonSerializer.Serialize(new { type = "text", text = prompt + "\n\nTESTO DELLA SEZIONE:\n" + sectionText }));
+        if (imageParts != null)
+        {
+            userJson.Append(',');
+            userJson.Append(System.Text.Json.JsonSerializer.Serialize(new { type = "text", text = $"\n\nIMMAGINI DELLE PRIME {maxPages} PAGINE DELLA SDS (per la lettura dei pittogrammi GHS della sezione 2.2):" }));
+            foreach (var part in imageParts)
+            {
+                userJson.Append(',');
+                userJson.Append(System.Text.Json.JsonSerializer.Serialize(part));
+            }
+        }
+        userJson.Append(']');
+
+        var payloadJson = $@"{{""model"":{System.Text.Json.JsonSerializer.Serialize(model)},""messages"":[{{""role"":""system"",""content"":{System.Text.Json.JsonSerializer.Serialize(systemContent)}}},{{""role"":""user"",""content"":{userJson}}}],""temperature"":0,""max_tokens"":8000,""response_format"":{{""type"":""json_object""}}}}";
+
+        try
+        {
+            _logger.LogInformation("LLM call (sezione): url={Url} model={Model} textLen={Len} images={Images}", $"{baseUrl}/v1/chat/completions", model, sectionText.Length, imageParts?.Count ?? 0);
+            using var response = await client.PostAsync($"{baseUrl}/v1/chat/completions", new StringContent(payloadJson, System.Text.Encoding.UTF8, "application/json"));
+            if (!response.IsSuccessStatusCode)
+            {
+                var errBody = await response.Content.ReadAsStringAsync();
+                _logger.LogWarning("LLM HTTP {Status}: {Body}", (int)response.StatusCode, errBody);
+                return null;
+            }
+
+            var body = await response.Content.ReadAsStringAsync();
+            using var doc = System.Text.Json.JsonDocument.Parse(body);
+            var content = doc.RootElement.GetProperty("choices")[0].GetProperty("message").GetProperty("content").GetString();
+
+            var json = ExtractJson(content);
+            if (json == null)
+            {
+                _logger.LogWarning("Nessun JSON trovato nella risposta LLM. Content: {Content}", content);
+                return null;
+            }
+
+            try
+            {
+                System.Text.Json.JsonDocument.Parse(json);
+                return json;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "JSON LLM non valido: {Json}", json.Length > 500 ? json[..500] : json);
+                return null;
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Errore nella chiamata al servizio LLM {Url}", baseUrl);
+            return null;
+        }
+    }
+
+    // Unisce i risultati delle chiamate LLM per sezione in un unico JSON.
+    private static string MergeSectionResults(Dictionary<string, string?> sectionResults)
+    {
+        var merged = new System.Text.Json.Nodes.JsonObject();
+        
+        foreach (var (sectionKey, json) in sectionResults)
+        {
+            if (json == null) continue;
+            
+            try
+            {
+                using var doc = System.Text.Json.JsonDocument.Parse(json);
+                foreach (var prop in doc.RootElement.EnumerateObject())
+                {
+                    // Evita sovrascritture: se la proprietà esiste già, salta
+                    if (!merged.ContainsKey(prop.Name))
+                        merged[prop.Name] = System.Text.Json.Nodes.JsonNode.Parse(prop.Value.GetRawText());
+                }
+            }
+            catch (Exception ex)
+            {
+                // Logga l'errore ma continua con le altre sezioni
+                System.Diagnostics.Debug.WriteLine($"Errore nel parsing della sezione {sectionKey}: {ex.Message}");
+            }
+        }
+        
+        return merged.ToJsonString();
+    }
+
     // Chiamata LLM: invia il prompt completo con il testo della SDS e, se abilitata (LLM:VisionEnabled),
     // le prime pagine del PDF come immagini per la lettura dei pittogrammi GHS (sezione 2.2).
     private async Task<string?> CallLlmAsync(string pdfText, string? fileName, Stream? pdfStream = null)
@@ -499,6 +810,8 @@ public class ImportService : IImportService
         {
             try
             {
+                // Resetta la posizione dello stream prima del rendering per evitare errori di lettura
+                pdfStream.Position = 0;
                 imageParts = RenderPdfPagesAsBase64Png(pdfStream, maxPages);
                 if (imageParts.Count == 0) imageParts = null;
             }

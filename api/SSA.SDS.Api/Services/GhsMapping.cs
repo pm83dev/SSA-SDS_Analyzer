@@ -120,6 +120,31 @@ public static class GhsMapping
         if (codes.Contains("GHS07") && hasH314)
             codes.Remove("GHS07");
 
+        // Esclusione GHS09 per frasi H4xx in contesti inappropriati:
+        // Se sono presenti frasi H4xx ma non ci sono indicatori di pericolo ambientale,
+        // e se non ci sono altre frasi che giustificherebbero GHS09, escludiamo GHS09.
+        var hasH4xx = hPhrases.Split(new[] { ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries)
+            .Any(c => c.Trim().ToUpperInvariant().StartsWith("H4"));
+        
+        if (hasH4xx && codes.Contains("GHS09"))
+        {
+            // Verifica se ci sono altre frasi che giustificherebbero GHS09
+            var hasEnvironmentalH = hPhrases.Split(new[] { ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                .Any(c => 
+                {
+                    var phrase = c.Trim().ToUpperInvariant();
+                    return phrase.StartsWith("H400") || phrase.StartsWith("H410") || 
+                           phrase.StartsWith("H411") || phrase.StartsWith("H412") || 
+                           phrase.StartsWith("H413");
+                });
+            
+            // Se non ci sono altre frasi che giustificano GHS09, rimuoviamo il codice
+            if (!hasEnvironmentalH)
+            {
+                codes.Remove("GHS09");
+            }
+        }
+
         return codes.OrderBy(c => c, StringComparer.Ordinal).ToList();
     }
 
