@@ -1,13 +1,13 @@
 import {
   SdsValueComponent
-} from "./chunk-3B7XZ34X.js";
+} from "./chunk-6QYK56KN.js";
 import {
   SDS_FIELDS,
   columnLabel,
   fieldLabel,
   isToVerify,
   verifyReasons
-} from "./chunk-SBOVXDKA.js";
+} from "./chunk-6QO6FDOT.js";
 import {
   SafetyCardService
 } from "./chunk-OFYPDFIK.js";
@@ -22495,4 +22495,4 @@ xlsx/xlsx.mjs:
 xlsx/xlsx.mjs:
   (*! sheetjs (C) 2013-present SheetJS -- http://sheetjs.com *)
 */
-//# sourceMappingURL=chunk-W3O2J6LU.js.map
+//# sourceMappingURL=chunk-ONHQ6ZP2.js.map

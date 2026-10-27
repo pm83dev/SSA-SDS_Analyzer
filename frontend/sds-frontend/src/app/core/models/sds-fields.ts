@@ -90,11 +90,22 @@ function splitComponents(value: string): string[] {
   return merged;
 }
 
-// Dal testo di un componente tiene solo il nome: via CAS, EC, indici, percentuali e parentesi
+// Dal testo di un componente tiene solo il nome: via CAS, EC, indici e percentuali.
+// I contenuti di ()/[] restano nel nome (es. "1,3-bis[12-idrossi-ottadecammide-N-metilene]-benzene"):
+// si rimuovono solo i dati al loro interno e le parentesi che restano vuote.
 function componentName(part: string): string {
   let name = part.includes('|') ? part.split('|')[0] : part;
+  // I contenuti di ()/[] fanno parte del nome (es. "1,3-bis[12-idrossi-ottadecammide-N-metilene]-benzene"):
+  // si rimuovono solo i dati al loro interno (CAS, EC, indici, percentuali) e poi le parentesi vuote
   name = name
-    .replace(/\([^)]*\)|\[[^\]]*\]/g, ' ')
+    .replace(/(\(|\[)([^)\]]*)(\)|\])/g, (_m, open: string, inner: string, close: string) => {
+      const cleaned = inner
+        .replace(/\b(CAS|EC|CE|N\.?\s*CAS|N\.?\s*EC|Index|REACH)\b[^,;]*/gi, ' ')
+        .replace(/\d+(?:[.,]\d+)?\s*(?:[<>≤≥]=?)\s*x\s*(?:[<>≤≥]=?)\s*\d+(?:[.,]\d+)?\s*%?/gi, ' ')
+        .replace(/[<>≤≥=~]*\s*\d+(?:[.,]\d+)?\s*(?:-\s*[<>≤≥=]*\s*\d+(?:[.,]\d+)?)?\s*%/g, ' ')
+        .replace(/\d{2,7}-\d{2}-\d|\d{3}-\d{3}-\d{1,2}(?:-[\dX]+)?/g, ' ');
+      return cleaned.trim() ? open + cleaned + close : ' ';
+    })
     .replace(/\b(CAS|EC|CE|N\.?\s*CAS|N\.?\s*EC|Index|REACH)\b[^,;]*/gi, ' ')
     // intervalli scritti come "30 ≤ x < 32,5 %" o "10 <= x <= 20"
     .replace(/\d+(?:[.,]\d+)?\s*(?:[<>≤≥]=?)\s*x\s*(?:[<>≤≥]=?)\s*\d+(?:[.,]\d+)?\s*%?/gi, ' ')

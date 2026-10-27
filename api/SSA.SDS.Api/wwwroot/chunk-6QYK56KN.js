@@ -11,7 +11,7 @@ import {
   sdsValue,
   splitCodes,
   verifyReasons
-} from "./chunk-SBOVXDKA.js";
+} from "./chunk-6QO6FDOT.js";
 import {
   CommonModule,
   DatePipe,
@@ -623,4 +623,4 @@ var SdsValueComponent = class _SdsValueComponent {
 export {
   SdsValueComponent
 };
-//# sourceMappingURL=chunk-3B7XZ34X.js.map
+//# sourceMappingURL=chunk-6QYK56KN.js.map

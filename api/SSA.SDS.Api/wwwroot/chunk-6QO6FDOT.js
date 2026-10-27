@@ -161,7 +161,10 @@ function splitComponents(value) {
 }
 function componentName(part) {
   let name = part.includes("|") ? part.split("|")[0] : part;
-  name = name.replace(/\([^)]*\)|\[[^\]]*\]/g, " ").replace(/\b(CAS|EC|CE|N\.?\s*CAS|N\.?\s*EC|Index|REACH)\b[^,;]*/gi, " ").replace(/\d+(?:[.,]\d+)?\s*(?:[<>≤≥]=?)\s*x\s*(?:[<>≤≥]=?)\s*\d+(?:[.,]\d+)?\s*%?/gi, " ").replace(/[<>≤≥=~]*\s*\d+(?:[.,]\d+)?\s*(?:-\s*[<>≤≥=]*\s*\d+(?:[.,]\d+)?)?\s*%/g, " ").replace(/\d{2,7}-\d{2}-\d|\d{3}-\d{3}-\d{1,2}(?:-[\dX]+)?/g, " ").replace(/\s{2,}/g, " ").replace(/^[\s,;:\-–]+|[\s,;:\-–]+$/g, "");
+  name = name.replace(/(\(|\[)([^)\]]*)(\)|\])/g, (_m, open, inner, close) => {
+    const cleaned = inner.replace(/\b(CAS|EC|CE|N\.?\s*CAS|N\.?\s*EC|Index|REACH)\b[^,;]*/gi, " ").replace(/\d+(?:[.,]\d+)?\s*(?:[<>≤≥]=?)\s*x\s*(?:[<>≤≥]=?)\s*\d+(?:[.,]\d+)?\s*%?/gi, " ").replace(/[<>≤≥=~]*\s*\d+(?:[.,]\d+)?\s*(?:-\s*[<>≤≥=]*\s*\d+(?:[.,]\d+)?)?\s*%/g, " ").replace(/\d{2,7}-\d{2}-\d|\d{3}-\d{3}-\d{1,2}(?:-[\dX]+)?/g, " ");
+    return cleaned.trim() ? open + cleaned + close : " ";
+  }).replace(/\b(CAS|EC|CE|N\.?\s*CAS|N\.?\s*EC|Index|REACH)\b[^,;]*/gi, " ").replace(/\d+(?:[.,]\d+)?\s*(?:[<>≤≥]=?)\s*x\s*(?:[<>≤≥]=?)\s*\d+(?:[.,]\d+)?\s*%?/gi, " ").replace(/[<>≤≥=~]*\s*\d+(?:[.,]\d+)?\s*(?:-\s*[<>≤≥=]*\s*\d+(?:[.,]\d+)?)?\s*%/g, " ").replace(/\d{2,7}-\d{2}-\d|\d{3}-\d{3}-\d{1,2}(?:-[\dX]+)?/g, " ").replace(/\s{2,}/g, " ").replace(/^[\s,;:\-–]+|[\s,;:\-–]+$/g, "");
   return name;
 }
 function componentNames(card) {
@@ -269,4 +272,4 @@ export {
   verifyReasons,
   fieldLabel
 };
-//# sourceMappingURL=chunk-SBOVXDKA.js.map
+//# sourceMappingURL=chunk-6QO6FDOT.js.map

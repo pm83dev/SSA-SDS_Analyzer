@@ -94,7 +94,7 @@ var routes = [
   },
   {
     path: "clients/:id",
-    loadComponent: () => import("./chunk-BL6GLTTD.js").then((m) => m.ClientDetailComponent),
+    loadComponent: () => import("./chunk-3C6QANYW.js").then((m) => m.ClientDetailComponent),
     canActivate: [authGuard]
   },
   {
@@ -104,17 +104,17 @@ var routes = [
   },
   {
     path: "safety-cards",
-    loadComponent: () => import("./chunk-W3O2J6LU.js").then((m) => m.CardListComponent),
+    loadComponent: () => import("./chunk-ONHQ6ZP2.js").then((m) => m.CardListComponent),
     canActivate: [authGuard]
   },
   {
     path: "safety-cards/new",
-    loadComponent: () => import("./chunk-VV3ENVUA.js").then((m) => m.CardFormComponent),
+    loadComponent: () => import("./chunk-2HKCNOXR.js").then((m) => m.CardFormComponent),
     canActivate: [authGuard]
   },
   {
     path: "safety-cards/:id/edit",
-    loadComponent: () => import("./chunk-VV3ENVUA.js").then((m) => m.CardFormComponent),
+    loadComponent: () => import("./chunk-2HKCNOXR.js").then((m) => m.CardFormComponent),
     canActivate: [authGuard]
   },
   {

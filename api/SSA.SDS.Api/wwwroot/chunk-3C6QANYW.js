@@ -1,10 +1,10 @@
 import {
   SdsValueComponent
-} from "./chunk-3B7XZ34X.js";
+} from "./chunk-6QYK56KN.js";
 import {
   SDS_FIELDS,
   columnLabel
-} from "./chunk-SBOVXDKA.js";
+} from "./chunk-6QO6FDOT.js";
 import {
   SafetyCardService
 } from "./chunk-OFYPDFIK.js";
@@ -392,4 +392,4 @@ La scheda resta nell'archivio.`))
 export {
   ClientDetailComponent
 };
-//# sourceMappingURL=chunk-BL6GLTTD.js.map
+//# sourceMappingURL=chunk-3C6QANYW.js.map

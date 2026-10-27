@@ -18,7 +18,7 @@ import {
 import {
   SDS_FIELDS,
   fieldLabel
-} from "./chunk-SBOVXDKA.js";
+} from "./chunk-6QO6FDOT.js";
 import {
   SafetyCardService
 } from "./chunk-OFYPDFIK.js";
@@ -809,4 +809,4 @@ var CardFormComponent = class _CardFormComponent {
 export {
   CardFormComponent
 };
-//# sourceMappingURL=chunk-VV3ENVUA.js.map
+//# sourceMappingURL=chunk-2HKCNOXR.js.map
