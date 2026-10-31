@@ -28,9 +28,31 @@
 }
 .search-input { min-width: 300px; }
 .table-container {
-  overflow-x: auto;
+  overflow-x: scroll;
   background: white;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Barra di scorrimento sempre visibile (anche quando non serve) */
+.table-container::-webkit-scrollbar {
+  height: 10px;
+}
+.table-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+.table-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Firefox: scrollbar sempre visibile */
+.table-container {
+  scrollbar-width: thin;
+  scrollbar-color: #c1c1c1 #f1f1f1;
 }
 .data-table {
   width: max-content;

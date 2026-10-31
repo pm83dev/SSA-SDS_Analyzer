@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["src/app/layout/components/navbar.component.css"],
-  "sourcesContent": [".badge-notif {\r\n  position: absolute;\r\n  top: -2px;\r\n  right: -8px;\r\n  background: #e74c3c;\r\n  color: white;\r\n  border-radius: 10px;\r\n  font-size: 11px;\r\n  padding: 2px 6px;\r\n  font-weight: 700;\r\n}\r\n.notif-expired { color: #e74c3c; }\r\n.notif-warning { color: #f39c12; }\r\n"],
-  "mappings": ";AAAA,CAAC;AACC,YAAU;AACV,OAAK;AACL,SAAO;AACP,cAAY;AACZ,SAAO;AACP,iBAAe;AACf,aAAW;AACX,WAAS,IAAI;AACb,eAAa;AACf;AACA,CAAC;AAAgB,SAAO;AAAS;AACjC,CAAC;AAAgB,SAAO;AAAS;",
+  "sourcesContent": ["nav {\r\n  position: sticky !important;\r\n  top: 0 !important;\r\n  z-index: 1030 !important;\r\n}\r\n\r\n.badge-notif {\r\n  position: absolute;\r\n  top: -2px;\r\n  right: -8px;\r\n  background: #e74c3c;\r\n  color: white;\r\n  border-radius: 10px;\r\n  font-size: 11px;\r\n  padding: 2px 6px;\r\n  font-weight: 700;\r\n}\r\n.notif-expired { color: #e74c3c; }\r\n.notif-warning { color: #f39c12; }\r\n"],
+  "mappings": ";AAAA;AACE,YAAU;AACV,OAAK;AACL,WAAS;AACX;AAEA,CAAC;AACC,YAAU;AACV,OAAK;AACL,SAAO;AACP,cAAY;AACZ,SAAO;AACP,iBAAe;AACf,aAAW;AACX,WAAS,IAAI;AACb,eAAa;AACf;AACA,CAAC;AAAgB,SAAO;AAAS;AACjC,CAAC;AAAgB,SAAO;AAAS;",
   "names": []
 }
