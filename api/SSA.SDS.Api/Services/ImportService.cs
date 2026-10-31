@@ -509,20 +509,20 @@ public class ImportService : IImportService
 
     // Divide il testo della SDS nelle sezioni principali (1, 2, 3, 9) usando i pattern delle intestazioni.
     // Ritorna una dictionary con le chiavi "section1", "section2", "section3", "section9".
+    // Le intestazioni delle altre sezioni (4-8, 10-16) servono SOLO a delimitare la fine di quelle estratte:
+    // senza di esse la sezione 9 arriverebbe a fine testo e ingloberebbe le sezioni successive.
     private static Dictionary<string, string> SplitSdsSections(string text)
     {
         var sections = new Dictionary<string, string>();
-        
-        // Pattern per trovare l'inizio di ogni sezione principale
-        var sectionPatterns = new Dictionary<string, System.Text.RegularExpressions.Regex>
-        {
-            ["section1"] = new System.Text.RegularExpressions.Regex(@"^\s*1\.\s+[A-Z]", System.Text.RegularExpressions.RegexOptions.Multiline),
-            ["section2"] = new System.Text.RegularExpressions.Regex(@"^\s*2\.\s+[A-Z]", System.Text.RegularExpressions.RegexOptions.Multiline),
-            ["section3"] = new System.Text.RegularExpressions.Regex(@"^\s*3\.\s+[A-Z]", System.Text.RegularExpressions.RegexOptions.Multiline),
-            ["section9"] = new System.Text.RegularExpressions.Regex(@"^\s*9\.\s+[A-Z]", System.Text.RegularExpressions.RegexOptions.Multiline)
-        };
-        
-        // Trova la posizione di inizio di ogni sezione
+
+        // Pattern per trovare l'inizio di ogni intestazione numerata (1-16).
+        // Le chiavi "sectionN" sono le uniche che verranno estratte e inviate all'LLM.
+        var sectionPatterns = new Dictionary<string, System.Text.RegularExpressions.Regex>();
+        for (var n = 1; n <= 16; n++)
+            sectionPatterns[$"section{n}"] = new System.Text.RegularExpressions.Regex(
+                $@"^\s*{n}\.\s+[A-Z]", System.Text.RegularExpressions.RegexOptions.Multiline);
+
+        // Trova la posizione di inizio di ogni intestazione
         var positions = new Dictionary<string, int>();
         foreach (var kvp in sectionPatterns)
         {
@@ -530,27 +530,21 @@ public class ImportService : IImportService
             if (match.Success)
                 positions[kvp.Key] = match.Index;
         }
-        
-        // Estrae il contenuto di ogni sezione (dall'inizio alla sezione successiva)
+
+        // Estrae il contenuto delle sole sezioni richieste (dall'inizio alla sezione successiva trovata)
         var orderedKeys = new[] { "section1", "section2", "section3", "section9" };
-        for (var i = 0; i < orderedKeys.Length; i++)
+        foreach (var key in orderedKeys)
         {
-            var key = orderedKeys[i];
             if (!positions.ContainsKey(key)) continue;
-            
+
             var start = positions[key];
-            int end;
-            
-            // Trova la sezione successiva per determinare la fine di questa
-            var nextKey = orderedKeys.FirstOrDefault(k => k != key && positions.ContainsKey(k) && positions[k] > start);
-            if (nextKey != null)
-                end = positions[nextKey];
-            else
-                end = text.Length;
-            
+
+            // La fine è l'intestazione successiva (di qualsiasi sezione) che compare dopo l'inizio di questa
+            var end = positions.Values.Where(p => p > start).DefaultIfEmpty(text.Length).Min();
+
             sections[key] = text[start..end].Trim();
         }
-        
+
         return sections;
     }
 
